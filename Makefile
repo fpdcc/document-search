@@ -8,7 +8,8 @@ all: data/indicator/BOOKS data/indicator/CONTROL_MONUMENT_MAPS \
      data/indicator/TITLES
 
 data/%.csv : data/raw/%.txt
-	sed -e 's/\r//' -e '1 s/$$/|"source_file"/' -e '1 s/"//g' $< | in2csv -d "|" -f csv > $@
+	# Strip carriage returns/unecessary quotes and add source_file field to headers
+	sed -e 's/\r//' -e '1 s/"//g' -e '1 s/$$/|source_file/' $< | in2csv -d "|" -f csv > $@
 
 data/indicator/% : data/%.csv
 	python manage.py import_data $< $(MODEL) --truncate

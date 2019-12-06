@@ -34,13 +34,17 @@ class Command(BaseCommand):
 
         reader = csv.DictReader(options['infile'])
 
+        # Fieldnames in the source CSV should be identical to model attributes,
+        # except they have spaces instead of underscores
         header_to_model_fields = {field: field.replace(' ', '_')
                                   for field in reader.fieldnames}
 
         for row in reader:
+            # Make sure to convert empty strings to NULL
             metadata = {header_to_model_fields[field]: value or None
                         for field, value in row.items()}
-
+            # Document files are stored on S3, so we need to save a file string
+            # corresponding to the appropriate S3 prefix for each document type
             s3_path = f'{Model.s3_prefix}/{metadata["source_file"]}'
             metadata['source_file'] = s3_path
 
