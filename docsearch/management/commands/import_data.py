@@ -40,5 +40,9 @@ class Command(BaseCommand):
         for row in reader:
             metadata = {header_to_model_fields[field]: value or None
                         for field, value in row.items()}
+
+            s3_path = f'{Model.s3_prefix}/{metadata["source_file"]}'
+            metadata['source_file'] = s3_path
+
             obj = Model(**metadata)
             obj.save()
