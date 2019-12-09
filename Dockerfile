@@ -4,7 +4,7 @@
 # version number in the pilot. YMMV. See this post for a discussion of
 # some options and their pros and cons:
 # https://pythonspeed.com/articles/base-image-python-docker-images/
-FROM python:3.8
+FROM python:3.6
 
 # Give ourselves some credit
 LABEL maintainer "DataMade <info@datamade.us>"
