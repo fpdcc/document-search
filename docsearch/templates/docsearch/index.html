@@ -1,0 +1,49 @@
+{% extends "docsearch/base.html" %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+<div class="container-fluid mb-3 py-5 bg-light">
+  <div class="row">
+    <div class="col-sm-10 offset-sm-1">
+      <h1 class="mb-3">Document Search</h1>
+      <h3 class="mb-3 text-muted">Forest Preserves of Cook County</h2>
+      <h5 class="mb-3">
+        Search for historical documents about Forest Preserves projects, including
+        <strong>licenses, easements, flat files, and more</strong>.</h4>
+    </div>
+  </div>
+</div>
+<br />
+<div class="container">
+  <div class="row py-5" id="search">
+    <div class="col-md-10 offset-md-1">
+      <div class="card shadow mb-3">
+        <div class="card-body">
+          <form id="entity-form" action="{% url 'home' %}" method="POST">
+            <div class="row">
+              <div class="col-md">
+                <div class="input-group">
+                  <input
+                    type="text"
+                    id="entity-lookup"
+                    name="q"
+                    class="form-control form-control-lg"
+                    placeholder="Search for a candidate or office..."
+                    autofocus />
+                  <div class="input-group-append">
+                    <button type="submit" class="btn btn-secondary bg-fpdcc-light-green btn-lg" id="submit-button">
+                      <i class="fas fa-search"></i> Search
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

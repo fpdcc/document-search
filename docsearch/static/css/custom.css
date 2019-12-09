@@ -1,0 +1,122 @@
+/* Global styles */
+body {
+  font-family: 'Nunito Sans', 'Helvetica', sans-serif;
+}
+
+.bg-umn-gold {
+  background: #ffcc33;
+}
+
+.bg-umn-light-gray {
+  background: #f5f5f5;
+}
+
+.bg-umn-maroon {
+  background: #7a121c;
+}
+
+.bg-breadcrumb {
+  background: #e9ecef;
+}
+
+.bg-fpdcc-light-green {
+  background: #687f2f
+}
+
+.red {
+  color: red;
+}
+
+.green {
+  color: green;
+}
+
+.umn-maroon, .umn-maroon:hover {
+  color: #7a121c !important;  /* Override Bootstrap default */
+}
+
+.page-item.active .page-link {
+  background-color: #7a121c;
+  border-color: #7a121c;
+
+}
+
+.select2-container--default
+.select2-results__option--highlighted[aria-selected] {
+  /* Override default Select2 selection color */
+  background-color: #7a121c !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: white;
+  font-size: 1.1em;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: #dfdfdf;
+}
+
+.navbar-logo-image {
+  height: 75px;
+}
+
+@media(max-width:756px) {
+  .navbar-logo-image {
+    height: 50px;
+  }
+
+  .navbar-logo-text {
+    font-size: 0.9em;
+  }
+}
+
+/* search page */
+.filter-card, .filter-card input {
+  font-size: 14px;
+}
+
+/* sorting */
+
+.sort-container {
+  display: inline-block;
+  margin-left: 2px;
+}
+
+.sort-container a.active {
+  color: #481212;
+}
+
+.sort-asc,
+.sort-desc {
+  display: block;
+  position: relative;
+}
+
+.sort-asc {
+  margin-top: -2px;
+  bottom: -3px;
+}
+
+.sort-link:hover {
+  text-decoration: none;
+}
+
+/* Fix for flickering tooltip */
+/* See: https://stackoverflow.com/a/48665379 */
+.tooltip {
+  pointer-events: none;
+}
+
+/* Bootstrap overrides */
+.bg-dark {
+  background-color: #445721 !important;
+}
+
+.bg-light {
+  background-color: #f0f0e1 !important;
+}
+
+/* Footer styles */
+footer a {
+  color: rgba(255,255,255,.5)!important;
+}
