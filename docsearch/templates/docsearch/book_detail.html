@@ -1,0 +1,12 @@
+{% extends "docsearch/base_content.html" %}
+
+{% block title %}{{ object }}{% endblock %}
+
+{% block content %}
+<h1>
+    {{ object }}
+    <small class="float-right">
+        <a class="btn btn-secondary bg-fpdcc-light-green" href="{{ update_url }}">Edit</a>
+    </small>
+</h1>
+{% endblock %}

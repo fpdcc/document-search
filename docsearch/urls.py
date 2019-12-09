@@ -20,6 +20,10 @@ from docsearch import views
 
 urlpatterns = [
     path('', views.Home.as_view(), name='home'),
+    path('book/<int:pk>/', views.BookDetail.as_view(), name="book"),
+    path('book/create/', views.BookCreate.as_view(), name="book-create"),
+    path('book/update/<int:pk>/', views.BookUpdate.as_view(), name="book-update"),
+    path('book/delete/<int:pk>/', views.BookDelete.as_view(), name="book-delete"),
     path('admin/', admin.site.urls),
     path('logout/', auth.views.LogoutView.as_view(), name='logout'),
 ]
