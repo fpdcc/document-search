@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 {% load model_meta %}
 
-{% block title %}{% if object %}Edit {{ object }}{% else %}Add{% endif %} {{ object }}{% endblock %}
+{% block title %}{% if object %}Edit{% else %}Add new{% endif %} {{ view.model|verbose_name|title }}{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -15,7 +15,7 @@
       {% csrf_token %}
       {% crispy form %}
       <div class="float-right">
-        <a class="btn btn-link" href="{{ cancel_url }}">Cancel</a><!-- TODO: Return to search -->
+        <a class="btn btn-link" href="{{ cancel_url }}">Cancel</a>
         <button class="btn btn-secondary bg-fpdcc-light-green" type="submit">
           {% if object %}Update{% else %}Create{% endif %}
         </button>
