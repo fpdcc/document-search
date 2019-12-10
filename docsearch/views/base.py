@@ -2,6 +2,8 @@ from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 
+from docsearch import models
+
 
 class BaseUrlMixin:
     def get_url(self, attr, obj=None):
@@ -43,6 +45,14 @@ class BaseCreateView(LoginRequiredMixin, CancelUrlMixin, CreateView):
         context['cancel_url'] = self.get_cancel_url()
         return context
 
+    def form_valid(self, form):
+        models.ActionLog.objects.create(
+            user=self.request.user,
+            content_object=form.instance,
+            action=models.ActionLog.Action.CREATE
+        )
+        return super().form_valid(form)
+
 
 class BaseUpdateView(LoginRequiredMixin, CancelUrlMixin, DeleteUrlMixin, UpdateView):
     def get_context_data(self, *args, **kwargs):
@@ -50,6 +60,14 @@ class BaseUpdateView(LoginRequiredMixin, CancelUrlMixin, DeleteUrlMixin, UpdateV
         context['cancel_url'] = self.get_cancel_url(obj=context['object'])
         context['delete_url'] = self.get_delete_url(obj=context['object'])
         return context
+
+    def form_valid(self, form):
+        models.ActionLog.objects.create(
+            user=self.request.user,
+            content_object=form.instance,
+            action=models.ActionLog.Action.UPDATE
+        )
+        return super().form_valid(form)
 
 
 class BaseDetailView(LoginRequiredMixin, UpdateUrlMixin, DetailView):

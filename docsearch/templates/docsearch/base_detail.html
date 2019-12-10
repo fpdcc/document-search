@@ -3,10 +3,15 @@
 {% block title %}{{ object }}{% endblock %}
 
 {% block content %}
-<h1>
-    {{ object }}
-    <small class="float-right">
+<div class="row">
+  <div class="col-12">
+    <h1>
+      {{ object }}
+      <small class="float-right">
         <a class="btn btn-secondary bg-fpdcc-light-green" href="{{ update_url }}">Edit</a>
-    </small>
-</h1>
+      </small>
+    </h1>
+    <p class="text-muted">{{ object.actions.first.get_action_string|capfirst }}</p>
+  </div>
+</div>
 {% endblock %}
