@@ -8,6 +8,8 @@ class ControlMonumentMapDetail(base_views.BaseDetailView):
     model = models.ControlMonumentMap
     template_name = 'docsearch/controlmonumentmaps/detail.html'
     update_url_from_obj = 'controlmonumentmap-update'
+    metadata_fields = ['township', 'range', 'section', 'part_of_section',
+                       'source_file']
 
 
 class ControlMonumentMapCreate(base_views.BaseCreateView):

@@ -8,6 +8,7 @@ class BookDetail(base_views.BaseDetailView):
     model = models.Book
     template_name = 'docsearch/books/detail.html'
     update_url_from_obj = 'book-update'
+    metadata_fields = ['township', 'range', 'section', 'source_file']
 
 
 class BookCreate(base_views.BaseCreateView):
