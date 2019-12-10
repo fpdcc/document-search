@@ -118,5 +118,9 @@ body {
 
 /* Footer styles */
 footer a {
-  color: rgba(255,255,255,.5)!important;
+  color: rgba(255,255,255,.5) !important;
+}
+
+footer a.dropdown-item {
+  color: #212529 !important;
 }

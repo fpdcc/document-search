@@ -60,6 +60,15 @@ class BaseDocumentModel(models.Model):
         return cls._meta.label_lower.split('.')[-1]
 
     @classmethod
+    def get_plural_slug(cls):
+        """
+        Return a plural version of this model's slug.
+
+        Override this method if the model name has an irregular plural form.
+        """
+        return f'{cls.get_slug()}s'
+
+    @classmethod
     def get_create_url(self):
         """
         Return the canonical URL referring to this object's CreateView.
@@ -157,6 +166,10 @@ class RightOfWay(BaseDocumentModel):
     class Meta:
         verbose_name_plural = 'rights of way'
 
+    @classmethod
+    def get_plural_slug(cls):
+        return 'rightsofway'
+
 
 class Survey(BaseDocumentModel):
     s3_prefix = 'SURVEYS'
@@ -194,12 +207,8 @@ def get_model_from_plural_slug(slug):
     Example:
         get_model_from_plural_slug(controlmonumentmaps) -> ControlMonumentMap
     """
-    if not slug.endswith('s'):
-        raise InvalidSlugException(f'slug "{slug}"" must be plural')
-    singular_slug = slug[:-1]
     for Model in apps.get_app_config('docsearch').get_models():
         if issubclass(Model, BaseDocumentModel):
-            model_slug = Model.get_slug()
-            if model_slug == singular_slug:
+            if slug == Model.get_plural_slug():
                 return Model
     raise InvalidSlugException(f'No Model found for slug "{slug}"')

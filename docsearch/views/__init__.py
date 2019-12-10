@@ -5,6 +5,16 @@ from django.http import Http404
 from docsearch import models
 from .books import *
 from .controlmonumentmaps import *
+from .dossiers import *
+from .easements import *
+from .flatdrawings import *
+from .indexcards import *
+from .licenses import *
+from .projectfiles import *
+from .rightsofway import *
+from .surplusparcels import *
+from .surveys import *
+from .titles import *
 
 
 class Home(LoginRequiredMixin, TemplateView):
