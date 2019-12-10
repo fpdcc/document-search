@@ -81,6 +81,18 @@ class BaseDocumentModel(models.Model):
         """
         return reverse(f'{self.get_slug()}-detail', args=(self.pk,))
 
+    def get_update_url(self):
+        """
+        Return the canonical URL referring to this object's UpdateView.
+        """
+        return reverse(f'{self.get_slug()}-update', args=(self.pk,))
+
+    def get_delete_url(self):
+        """
+        Return the canonical URL referring to this object's UpdateView.
+        """
+        return reverse(f'{self.get_slug()}-delete', args=(self.pk,))
+
 
 class Book(BaseDocumentModel):
     s3_prefix = 'BOOKS'
