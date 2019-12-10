@@ -59,9 +59,16 @@ class BaseDocumentModel(models.Model):
         # Models are namespaced by app, e.g. 'docsearch.controlmonumentmap'
         return cls._meta.label_lower.split('.')[-1]
 
+    @classmethod
+    def get_create_url(self):
+        """
+        Return the canonical URL referring to this object's CreateView.
+        """
+        return reverse(f'{self.get_slug()}-create')
+
     def get_absolute_url(self):
         """
-        Return the canonical URL referring to this object's detail view.
+        Return the canonical URL referring to this object's DetailView.
         """
         return reverse(f'{self.get_slug()}-detail', args=(self.pk,))
 
