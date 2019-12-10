@@ -50,8 +50,9 @@ def test_create(client, user, document_and_fields):
 
     assert post_response.status_code == 302
 
-    document.refresh_from_db()
-    most_recent_action = document.actions.first()
+    new_doc = Model.objects.last()
+    assert new_doc != document
+    most_recent_action = new_doc.actions.first()
 
     assert most_recent_action.user == user
     assert most_recent_action.action == 'create'
