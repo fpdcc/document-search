@@ -21,12 +21,12 @@ class BookUpdate(base_views.BaseUpdateView):
     model = models.Book
     template_name = 'docsearch/book/form.html'
     fields = '__all__'
-    cancel_url = 'book'
+    cancel_url = 'book-detail'
     delete_url = 'book-delete'
 
 
 class BookDelete(base_views.BaseDeleteView):
     model = models.Book
     template_name = 'docsearch/book/confirm_delete.html'
-    cancel_url = 'book'
+    cancel_url = 'book-detail'
     success_url = reverse_lazy('book-create')  # TODO: Change to search

@@ -21,12 +21,12 @@ class ControlMonumentMapUpdate(base_views.BaseUpdateView):
     model = models.ControlMonumentMap
     template_name = 'docsearch/controlmonumentmap/form.html'
     fields = '__all__'
-    cancel_url = 'controlmonumentmap'
+    cancel_url = 'controlmonumentmap-detail'
     delete_url = 'controlmonumentmap-delete'
 
 
 class ControlMonumentMapDelete(base_views.BaseDeleteView):
     model = models.ControlMonumentMap
     template_name = 'docsearch/controlmonumentmap/confirm_delete.html'
-    cancel_url = 'controlmonumentmap'
+    cancel_url = 'controlmonumentmap-detail'
     success_url = reverse_lazy('controlmonumentmap-create')  # TODO: Change to search

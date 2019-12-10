@@ -14,20 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin, auth
-from django.urls import path
+from django.urls import path, include
 
 from docsearch import views
+from .books import urlpatterns as books_patterns
+from .controlmonumentmaps import urlpatterns as controlmonumentmaps_patterns
 
 urlpatterns = [
     path('', views.Home.as_view(), name='home'),
-    path('book/<int:pk>/', views.BookDetail.as_view(), name="book"),
-    path('book/create/', views.BookCreate.as_view(), name="book-create"),
-    path('book/update/<int:pk>/', views.BookUpdate.as_view(), name="book-update"),
-    path('book/delete/<int:pk>/', views.BookDelete.as_view(), name="book-delete"),
-    path('controlmonumentmap/<int:pk>/', views.ControlMonumentMapDetail.as_view(), name="controlmonumentmap"),
-    path('controlmonumentmap/create/', views.ControlMonumentMapCreate.as_view(), name="controlmonumentmap-create"),
-    path('controlmonumentmap/update/<int:pk>/', views.ControlMonumentMapUpdate.as_view(), name="controlmonumentmap-update"),
-    path('controlmonumentmap/delete/<int:pk>/', views.ControlMonumentMapDelete.as_view(), name="controlmonumentmap-delete"),
+    path('books/', include(books_patterns)),
+    path('controlmonumentmaps/', include(controlmonumentmaps_patterns)),
     path('admin/', admin.site.urls),
     path('logout/', auth.views.LogoutView.as_view(), name='logout'),
 ]
