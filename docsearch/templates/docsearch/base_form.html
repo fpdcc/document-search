@@ -13,7 +13,7 @@
     </h1>
     <form method="POST">
       {% csrf_token %}
-      {% crispy form %}
+      {{ form|crispy }}
       <div class="float-right">
         <a class="btn btn-link" href="{{ cancel_url }}">Cancel</a>
         <button class="btn btn-secondary bg-fpdcc-light-green" type="submit">

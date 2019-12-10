@@ -23,6 +23,6 @@ class Search(LoginRequiredMixin, TemplateView):
         if not kwargs.get('doctype'):
             raise ValueError('doctype is a required kwarg')
         try:
-            return models.get_model_from_slug(kwargs['doctype'])
+            return models.get_model_from_plural_slug(kwargs['doctype'])
         except models.InvalidSlugException as e:
             raise Http404(str(e))
