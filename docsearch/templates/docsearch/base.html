@@ -74,46 +74,10 @@
       <div class="collapse navbar-collapse" id="navbar-supported-content">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              id="nav-search-dropdown"
-              data-toggle="dropdown"
-              href="#"
-              role="button"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Search
-            </a>
-            <div class="dropdown-menu" aria-labelledby="nav-search-dropdown">
-              <a class="dropdown-item" href="{% url 'search' 'books' %}">
-                Books
-              </a>
-              <a class="dropdown-item" href="{% url 'search' 'controlmonumentmaps' %}">
-                Control Monument Maps
-              </a>
-            </div>
+            {% include "docsearch/partials/dropdown_search.html" %}
           </li>
           <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              id="nav-add-dropdown"
-              data-toggle="dropdown"
-              href="#"
-              role="button"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Add new
-            </a>
-            <div class="dropdown-menu" aria-labelledby="nav-search-dropdown">
-              <a class="dropdown-item" href="{% url 'book-create' %}">
-                Book
-              </a>
-              <a class="dropdown-item" href="{% url 'controlmonumentmap-create' %}">
-                Control Monument Map
-              </a>
-            </div>
+            {% include "docsearch/partials/dropdown_add.html" %}
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'logout' %}">Sign out</a>
@@ -135,12 +99,19 @@
           alt="Forest Preserves of Cook County logo"
         />
         <h3 class="mb-1">Document Search</h3>
-        <p>
-          <a href="{% url 'home' %}">Home</a> |
-          <a href="{% url 'home' %}">Search</a> |
-          <a href="{% url 'home' %}">Add new</a> |
-          <a href="{% url 'logout' %}">Sign out</a>
-        </p>
+        <div class="d-flex justify-content-center">
+          <ul class="nav mx-auto">
+            <li class="nav-item dropdown">
+              {% include "docsearch/partials/dropdown_search.html" %}
+            </li>
+            <li class="nav-item dropdown">
+              {% include "docsearch/partials/dropdown_add.html" %}
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}">Sign out</a>
+            </li>
+          </ul>
+        </div>
 
         <p class="mt-4">
           Website by <br/>
