@@ -1,16 +1,7 @@
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView
 
-from docsearch import models, base_views
-
-
-class Home(LoginRequiredMixin, TemplateView):
-    template_name = 'docsearch/index.html'
-
-
-class Search(LoginRequiredMixin, TemplateView):
-    template_name = 'docsearch/search.html'
+from docsearch import models
+from . import base as base_views
 
 
 class BookDetail(base_views.BaseDetailView):

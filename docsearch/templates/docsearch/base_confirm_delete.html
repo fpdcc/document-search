@@ -3,7 +3,7 @@
 {% block title %}Delete {{ object }}{% endblock %}
 
 {% block content %}
-<h4 class="mb-3">Are you sure you want to delete <strong>{{ object }}</strong>?</h4>
+<h2 class="mb-3">Are you sure you want to delete <strong>{{ object }}</strong>?</h2>
 <p class="text-muted">This action cannot be undone.</p>
 <form method="POST">
   {% csrf_token %}
