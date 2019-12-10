@@ -7,26 +7,26 @@ from . import base as base_views
 class ControlMonumentMapDetail(base_views.BaseDetailView):
     model = models.ControlMonumentMap
     template_name = 'docsearch/controlmonumentmaps/detail.html'
-    update_url = 'controlmonumentmap-update'
+    update_url_from_obj = 'controlmonumentmap-update'
 
 
 class ControlMonumentMapCreate(base_views.BaseCreateView):
     model = models.ControlMonumentMap
     template_name = 'docsearch/controlmonumentmaps/form.html'
     fields = '__all__'
-    cancel_url = 'home'  # TODO: Change this to Search
+    cancel_url = reverse_lazy('search', args=('controlmonumentmaps',))
 
 
 class ControlMonumentMapUpdate(base_views.BaseUpdateView):
     model = models.ControlMonumentMap
     template_name = 'docsearch/controlmonumentmaps/form.html'
     fields = '__all__'
-    cancel_url = 'controlmonumentmap-detail'
-    delete_url = 'controlmonumentmap-delete'
+    cancel_url_from_obj = 'controlmonumentmap-detail'
+    delete_url_from_obj = 'controlmonumentmap-delete'
 
 
 class ControlMonumentMapDelete(base_views.BaseDeleteView):
     model = models.ControlMonumentMap
     template_name = 'docsearch/controlmonumentmaps/confirm_delete.html'
-    cancel_url = 'controlmonumentmap-detail'
-    success_url = reverse_lazy('controlmonumentmap-create')  # TODO: Change to search
+    cancel_url_from_obj = 'controlmonumentmap-detail'
+    success_url = reverse_lazy('search', args=('controlmonumentmaps',))

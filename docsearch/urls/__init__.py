@@ -22,6 +22,7 @@ from .controlmonumentmaps import urlpatterns as controlmonumentmaps_patterns
 
 urlpatterns = [
     path('', views.Home.as_view(), name='home'),
+    path('search/<slug:doctype>/', views.Search.as_view(), name='search'),
     path('books/', include(books_patterns)),
     path('controlmonumentmaps/', include(controlmonumentmaps_patterns)),
     path('admin/', admin.site.urls),

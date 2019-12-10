@@ -5,16 +5,21 @@ from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 
 class BaseUrlMixin:
     def get_url(self, attr, obj=None):
-        if not hasattr(self, attr):
-            raise AttributeError(
-                f'{attr} is required on this class'
-            )
-        name = getattr(self, attr)
-        if obj is not None:
-            args = (obj.pk,)
+        if hasattr(self, attr):
+            # If the base attr is set, that means the user has set a simple
+            # URL string, so default to that string
+            return getattr(self, attr)
+        elif hasattr(self, f'{attr}_from_obj'):
+            if obj is None:
+                raise ValueError(
+                    f'Expected an obj kwarg for {attr}_from_obj, got None'
+                )
+            name = getattr(self, f'{attr}_from_obj')
+            return reverse(name, args=(obj.pk,))
         else:
-            args = ()
-        return reverse(name, args=args)
+            raise AttributeError(
+                f'One of {attr} or {attr}_from_obj must be set on this class'
+            )
 
 
 class CancelUrlMixin(BaseUrlMixin):
