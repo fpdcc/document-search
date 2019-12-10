@@ -1,3 +1,4 @@
+from django.apps import apps
 from django.db import models
 
 
@@ -121,3 +122,26 @@ class Title(models.Model):
     s3_prefix = 'TITLES'
     control_number = models.CharField(max_length=255)
     source_file = models.FileField()
+
+
+class InvalidSlugException(ValueError):
+    pass
+
+
+def get_model_from_slug(slug):
+    """
+    Given a slug of a model (which we expect to be lowercase and plural with
+    no spaces) return the corresponding model class.
+
+    Example:
+        get_model_from_slug(controlmonumentmaps) -> <class: ControlMonumentMap>
+    """
+    if not slug.endswith('s'):
+        raise InvalidSlugException(f'slug "{slug}"" must be plural')
+    singular_slug = slug[:-1]
+    for Model in apps.get_app_config('docsearch').get_models():
+        # Models are namespaced by app, e.g. 'docsearch.controlmonumentmap'
+        model_slug = Model._meta.label_lower.split('.')[-1]
+        if model_slug == singular_slug:
+            return Model
+    raise InvalidSlugException(f'No Model found for slug "{slug}"')

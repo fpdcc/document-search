@@ -7,26 +7,26 @@ from . import base as base_views
 class BookDetail(base_views.BaseDetailView):
     model = models.Book
     template_name = 'docsearch/books/detail.html'
-    update_url = 'book-update'
+    update_url_from_obj = 'book-update'
 
 
 class BookCreate(base_views.BaseCreateView):
     model = models.Book
     template_name = 'docsearch/books/form.html'
     fields = '__all__'
-    cancel_url = 'home'  # TODO: Change this to Search
+    cancel_url = reverse_lazy('search', args=('books',))
 
 
 class BookUpdate(base_views.BaseUpdateView):
     model = models.Book
     template_name = 'docsearch/books/form.html'
     fields = '__all__'
-    cancel_url = 'book-detail'
-    delete_url = 'book-delete'
+    cancel_url_from_obj = 'book-detail'
+    delete_url_from_obj = 'book-delete'
 
 
 class BookDelete(base_views.BaseDeleteView):
     model = models.Book
     template_name = 'docsearch/books/confirm_delete.html'
-    cancel_url = 'book-detail'
-    success_url = reverse_lazy('book-create')  # TODO: Change to search
+    cancel_url_from_obj = 'book-detail'
+    success_url = reverse_lazy('search', args=('books',))
