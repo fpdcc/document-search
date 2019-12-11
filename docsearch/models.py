@@ -75,6 +75,13 @@ class BaseDocumentModel(models.Model):
         """
         return reverse(f'{self.get_slug()}-create')
 
+    @classmethod
+    def get_search_url(self):
+        """
+        Return the canonical URL referring to this object's Search view.
+        """
+        return reverse('search', args=(self.get_plural_slug(),))
+
     def get_absolute_url(self):
         """
         Return the canonical URL referring to this object's DetailView.
