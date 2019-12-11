@@ -3,13 +3,13 @@
 {% load get_attr %}
 {% load model_meta %}
 
-{% block title %}{{ object }}{% endblock %}
+{% block title %}{{ view.model|verbose_name|title }}{% endblock %}
 
 {% block content %}
 <div class="row">
   <div class="col-12">
     <h1>
-      {{ object }}
+      {{ view.model|verbose_name|title }}
       <small class="float-right">
         <a class="btn btn-secondary bg-fpdcc-light-green" href="{{ update_url }}">Edit</a>
       </small>
