@@ -14,12 +14,15 @@ class BaseCreateView(LoginRequiredMixin, CreateView):
         return self.model.get_search_url()
 
     def form_valid(self, form):
+        # Generate the response before saving an ActionLog entry, since the
+        # ActionLog requires an object to have been saved to the database
+        response = super().form_valid(form)
         models.ActionLog.objects.create(
             user=self.request.user,
             content_object=form.instance,
             action=models.ActionLog.Action.CREATE
         )
-        return super().form_valid(form)
+        return response
 
 
 class BaseUpdateView(LoginRequiredMixin, UpdateView):
