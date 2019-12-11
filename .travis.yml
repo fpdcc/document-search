@@ -4,9 +4,16 @@ branches:
   - master
   - "/^v[0-9].*$/"
 
-dist: trusty
+language: python
+python: "3.6"
 
 services:
 - docker
+
+# Install a newer version of Docker Compose -- see:
+# https://docs.travis-ci.com/user/docker/#using-docker-compose
+before_install:
+- pip install -U pip
+- pip install -U docker-compose
 
 script: docker-compose -f docker-compose.yml -f tests/docker-compose.yml run --rm app
