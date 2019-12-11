@@ -17,11 +17,15 @@ install:
 
 # Make a database available. Be sure to update the version, if needed.
 addons:
-  postgresql: '11'
+  postgresql: '10'
+  apt:
+    packages:
+    - postgresql-10-postgis-2.4
 
 # Run these things before running the tests. In this case, we're copying
 # a test configuration file to the appropriate location.
 before_script:
+- psql -U postgres -c "CREATE EXTENSION postgis;"
 - cp docsearch/local_settings.example.py docsearch/local_settings.py
 
 # Run the tests
