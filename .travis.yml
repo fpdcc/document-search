@@ -4,32 +4,9 @@ branches:
   - master
   - "/^v[0-9].*$/"
 
-# Use python and tell it to use a particular version
-language: python
+dist: trusty
 
-python:
-- '3.6'
+services:
+- docker
 
-# Install dependencies
-install:
-- pip install --upgrade pip
-- pip install --upgrade -r requirements.txt -r tests/requirements.txt
-
-# Make a database available. Be sure to update the version, if needed.
-addons:
-  postgresql: '10'
-  apt:
-    packages:
-    - binutils
-    - libproj-dev
-    - gdal-bin
-    - postgresql-10-postgis-2.4
-
-# Run these things before running the tests. In this case, we're copying
-# a test configuration file to the appropriate location.
-before_script:
-- psql -U postgres -c "CREATE EXTENSION postgis;"
-- cp docsearch/local_settings.example.py docsearch/local_settings.py
-
-# Run the tests
-script: pytest -sxv
+script: docker-compose -f docker-compose.yml -f tests/docker-compose.yml run --rm app
