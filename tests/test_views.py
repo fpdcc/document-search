@@ -98,13 +98,14 @@ def test_delete(client, user, document_and_fields):
     client.force_login(user)
     document, _ = document_and_fields
 
+    Model = type(document)
     url = document.get_delete_url()
     get_response = client.get(url)
 
     assert get_response.status_code == 200
 
     response_content = get_response.content.decode('utf-8')
-    expected_string = f'Are you sure you want to delete <strong>{str(document)}'
+    expected_string = f'Are you sure you want to delete this {Model._meta.verbose_name.title()}?'
     assert expected_string in response_content
 
     post_response = client.post(url)
