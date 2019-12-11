@@ -20,6 +20,9 @@ addons:
   postgresql: '10'
   apt:
     packages:
+    - binutils
+    - libproj-dev
+    - gdal-bin
     - postgresql-10-postgis-2.4
 
 # Run these things before running the tests. In this case, we're copying
