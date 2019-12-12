@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
     'docsearch',
 ]
 
@@ -52,10 +53,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'docsearch.context_processors.models',
             ],
         },
     },
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 WSGI_APPLICATION = 'docsearch.wsgi.application'
 
@@ -77,12 +81,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# TODO: Replace this with a custom login form.
+LOGIN_URL = '/admin/login/'
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Chicago'
 
 USE_I18N = True
 
@@ -94,3 +101,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# TODO: Configure S3 backend and make sure it works with the tests
+MEDIA_ROOT = '/media/'

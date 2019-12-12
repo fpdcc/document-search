@@ -1,0 +1,15 @@
+{% extends "docsearch/base_content.html" %}
+
+{% load model_meta %}
+
+{% block title %}Search for {{ model|verbose_name_plural|title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-sm-12">
+    <h1 class="mb-3">
+      Search for {{ model|verbose_name_plural|title }}
+    </h1>
+  </div>
+</div>
+{% endblock %}

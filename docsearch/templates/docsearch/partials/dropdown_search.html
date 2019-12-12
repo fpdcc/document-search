@@ -1,0 +1,19 @@
+{% load model_meta %}
+
+<a
+  class="nav-link dropdown-toggle"
+  data-toggle="dropdown"
+  href="#"
+  role="button"
+  aria-haspopup="true"
+  aria-expanded="false"
+>
+  Search
+</a>
+<div class="dropdown-menu">
+  {% for model in models %}
+    <a class="dropdown-item" href="{% url 'search' model.get_plural_slug %}">
+      {{ model|verbose_name_plural|title }}
+    </a>
+  {% endfor %}
+</div>

@@ -1,0 +1,19 @@
+{% load model_meta %}
+
+<a
+  class="nav-link dropdown-toggle"
+  data-toggle="dropdown"
+  href="#"
+  role="button"
+  aria-haspopup="true"
+  aria-expanded="false"
+>
+  Add new
+</a>
+<div class="dropdown-menu">
+  {% for model in models %}
+    <a class="dropdown-item" href="{{ model.get_create_url }}">
+      {{ model|verbose_name|title }}
+    </a>
+  {% endfor %}
+</div>
