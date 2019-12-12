@@ -1,0 +1,29 @@
+{% extends "docsearch/base_content.html" %}
+
+{% load crispy_forms_tags %}
+{% load model_meta %}
+
+{% block title %}{% if object %}Edit{% else %}Add new{% endif %} {{ view.model|verbose_name|title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-sm-12">
+    <h1 class="mb-3">
+      {% if object %}Edit{% else %}Add new{% endif %} {{ view.model|verbose_name|title }}
+    </h1>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <div class="float-right">
+        <a class="btn btn-link" href="{{ cancel_url }}">Cancel</a>
+        <button class="btn btn-secondary bg-fpdcc-light-green" type="submit">
+          {% if object %}Update{% else %}Create{% endif %}
+        </button>
+        {% if object %}
+          <a class="btn btn-danger" href="{{ delete_url }}">Delete</a>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

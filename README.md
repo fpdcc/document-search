@@ -22,6 +22,12 @@ docker-compose up
 The app will be available at http://localhost:8000. The database will be exposed
 on port 32001.
 
+Create a superuser to view the application:
+
+```
+docker-compose run --rm app ./manage.py createsuperuser
+```
+
 Load initial data:
 
 ```

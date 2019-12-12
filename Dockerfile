@@ -34,7 +34,8 @@ WORKDIR /app
 # https://blog.realkinetic.com/building-minimal-docker-containers-for-python-applications-37d0272c52f3
 COPY ./requirements.txt /app/requirements.txt
 COPY ./data/requirements.txt /app/data-requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt -r data-requirements.txt
+COPY ./tests/requirements.txt /app/tests-requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt -r data-requirements.txt -r tests-requirements.txt
 
 # Copy the contents of the current host directory (i.e., our app code) into
 # the container.
