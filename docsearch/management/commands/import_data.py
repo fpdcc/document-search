@@ -2,6 +2,7 @@ import argparse
 import csv
 
 from django.core.management.base import BaseCommand
+from django.db import connection, transaction
 
 import docsearch.models
 
@@ -26,11 +27,15 @@ class Command(BaseCommand):
             help='Truncate the table before performing the import'
         )
 
+    @transaction.atomic
     def handle(self, *args, **options):
         Model = getattr(docsearch.models, options['model'])
 
         if options['truncate'] is True:
-            Model.objects.all().delete()
+            with connection.cursor() as curs:
+                curs.execute(
+                    f'TRUNCATE {Model._meta.db_table} RESTART IDENTITY'
+                )
 
         reader = csv.DictReader(options['infile'])
 
