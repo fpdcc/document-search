@@ -7,7 +7,21 @@ Search and management interface for spatial documents, built for the Forest Pres
 Development requires a local installation of [Docker](https://docs.docker.com/install/)
 and [Docker Compose](https://docs.docker.com/compose/install/).
 
-Build containers:
+Before you start, you'll need a local settings file for development. If you're
+on the Blackbox keyring for this repo, you can decrypt the canonical settings
+file:
+
+```
+blackbox_cat configs/local_settings.dev.py.gpg > docsearch/local_settings.dev.py
+```
+
+Otherwise, copy and edit the example settings file:
+
+```
+cp docsearch/local_settings.example.py docsearch/local_settings.dev.py
+```
+
+Next, build containers:
 
 ```
 docker-compose build
