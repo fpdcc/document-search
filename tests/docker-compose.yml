@@ -4,4 +4,10 @@ services:
   app:
     # Don't restart the service when the command exits
     restart: "no"
+    volumes:
+      # Mount the development directory as a volume into the container, so
+      # Docker automatically recognizes your changes.
+      - .:/app
+      # Mount the example settings for the test, so we don't save files on S3
+      - ${PWD}/docsearch/local_settings.example.py:/app/docsearch/local_settings.py
     command: pytest -sxv

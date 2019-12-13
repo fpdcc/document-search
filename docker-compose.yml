@@ -21,7 +21,7 @@ services:
       # Mount the development directory as a volume into the container, so
       # Docker automatically recognizes your changes.
       - .:/app
-      - ${PWD}/docsearch/local_settings.example.py:/app/docsearch/local_settings.py
+      - ${PWD}/docsearch/local_settings.dev.py:/app/docsearch/local_settings.py
     command: python manage.py runserver 0.0.0.0:8000
 
   migration:

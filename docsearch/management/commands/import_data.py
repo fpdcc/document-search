@@ -50,7 +50,7 @@ class Command(BaseCommand):
                         for field, value in row.items()}
             # Document files are stored on S3, so we need to save a file string
             # corresponding to the appropriate S3 prefix for each document type
-            s3_path = f'{Model.s3_prefix}/{metadata["source_file"]}'
+            s3_path = f'{Model.source_file.field.upload_to}/{metadata["source_file"]}'
             metadata['source_file'] = s3_path
 
             obj = Model(**metadata)
