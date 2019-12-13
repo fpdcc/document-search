@@ -106,3 +106,4 @@ venv.bak/
 /.blackbox/pubring.gpg~
 /.blackbox/pubring.kbx~
 /.blackbox/secring.gpg
+/configs/local_settings.dev.py
