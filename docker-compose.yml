@@ -63,6 +63,20 @@ services:
     ports:
       - 32001:5432
 
+  solr:
+    image: solr:8.3
+    container_name: document-search-solr
+    volumes:
+      - ./solr_configs:/docsearch_configs
+      - solr-data:/opt/solr/server/solr/mycores
+    command: sh -c 'solr-create -c docsearch -d /docsearch_configs'
+    ports:
+      - 8986:8983
+    environment:
+      SOLR_LOG_LEVEL: DEBUG
+    restart: on-failure
+
 volumes:
   # Declare your named volume for Postgres.
   document-search-db-data:
+  solr-data:

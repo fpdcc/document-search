@@ -9,9 +9,10 @@ from django.contrib.contenttypes.models import ContentType
 
 class ActionLog(models.Model):
 
-    class Action(models.TextChoices):
+    class Action:
         CREATE = 'create'
         UPDATE = 'update'
+        CHOICES = ((CREATE, CREATE), (UPDATE, UPDATE))
 
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(
@@ -20,7 +21,7 @@ class ActionLog(models.Model):
         null=True,
         blank=True
     )
-    action = models.CharField(max_length=6, choices=Action.choices)
+    action = models.CharField(max_length=6, choices=Action.CHOICES)
     # Configure generic relations
     # See: https://docs.djangoproject.com/en/3.0/ref/contrib/contenttypes/#generic-relations
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
