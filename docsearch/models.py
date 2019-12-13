@@ -42,7 +42,6 @@ class ActionLog(models.Model):
 
 
 class BaseDocumentModel(models.Model):
-    source_file = models.FileField()
     actions = GenericRelation(ActionLog)
 
     class Meta:
@@ -102,39 +101,38 @@ class BaseDocumentModel(models.Model):
 
 
 class Book(BaseDocumentModel):
-    s3_prefix = 'BOOKS'
     township = models.CharField(max_length=255)
     range = models.CharField(max_length=255)
     section = models.CharField(max_length=255, null=True, blank=True)
+    source_file = models.FileField(upload_to='BOOKS')
 
 
 class ControlMonumentMap(BaseDocumentModel):
-    s3_prefix = 'CONTROL_MONUMENT_MAPS'
     township = models.CharField(max_length=255, null=True, blank=True)
     range = models.CharField(max_length=255, null=True, blank=True)
     section = models.CharField(max_length=255)
     part_of_section = models.CharField(max_length=255, null=True, blank=True)
+    source_file = models.FileField(upload_to='CONTROL_MONUMENT_MAPS')
 
 
 class SurplusParcel(BaseDocumentModel):
-    s3_prefix = 'DEEP_PARCEL_SURPLUS'
     surplus_parcel = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
+    source_file = models.FileField(upload_to='DEEP_PARCEL_SURPLUS')
 
 
 class Dossier(BaseDocumentModel):
-    s3_prefix = 'DOSSIER_FILES'
     file_number = models.CharField(max_length=255)
     document_number = models.CharField(max_length=3)
+    source_file = models.FileField(upload_to='DOSSIER_FILES')
 
 
 class Easement(BaseDocumentModel):
-    s3_prefix = 'EASEMENTS'
     easement_number = models.CharField(max_length=255)
+    source_file = models.FileField(upload_to='EASEMENTS')
 
 
 class FlatDrawing(BaseDocumentModel):
-    s3_prefix = 'FLAT_DRAWINGS'
     area = models.PositiveIntegerField(null=True, blank=True)
     section = models.PositiveIntegerField(null=True, blank=True)
     map_number = models.CharField(max_length=255, null=True, blank=True)
@@ -152,23 +150,23 @@ class FlatDrawing(BaseDocumentModel):
     )
     hash = models.CharField(max_length=255, null=True, blank=True)
     cad_file = models.FileField('CAD file', null=True, blank=True)
+    source_file = models.FileField(upload_to='FLAT_DRAWINGS')
 
 
 class IndexCard(BaseDocumentModel):
-    s3_prefix = 'INDEX_CARDS'
     monument_number = models.CharField(max_length=255, blank=True, null=True)
     township = models.CharField(max_length=255)
     section = models.CharField(max_length=255, null=True, blank=True)
     corner = models.CharField(max_length=255, null=True, blank=True)
+    source_file = models.FileField(upload_to='INDEX_CARDS')
 
 
 class License(BaseDocumentModel):
-    s3_prefix = 'LICENSES'
     license_number = models.CharField(max_length=255)
+    source_file = models.FileField(upload_to='LICENSES')
 
 
 class ProjectFile(BaseDocumentModel):
-    s3_prefix = 'PROJECT_FILES'
     area = models.PositiveIntegerField(null=True, blank=True)
     section = models.PositiveIntegerField(null=True, blank=True)
     job_number = models.CharField(max_length=255, null=True, blank=True)
@@ -176,11 +174,12 @@ class ProjectFile(BaseDocumentModel):
     description = models.TextField(null=True, blank=True)
     cabinet_number = models.CharField(max_length=255, null=True, blank=True)
     drawer_number = models.CharField(max_length=255, null=True, blank=True)
+    source_file = models.FileField(upload_to='PROJECT_FILES')
 
 
 class RightOfWay(BaseDocumentModel):
-    s3_prefix = 'RIGHT_OF_WAY'
     folder_tab = models.CharField(max_length=255)
+    source_file = models.FileField(upload_to='RIGHT_OF_WAY')
 
     class Meta:
         verbose_name_plural = 'rights of way'
@@ -191,7 +190,6 @@ class RightOfWay(BaseDocumentModel):
 
 
 class Survey(BaseDocumentModel):
-    s3_prefix = 'SURVEYS'
     area = models.PositiveIntegerField(null=True, blank=True)
     section = models.PositiveIntegerField(null=True, blank=True)
     map_number = models.CharField(max_length=255, null=True, blank=True)
@@ -208,11 +206,12 @@ class Survey(BaseDocumentModel):
         null=True
     )
     hash = models.CharField(max_length=255, null=True, blank=True)
+    source_file = models.FileField(upload_to='SURVEYS')
 
 
 class Title(BaseDocumentModel):
-    s3_prefix = 'TITLES'
     control_number = models.CharField(max_length=255)
+    source_file = models.FileField(upload_to='TITLES')
 
 
 class InvalidSlugException(ValueError):
