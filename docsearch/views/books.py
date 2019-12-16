@@ -23,3 +23,7 @@ class BookUpdate(base_views.BaseUpdateView):
 class BookDelete(base_views.BaseDeleteView):
     model = models.Book
     template_name = 'docsearch/books/confirm_delete.html'
+
+
+class BookSearch(base_views.BaseSearchView):
+    model = models.Book
