@@ -24,3 +24,7 @@ class IndexCardUpdate(base_views.BaseUpdateView):
 class IndexCardDelete(base_views.BaseDeleteView):
     model = models.IndexCard
     template_name = 'docsearch/indexcards/confirm_delete.html'
+
+
+class IndexCardSearch(base_views.BaseSearchView):
+    model = models.IndexCard

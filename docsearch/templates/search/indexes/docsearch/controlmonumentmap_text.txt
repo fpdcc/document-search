@@ -1,0 +1,4 @@
+{{ object.township|default_if_none:"" }}
+{{ object.range|default_if_none:"" }}
+{{ object.section }}
+{{ object.part_of_section|default_if_none:"" }}

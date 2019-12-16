@@ -23,3 +23,7 @@ class DossierUpdate(base_views.BaseUpdateView):
 class DossierDelete(base_views.BaseDeleteView):
     model = models.Dossier
     template_name = 'docsearch/dossiers/confirm_delete.html'
+
+
+class DossierSearch(base_views.BaseSearchView):
+    model = models.Dossier

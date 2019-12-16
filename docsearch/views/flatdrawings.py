@@ -27,3 +27,7 @@ class FlatDrawingUpdate(base_views.BaseUpdateView):
 class FlatDrawingDelete(base_views.BaseDeleteView):
     model = models.FlatDrawing
     template_name = 'docsearch/flatdrawings/confirm_delete.html'
+
+
+class FlatDrawingSearch(base_views.BaseSearchView):
+    model = models.FlatDrawing

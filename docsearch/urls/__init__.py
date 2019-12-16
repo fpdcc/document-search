@@ -32,7 +32,6 @@ from .titles import urlpatterns as titles_patterns
 
 urlpatterns = [
     path('', views.Home.as_view(), name='home'),
-    path('search/<slug:doctype>/', views.Search.as_view(), name='search'),
     path('books/', include(books_patterns)),
     path('controlmonumentmaps/', include(controlmonumentmaps_patterns)),
     path('dossiers/', include(dossiers_patterns)),

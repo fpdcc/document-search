@@ -1,0 +1,2 @@
+{{ object.surplus_parcel|default_if_none:"" }}
+{{ object.description|default_if_none:"" }}

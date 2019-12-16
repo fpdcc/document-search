@@ -23,3 +23,7 @@ class SurplusParcelUpdate(base_views.BaseUpdateView):
 class SurplusParcelDelete(base_views.BaseDeleteView):
     model = models.SurplusParcel
     template_name = 'docsearch/surplusparcels/confirm_delete.html'
+
+
+class SurplusParcelSearch(base_views.BaseSearchView):
+    model = models.SurplusParcel

@@ -23,3 +23,7 @@ class TitleUpdate(base_views.BaseUpdateView):
 class TitleDelete(base_views.BaseDeleteView):
     model = models.Title
     template_name = 'docsearch/titles/confirm_delete.html'
+
+
+class TitleSearch(base_views.BaseSearchView):
+    model = models.Title

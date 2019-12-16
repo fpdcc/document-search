@@ -23,3 +23,7 @@ class RightOfWayUpdate(base_views.BaseUpdateView):
 class RightOfWayDelete(base_views.BaseDeleteView):
     model = models.RightOfWay
     template_name = 'docsearch/rightsofway/confirm_delete.html'
+
+
+class RightOfWaySearch(base_views.BaseSearchView):
+    model = models.RightOfWay
