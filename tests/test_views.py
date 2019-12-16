@@ -17,9 +17,8 @@ def test_search(client, user, document_and_fields):
 
     Model = type(document)
     doctype_plural = Model._meta.verbose_name_plural.title()
-    doctype_plural_slug = Model.get_plural_slug()
 
-    url = reverse('search', args=(doctype_plural_slug,))
+    url = Model.get_search_url()
     response = client.get(url)
 
     assert response.status_code == 200
