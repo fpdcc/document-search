@@ -26,3 +26,7 @@ class SurveyUpdate(base_views.BaseUpdateView):
 class SurveyDelete(base_views.BaseDeleteView):
     model = models.Survey
     template_name = 'docsearch/surveys/confirm_delete.html'
+
+
+class SurveySearch(base_views.BaseSearchView):
+    model = models.Survey

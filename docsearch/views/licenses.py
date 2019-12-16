@@ -23,3 +23,7 @@ class LicenseUpdate(base_views.BaseUpdateView):
 class LicenseDelete(base_views.BaseDeleteView):
     model = models.License
     template_name = 'docsearch/licenses/confirm_delete.html'
+
+
+class LicenseSearch(base_views.BaseSearchView):
+    model = models.License

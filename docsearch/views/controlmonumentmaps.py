@@ -24,3 +24,7 @@ class ControlMonumentMapUpdate(base_views.BaseUpdateView):
 class ControlMonumentMapDelete(base_views.BaseDeleteView):
     model = models.ControlMonumentMap
     template_name = 'docsearch/controlmonumentmaps/confirm_delete.html'
+
+
+class ControlMonumentMapSearch(base_views.BaseSearchView):
+    model = models.ControlMonumentMap

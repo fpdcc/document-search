@@ -1,4 +1,3 @@
-from django.apps import apps
 from django.db import models
 from django.conf import settings
 from django.urls import reverse
@@ -80,7 +79,7 @@ class BaseDocumentModel(models.Model):
         """
         Return the canonical URL referring to this object's Search view.
         """
-        return reverse('search', args=(self.get_plural_slug(),))
+        return reverse(f'{self.get_slug()}-search')
 
     def get_absolute_url(self):
         """
@@ -213,21 +212,3 @@ class Survey(BaseDocumentModel):
 class Title(BaseDocumentModel):
     control_number = models.CharField(max_length=255)
     source_file = models.FileField(upload_to='TITLES')
-
-
-class InvalidSlugException(ValueError):
-    pass
-
-
-def get_model_from_plural_slug(slug):
-    """
-    Given a plural slug of a model, return the corresponding model class.
-
-    Example:
-        get_model_from_plural_slug(controlmonumentmaps) -> ControlMonumentMap
-    """
-    for Model in apps.get_app_config('docsearch').get_models():
-        if issubclass(Model, BaseDocumentModel):
-            if slug == Model.get_plural_slug():
-                return Model
-    raise InvalidSlugException(f'No Model found for slug "{slug}"')

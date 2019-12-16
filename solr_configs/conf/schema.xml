@@ -89,6 +89,54 @@
     
     <field name="range" type="text_en" indexed="true" stored="true" multiValued="false" />
     
+    <field name="part_of_section" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="file_number" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="document_number" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="easement_number" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="map_number" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="location" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="description" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="job_number" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="number_of_sheets" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="date" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="cross_ref_area" type="long" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="cross_ref_section" type="long" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="cross_ref_map_number" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="hash" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="monument_number" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="corner" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="license_number" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="area" type="long" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="job_name" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="cabinet_number" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="drawer_number" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="folder_tab" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="surplus_parcel" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="control_number" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
     <uniqueKey>id</uniqueKey>
 
     <!--
@@ -630,9 +678,9 @@
     -->
     <fieldType name="currency" class="solr.CurrencyField" precisionStep="8" defaultCurrency="USD" currencyConfig="currency.xml" />
     <!-- Similarity is the scoring routine for each document vs. a query.
-    A custom Similarity or SimilarityFactory may be specified here, but
-    the default is fine for most applications.
-    For more info: http://wiki.apache.org/solr/SchemaXml#Similarity
+       A custom Similarity or SimilarityFactory may be specified here, but
+       the default is fine for most applications.
+       For more info: http://wiki.apache.org/solr/SchemaXml#Similarity
     -->
     <!--
      <similarity class="com.example.solr.CustomSimilarityFactory">

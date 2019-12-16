@@ -1,0 +1,7 @@
+{{ object.area|default_if_none:"" }}
+{{ object.section|default_if_none:"" }}
+{{ object.job_number|default_if_none:"" }}
+{{ object.job_name|default_if_none:"" }}
+{{ object.description|default_if_none:"" }}
+{{ object.cabinet_number|default_if_none:"" }}
+{{ object.drawer_number|default_if_none:"" }}
