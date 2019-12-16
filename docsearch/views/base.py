@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
+from haystack.generic_views import SearchView
 
 from docsearch import models
 
@@ -68,3 +69,12 @@ class BaseDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return self.model.get_search_url()
+
+
+class BaseSearchView(LoginRequiredMixin, SearchView):
+    template_name = 'docsearch/search.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['parameters'] = self.request.GET.copy()
+        return context
