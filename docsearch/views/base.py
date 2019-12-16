@@ -78,3 +78,7 @@ class BaseSearchView(LoginRequiredMixin, SearchView):
         context = super().get_context_data(*args, **kwargs)
         context['parameters'] = self.request.GET.copy()
         return context
+
+    def form_valid(self, form):
+        form.cleaned_data['models'] = [self.model._meta.label]
+        return super().form_valid(form)
