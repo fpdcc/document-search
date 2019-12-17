@@ -1,5 +1,7 @@
 {% extends "docsearch/base.html" %}
+
 {% load static %}
+{% load model_meta %}
 
 {% block title %}Home{% endblock %}
 
@@ -21,12 +23,12 @@
     <div class="col-md-10 offset-md-1">
       <div class="card shadow mb-3">
         <div class="card-body">
-          <form id="entity-form" action="{% url 'home' %}" method="POST">
+          <form id="document-form" action="{% url 'book-search' %}" method="GET">
             <div class="row">
               <div class="col-md">
                 <div class="input-group">
                   <input
-                    type="text"
+                    type="tejxt"
                     id="document-search"
                     name="q"
                     class="form-control form-control-lg"
@@ -41,10 +43,37 @@
                 </div>
               </div>
             </div>
+            <div class="row mt-3">
+              <div class="col-md form-inline">
+                <label for="doctype-select">
+                  <strong>Search for:</strong>
+                </label>
+                <select id="doctype-select" class="form-control ml-2">
+                  {% for model in models %}
+                    <option
+                      value="{{ model.get_search_url }}"
+                      {% if model|verbose_name == "Book" %}selected{% endif %}
+                    >
+                      {{ model|verbose_name_plural|title }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
           </div>
         </form>
       </div>
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#doctype-select').change(function(e) {
+      $('#document-form').attr('action', $(e.target).val());
+    });
+  });
+</script>
 {% endblock %}

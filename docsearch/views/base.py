@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 from haystack.generic_views import FacetedSearchView
 
-from docsearch import models
+from docsearch import models, forms
 
 
 class BaseCreateView(LoginRequiredMixin, CreateView):
@@ -72,6 +72,7 @@ class BaseDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class BaseSearchView(LoginRequiredMixin, FacetedSearchView):
+    form_class = forms.BaseSearchForm
     template_name = 'docsearch/search.html'
 
     def get_context_data(self, *args, **kwargs):
@@ -85,3 +86,6 @@ class BaseSearchView(LoginRequiredMixin, FacetedSearchView):
     def form_valid(self, form):
         form.cleaned_data['models'] = [self.model._meta.label]
         return super().form_valid(form)
+
+    def get_queryset(self):
+        return super().get_queryset().models(self.model)

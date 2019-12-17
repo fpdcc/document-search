@@ -7,6 +7,7 @@
   <th>{{ view.model|field_name:"section"|capfirst }}</th>
   <th>{{ view.model|field_name:"map_number"|capfirst }}</th>
   <th>{{ view.model|field_name:"location"|capfirst }}</th>
+  <th>{{ view.model|field_name:"description"|capfirst }}</th>
   <th>{{ view.model|field_name:"job_number"|capfirst }}</th>
   <th>{{ view.model|field_name:"number_of_sheets"|capfirst }}</th>
   <th>{{ view.model|field_name:"date"|capfirst }}</th>
@@ -21,6 +22,7 @@
   <td>{{ result.object.section|default_if_none:"" }}</td>
   <td>{{ result.object.map_number|default_if_none:"" }}</td>
   <td>{{ result.object.location|default_if_none:"" }}</td>
+  <td>{{ result.object.description|default_if_none:"" }}</td>
   <td>{{ result.object.job_number|default_if_none:"" }}</td>
   <td>{{ result.object.number_of_sheets|default_if_none:"" }}</td>
   <td>{{ result.object.date|default_if_none:"" }}</td>
@@ -30,4 +32,4 @@
   <td>{{ result.object.hash|default_if_none:"" }}</td>
   <td><a href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
 {% endblock %}
-{% block empty_colspan %}11{% endblock %}
+{% block empty_colspan %}12{% endblock %}

@@ -18,7 +18,7 @@ class ControlMonumentMapIndex(indexes.SearchIndex, indexes.Indexable):
     township = indexes.CharField(model_attr='township', null=True, faceted=True)
     range = indexes.CharField(model_attr='range', null=True, faceted=True)
     section = indexes.CharField(model_attr='section', faceted=True)
-    part_of_section = indexes.CharField(model_attr='part_of_section', null=True)
+    part_of_section = indexes.CharField(model_attr='part_of_section', null=True, faceted=True)
 
     def get_model(self):
         return models.ControlMonumentMap
