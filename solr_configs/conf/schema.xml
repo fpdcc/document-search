@@ -97,6 +97,8 @@
     
     <field name="part_of_section" type="text_en" indexed="true" stored="true" multiValued="false" />
     
+    <field name="part_of_section_exact" type="string" indexed="true" stored="true" multiValued="false" />
+    
     <field name="file_number" type="text_en" indexed="true" stored="true" multiValued="false" />
     
     <field name="file_number_exact" type="string" indexed="true" stored="true" multiValued="false" />
