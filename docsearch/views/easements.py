@@ -27,3 +27,5 @@ class EasementDelete(base_views.BaseDeleteView):
 
 class EasementSearch(base_views.BaseSearchView):
     model = models.Easement
+    template_name = 'docsearch/easements/search.html'
+    facet_fields = ['easement_number']

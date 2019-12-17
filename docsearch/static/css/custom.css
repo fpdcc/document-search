@@ -31,14 +31,13 @@ body {
   color: green;
 }
 
-.umn-maroon, .umn-maroon:hover {
-  color: #7a121c !important;  /* Override Bootstrap default */
+.fpdcc-light-green, .fpdcc-light-green:hover {
+  color: #687f2f !important;  /* Override Bootstrap default */
 }
 
 .page-item.active .page-link {
-  background-color: #7a121c;
-  border-color: #7a121c;
-
+  background-color: #687f2f;
+  border-color: #687f2f;
 }
 
 .select2-container--default
@@ -73,6 +72,12 @@ body {
 /* search page */
 .filter-card, .filter-card input {
   font-size: 14px;
+}
+
+@media(min-width:576px) {
+  .facets-collapse {
+    display: block !important;
+  }
 }
 
 /* sorting */

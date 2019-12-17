@@ -85,57 +85,109 @@
     
     <field name="township" type="text_en" indexed="true" stored="true" multiValued="false" />
     
+    <field name="township_exact" type="string" indexed="true" stored="true" multiValued="false" />
+    
     <field name="section" type="text_en" indexed="true" stored="true" multiValued="false" />
     
+    <field name="section_exact" type="string" indexed="true" stored="true" multiValued="false" />
+    
     <field name="range" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="range_exact" type="string" indexed="true" stored="true" multiValued="false" />
     
     <field name="part_of_section" type="text_en" indexed="true" stored="true" multiValued="false" />
     
     <field name="file_number" type="text_en" indexed="true" stored="true" multiValued="false" />
     
+    <field name="file_number_exact" type="string" indexed="true" stored="true" multiValued="false" />
+    
     <field name="document_number" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="document_number_exact" type="string" indexed="true" stored="true" multiValued="false" />
     
     <field name="easement_number" type="text_en" indexed="true" stored="true" multiValued="false" />
     
+    <field name="easement_number_exact" type="string" indexed="true" stored="true" multiValued="false" />
+    
     <field name="map_number" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="map_number_exact" type="string" indexed="true" stored="true" multiValued="false" />
     
     <field name="location" type="text_en" indexed="true" stored="true" multiValued="false" />
     
+    <field name="location_exact" type="string" indexed="true" stored="true" multiValued="false" />
+    
     <field name="description" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="description_exact" type="string" indexed="true" stored="true" multiValued="false" />
     
     <field name="job_number" type="text_en" indexed="true" stored="true" multiValued="false" />
     
+    <field name="job_number_exact" type="string" indexed="true" stored="true" multiValued="false" />
+    
     <field name="number_of_sheets" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="number_of_sheets_exact" type="string" indexed="true" stored="true" multiValued="false" />
     
     <field name="date" type="text_en" indexed="true" stored="true" multiValued="false" />
     
+    <field name="date_exact" type="string" indexed="true" stored="true" multiValued="false" />
+    
     <field name="cross_ref_area" type="long" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="cross_ref_area_exact" type="long" indexed="true" stored="true" multiValued="false" />
     
     <field name="cross_ref_section" type="long" indexed="true" stored="true" multiValued="false" />
     
+    <field name="cross_ref_section_exact" type="long" indexed="true" stored="true" multiValued="false" />
+    
     <field name="cross_ref_map_number" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="cross_ref_map_number_exact" type="string" indexed="true" stored="true" multiValued="false" />
     
     <field name="hash" type="text_en" indexed="true" stored="true" multiValued="false" />
     
+    <field name="hash_exact" type="string" indexed="true" stored="true" multiValued="false" />
+    
     <field name="monument_number" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="monument_number_exact" type="string" indexed="true" stored="true" multiValued="false" />
     
     <field name="corner" type="text_en" indexed="true" stored="true" multiValued="false" />
     
+    <field name="corner_exact" type="string" indexed="true" stored="true" multiValued="false" />
+    
     <field name="license_number" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="license_number_exact" type="string" indexed="true" stored="true" multiValued="false" />
     
     <field name="area" type="long" indexed="true" stored="true" multiValued="false" />
     
+    <field name="area_exact" type="long" indexed="true" stored="true" multiValued="false" />
+    
     <field name="job_name" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="job_name_exact" type="string" indexed="true" stored="true" multiValued="false" />
     
     <field name="cabinet_number" type="text_en" indexed="true" stored="true" multiValued="false" />
     
+    <field name="cabinet_number_exact" type="string" indexed="true" stored="true" multiValued="false" />
+    
     <field name="drawer_number" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="drawer_number_exact" type="string" indexed="true" stored="true" multiValued="false" />
     
     <field name="folder_tab" type="text_en" indexed="true" stored="true" multiValued="false" />
     
+    <field name="folder_tab_exact" type="string" indexed="true" stored="true" multiValued="false" />
+    
     <field name="surplus_parcel" type="text_en" indexed="true" stored="true" multiValued="false" />
     
+    <field name="surplus_parcel_exact" type="string" indexed="true" stored="true" multiValued="false" />
+    
     <field name="control_number" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="control_number_exact" type="string" indexed="true" stored="true" multiValued="false" />
     
     <uniqueKey>id</uniqueKey>
 

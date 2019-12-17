@@ -1,0 +1,23 @@
+{% extends "docsearch/base_search.html" %}
+
+{% load model_meta %}
+
+{% block thead %}
+  <th>{{ view.model|field_name:"area"|capfirst }}</th>
+  <th>{{ view.model|field_name:"section"|capfirst }}</th>
+  <th>{{ view.model|field_name:"job_number"|capfirst }}</th>
+  <th>{{ view.model|field_name:"job_name"|capfirst }}</th>
+  <th>{{ view.model|field_name:"cabinet_number"|capfirst }}</th>
+  <th>{{ view.model|field_name:"drawer_number"|capfirst }}</th>
+  <th></th>
+{% endblock %}
+{% block tr %}
+  <td>{{ result.object.area|default_if_none:"" }}</td>
+  <td>{{ result.object.section|default_if_none:"" }}</td>
+  <td>{{ result.object.job_number|default_if_none:"" }}</td>
+  <td>{{ result.object.job_name|default_if_none:"" }}</td>
+  <td>{{ result.object.cabinet_number|default_if_none:"" }}</td>
+  <td>{{ result.object.drawer_number|default_if_none:"" }}</td>
+  <td><a href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
+{% endblock %}
+{% block empty_colspan %}7{% endblock %}

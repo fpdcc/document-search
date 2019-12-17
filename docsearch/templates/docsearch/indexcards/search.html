@@ -1,0 +1,19 @@
+{% extends "docsearch/base_search.html" %}
+
+{% load model_meta %}
+
+{% block thead %}
+  <th>{{ view.model|field_name:"monument_number"|capfirst }}</th>
+  <th>{{ view.model|field_name:"township"|capfirst }}</th>
+  <th>{{ view.model|field_name:"section"|capfirst }}</th>
+  <th>{{ view.model|field_name:"corner"|capfirst }}</th>
+  <th></th>
+{% endblock %}
+{% block tr %}
+  <td>{{ result.object.monument_number|default_if_none:"" }}</td>
+  <td>{{ result.object.township|default_if_none:"" }}</td>
+  <td>{{ result.object.section|default_if_none:"" }}</td>
+  <td>{{ result.object.corner|default_if_none:"" }}</td>
+  <td><a href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
+{% endblock %}
+{% block empty_colspan %}5{% endblock %}

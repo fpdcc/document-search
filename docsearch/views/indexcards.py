@@ -28,3 +28,5 @@ class IndexCardDelete(base_views.BaseDeleteView):
 
 class IndexCardSearch(base_views.BaseSearchView):
     model = models.IndexCard
+    template_name = 'docsearch/indexcards/search.html'
+    facet_fields = ['monument_number', 'township', 'section', 'corner']

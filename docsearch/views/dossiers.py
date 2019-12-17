@@ -27,3 +27,5 @@ class DossierDelete(base_views.BaseDeleteView):
 
 class DossierSearch(base_views.BaseSearchView):
     model = models.Dossier
+    template_name = 'docsearch/dossiers/search.html'
+    facet_fields = ['file_number', 'document_number']
