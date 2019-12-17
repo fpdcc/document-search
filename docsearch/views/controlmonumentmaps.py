@@ -28,3 +28,5 @@ class ControlMonumentMapDelete(base_views.BaseDeleteView):
 
 class ControlMonumentMapSearch(base_views.BaseSearchView):
     model = models.ControlMonumentMap
+    template_name = 'docsearch/controlmonumentmaps/search.html'
+    facet_fields = ['township', 'range', 'section', 'part_of_section']

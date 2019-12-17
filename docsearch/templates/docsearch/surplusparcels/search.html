@@ -1,0 +1,13 @@
+{% extends "docsearch/base_search.html" %}
+
+{% load model_meta %}
+
+{% block thead %}
+  <th>{{ view.model|field_name:"surplus_parcel"|capfirst }}</th>
+  <th></th>
+{% endblock %}
+{% block tr %}
+  <td>{{ result.object.surplus_parcel|default_if_none:"" }}</td>
+  <td><a href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
+{% endblock %}
+{% block empty_colspan %}2{% endblock %}

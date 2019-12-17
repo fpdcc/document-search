@@ -29,3 +29,6 @@ class ProjectFileDelete(base_views.BaseDeleteView):
 
 class ProjectFileSearch(base_views.BaseSearchView):
     model = models.ProjectFile
+    template_name = 'docsearch/projectfiles/search.html'
+    facet_fields = ['area', 'section', 'job_number', 'job_name',
+                    'cabinet_number', 'drawer_number']

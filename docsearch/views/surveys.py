@@ -30,3 +30,7 @@ class SurveyDelete(base_views.BaseDeleteView):
 
 class SurveySearch(base_views.BaseSearchView):
     model = models.Survey
+    template_name = 'docsearch/surveys/search.html'
+    facet_fields = ['area', 'section', 'map_number', 'location', 'job_number',
+                    'number_of_sheets', 'date', 'cross_ref_area',
+                    'cross_ref_section', 'cross_ref_map_number', 'hash']

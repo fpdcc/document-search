@@ -27,3 +27,5 @@ class SurplusParcelDelete(base_views.BaseDeleteView):
 
 class SurplusParcelSearch(base_views.BaseSearchView):
     model = models.SurplusParcel
+    template_name = 'docsearch/surplusparcels/search.html'
+    facet_fields = ['surplus_parcel']
