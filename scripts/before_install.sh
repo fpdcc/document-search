@@ -13,6 +13,3 @@ mkdir -p /home/datamade/document-search
 # IF YOU INITIALIZED BLACKBOX WITH GPG 2.X: comment out L15 and uncomment L16-18.
 # (You can check your local gpg version like gpg --version.)
 cd /opt/codedeploy-agent/deployment-root/$DEPLOYMENT_GROUP_ID/$DEPLOYMENT_ID/deployment-archive/ && chown -R datamade.datamade . && sudo -H -u datamade blackbox_postdeploy
-# apt-get update
-# apt-get install -y gnupg2
-# cd /opt/codedeploy-agent/deployment-root/$DEPLOYMENT_GROUP_ID/$DEPLOYMENT_ID/deployment-archive/ && chown -R datamade.datamade . && sudo -H -u datamade GPG=gpg2 blackbox_postdeploy

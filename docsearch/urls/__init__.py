@@ -46,4 +46,5 @@ urlpatterns = [
     path('titles/', include(titles_patterns)),
     path('admin/', admin.site.urls),
     path('logout/', auth.views.LogoutView.as_view(), name='logout'),
+    path('pong/', views.pong),
 ]
