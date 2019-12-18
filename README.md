@@ -48,6 +48,12 @@ Load initial data:
 docker-compose run --rm app make all
 ```
 
+Create the search index:
+
+```
+docker-compose run --rm app ./manage.py rebuild_index
+```
+
 ### Running tests
 
 Run tests with Docker Compose:
