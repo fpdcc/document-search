@@ -19,4 +19,4 @@ deploy:
   deployment_group: staging
   on:
     repo: datamade/document-search
-    branch: jfc/server-setup
+    branch: master 
