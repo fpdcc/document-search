@@ -1,19 +1,22 @@
-# Deploy on builds from master and semantic versioned tag, e.g., v0.1.3
 branches:
   only:
   - master
   - "/^v[0-9].*$/"
-
 language: python
-python: "3.6"
-
+python: '3.6'
 services:
 - docker
-
-# Install a newer version of Docker Compose -- see:
-# https://docs.travis-ci.com/user/docker/#using-docker-compose
 before_install:
 - pip install -U pip
 - pip install -U docker-compose
-
 script: docker-compose -f docker-compose.yml -f tests/docker-compose.yml run --rm app
+deploy:
+  provider: codedeploy
+  access_key_id: AKIAQJGP4DUASZSYFRWW
+  secret_access_key:
+    secure: qBxeVWSk3F7fQtKKkAl6r5y3PH0yG47cRQLVLWHc6n0/axv0l3biKVw6Pw7GvGZlZif2pl3FCN1N2/c1eaKaj8GoWUnmx9vTkRpeO2xRJTAOx2S0qnw77sQ5SC0CxGvA+mPiLWClePLaMP3UBcv9kUWas3OwhGE6ptXJDSxzdZIpm6dB6pE4QMOMo5OfGNJh5eCie+GI5/L4hFQi5odCfmyoaHndvc6oPiWC5VrLsOHPG+EhXI5MwJ4OTT0ghWXSdc4o1wtD1Z885EGRwbmfJ6tC/B4GtK+iKRDTrSeQ3w3IgkqTrTPtSYqlvQE/YTNis4cFK06t8ClW8G06YjjWUGVYzLBnP1NJwieai447jEr7HSFDtJ+RS+XodVutpVn0TWoGg9WdcO/KzsrlOX6cYJuIftBNo/CfY1Tk5pxAaBlngZ8PPSj7FfsySbW6Za2MEEh1rLFhiCkYevZBwgeJPTlxlowMr8wK88wG11/pvygkc7UqUZKHWZw87lUikkDbPuGh+FCIwZuu3ikILJRKkdMCIA96dqnxH48wLYYHUstIYujogXkYzyuwWE+lFPzg6hfEGkuFa7xMZbxScGJAuC5CyDyO/dJ7olAnqy7OEFOTxTFz/Y4yNEyGND+8wJATii8egiSamEijZAHbeZfW3htrQGEedVi0djPpXKh3+kk=
+  application: document-search
+  deployment_group: staging
+  on:
+    repo: datamade/document-search
+    branch: jfc/server-setup
