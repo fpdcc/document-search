@@ -17,11 +17,13 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      solr:
+        condition: service_started
     volumes:
       # Mount the development directory as a volume into the container, so
       # Docker automatically recognizes your changes.
       - .:/app
-      - ${PWD}/docsearch/local_settings.example.py:/app/docsearch/local_settings.py
+      - ${PWD}/docsearch/local_settings.dev.py:/app/docsearch/local_settings.py
     command: python manage.py runserver 0.0.0.0:8000
 
   migration:
@@ -63,6 +65,20 @@ services:
     ports:
       - 32001:5432
 
+  solr:
+    image: solr:8.3
+    container_name: document-search-solr
+    volumes:
+      - ./solr_configs:/docsearch_configs
+      - solr-data:/opt/solr/server/solr/mycores
+    command: sh -c 'solr-create -c docsearch -d /docsearch_configs'
+    ports:
+      - 8986:8983
+    environment:
+      SOLR_LOG_LEVEL: INFO
+    restart: on-failure
+
 volumes:
   # Declare your named volume for Postgres.
   document-search-db-data:
+  solr-data:

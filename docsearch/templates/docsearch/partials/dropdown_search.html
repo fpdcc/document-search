@@ -12,7 +12,7 @@
 </a>
 <div class="dropdown-menu">
   {% for model in models %}
-    <a class="dropdown-item" href="{% url 'search' model.get_plural_slug %}">
+    <a class="dropdown-item" href="{{ model.get_search_url }}">
       {{ model|verbose_name_plural|title }}
     </a>
   {% endfor %}

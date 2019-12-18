@@ -23,3 +23,9 @@ class EasementUpdate(base_views.BaseUpdateView):
 class EasementDelete(base_views.BaseDeleteView):
     model = models.Easement
     template_name = 'docsearch/easements/confirm_delete.html'
+
+
+class EasementSearch(base_views.BaseSearchView):
+    model = models.Easement
+    template_name = 'docsearch/easements/search.html'
+    facet_fields = ['easement_number']

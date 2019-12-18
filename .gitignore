@@ -54,6 +54,7 @@ coverage.xml
 # Django stuff:
 *.log
 local_settings.py
+local_settings.dev.py
 db.sqlite3
 
 # Flask stuff:
@@ -102,3 +103,9 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Blackbox
+/.blackbox/pubring.gpg~
+/.blackbox/pubring.kbx~
+/.blackbox/secring.gpg
+/configs/local_settings.dev.py

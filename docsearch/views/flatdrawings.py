@@ -27,3 +27,11 @@ class FlatDrawingUpdate(base_views.BaseUpdateView):
 class FlatDrawingDelete(base_views.BaseDeleteView):
     model = models.FlatDrawing
     template_name = 'docsearch/flatdrawings/confirm_delete.html'
+
+
+class FlatDrawingSearch(base_views.BaseSearchView):
+    model = models.FlatDrawing
+    template_name = 'docsearch/flatdrawings/search.html'
+    facet_fields = ['section', 'map_number', 'location', 'job_number',
+                    'number_of_sheets', 'date', 'cross_ref_area',
+                    'cross_ref_section', 'cross_ref_map_number', 'hash']
