@@ -37,3 +37,18 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
     }
 }
+
+# Static files
+
+MEDIA_ROOT = '/media/'
+
+# Haystack search
+# https://django-haystack.readthedocs.io/en/master/tutorial.html
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'URL': 'http://solr:8983/solr/document-search',
+        'ADMIN_URL': 'http://solr:8983/solr/admin/cores'
+    },
+}

@@ -1,4 +1,3 @@
-from django.apps import apps
 from django.db import models
 from django.conf import settings
 from django.urls import reverse
@@ -9,9 +8,10 @@ from django.contrib.contenttypes.models import ContentType
 
 class ActionLog(models.Model):
 
-    class Action(models.TextChoices):
+    class Action:
         CREATE = 'create'
         UPDATE = 'update'
+        CHOICES = ((CREATE, CREATE), (UPDATE, UPDATE))
 
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(
@@ -20,7 +20,7 @@ class ActionLog(models.Model):
         null=True,
         blank=True
     )
-    action = models.CharField(max_length=6, choices=Action.choices)
+    action = models.CharField(max_length=6, choices=Action.CHOICES)
     # Configure generic relations
     # See: https://docs.djangoproject.com/en/3.0/ref/contrib/contenttypes/#generic-relations
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
@@ -42,7 +42,6 @@ class ActionLog(models.Model):
 
 
 class BaseDocumentModel(models.Model):
-    source_file = models.FileField()
     actions = GenericRelation(ActionLog)
 
     class Meta:
@@ -80,7 +79,7 @@ class BaseDocumentModel(models.Model):
         """
         Return the canonical URL referring to this object's Search view.
         """
-        return reverse('search', args=(self.get_plural_slug(),))
+        return reverse(f'{self.get_slug()}-search')
 
     def get_absolute_url(self):
         """
@@ -102,39 +101,38 @@ class BaseDocumentModel(models.Model):
 
 
 class Book(BaseDocumentModel):
-    s3_prefix = 'BOOKS'
     township = models.CharField(max_length=255)
     range = models.CharField(max_length=255)
     section = models.CharField(max_length=255, null=True, blank=True)
+    source_file = models.FileField(upload_to='BOOKS')
 
 
 class ControlMonumentMap(BaseDocumentModel):
-    s3_prefix = 'CONTROL_MONUMENT_MAPS'
     township = models.CharField(max_length=255, null=True, blank=True)
     range = models.CharField(max_length=255, null=True, blank=True)
     section = models.CharField(max_length=255)
     part_of_section = models.CharField(max_length=255, null=True, blank=True)
+    source_file = models.FileField(upload_to='CONTROL_MONUMENT_MAPS')
 
 
 class SurplusParcel(BaseDocumentModel):
-    s3_prefix = 'DEEP_PARCEL_SURPLUS'
     surplus_parcel = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
+    source_file = models.FileField(upload_to='DEEP_PARCEL_SURPLUS')
 
 
 class Dossier(BaseDocumentModel):
-    s3_prefix = 'DOSSIER_FILES'
     file_number = models.CharField(max_length=255)
     document_number = models.CharField(max_length=3)
+    source_file = models.FileField(upload_to='DOSSIER_FILES')
 
 
 class Easement(BaseDocumentModel):
-    s3_prefix = 'EASEMENTS'
     easement_number = models.CharField(max_length=255)
+    source_file = models.FileField(upload_to='EASEMENTS')
 
 
 class FlatDrawing(BaseDocumentModel):
-    s3_prefix = 'FLAT_DRAWINGS'
     area = models.PositiveIntegerField(null=True, blank=True)
     section = models.PositiveIntegerField(null=True, blank=True)
     map_number = models.CharField(max_length=255, null=True, blank=True)
@@ -152,23 +150,23 @@ class FlatDrawing(BaseDocumentModel):
     )
     hash = models.CharField(max_length=255, null=True, blank=True)
     cad_file = models.FileField('CAD file', null=True, blank=True)
+    source_file = models.FileField(upload_to='FLAT_DRAWINGS')
 
 
 class IndexCard(BaseDocumentModel):
-    s3_prefix = 'INDEX_CARDS'
     monument_number = models.CharField(max_length=255, blank=True, null=True)
     township = models.CharField(max_length=255)
     section = models.CharField(max_length=255, null=True, blank=True)
     corner = models.CharField(max_length=255, null=True, blank=True)
+    source_file = models.FileField(upload_to='INDEX_CARDS')
 
 
 class License(BaseDocumentModel):
-    s3_prefix = 'LICENSES'
     license_number = models.CharField(max_length=255)
+    source_file = models.FileField(upload_to='LICENSES')
 
 
 class ProjectFile(BaseDocumentModel):
-    s3_prefix = 'PROJECT_FILES'
     area = models.PositiveIntegerField(null=True, blank=True)
     section = models.PositiveIntegerField(null=True, blank=True)
     job_number = models.CharField(max_length=255, null=True, blank=True)
@@ -176,11 +174,12 @@ class ProjectFile(BaseDocumentModel):
     description = models.TextField(null=True, blank=True)
     cabinet_number = models.CharField(max_length=255, null=True, blank=True)
     drawer_number = models.CharField(max_length=255, null=True, blank=True)
+    source_file = models.FileField(upload_to='PROJECT_FILES')
 
 
 class RightOfWay(BaseDocumentModel):
-    s3_prefix = 'RIGHT_OF_WAY'
     folder_tab = models.CharField(max_length=255)
+    source_file = models.FileField(upload_to='RIGHT_OF_WAY')
 
     class Meta:
         verbose_name_plural = 'rights of way'
@@ -191,7 +190,6 @@ class RightOfWay(BaseDocumentModel):
 
 
 class Survey(BaseDocumentModel):
-    s3_prefix = 'SURVEYS'
     area = models.PositiveIntegerField(null=True, blank=True)
     section = models.PositiveIntegerField(null=True, blank=True)
     map_number = models.CharField(max_length=255, null=True, blank=True)
@@ -208,26 +206,9 @@ class Survey(BaseDocumentModel):
         null=True
     )
     hash = models.CharField(max_length=255, null=True, blank=True)
+    source_file = models.FileField(upload_to='SURVEYS')
 
 
 class Title(BaseDocumentModel):
-    s3_prefix = 'TITLES'
     control_number = models.CharField(max_length=255)
-
-
-class InvalidSlugException(ValueError):
-    pass
-
-
-def get_model_from_plural_slug(slug):
-    """
-    Given a plural slug of a model, return the corresponding model class.
-
-    Example:
-        get_model_from_plural_slug(controlmonumentmaps) -> ControlMonumentMap
-    """
-    for Model in apps.get_app_config('docsearch').get_models():
-        if issubclass(Model, BaseDocumentModel):
-            if slug == Model.get_plural_slug():
-                return Model
-    raise InvalidSlugException(f'No Model found for slug "{slug}"')
+    source_file = models.FileField(upload_to='TITLES')

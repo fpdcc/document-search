@@ -1,0 +1,3 @@
+{{ object.township }}
+{{ object.range }}
+{{ object.section|default_if_none:"" }}
