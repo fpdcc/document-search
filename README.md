@@ -48,7 +48,13 @@ Load initial data:
 docker-compose run --rm app make all
 ```
 
-Create the search index:
+To create the search index, start by bringing up Solr in one shell:
+
+```
+docker-compose up solr
+```
+
+Then, in another shell, run the `rebuild_index` command:
 
 ```
 docker-compose run --rm app ./manage.py rebuild_index
