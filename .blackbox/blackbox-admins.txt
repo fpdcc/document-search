@@ -1,2 +1,3 @@
 derek.eder@datamade.us
+docsearch.staging@datamade.us
 jean.cochrane@datamade.us
