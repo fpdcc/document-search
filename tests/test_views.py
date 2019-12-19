@@ -1,6 +1,7 @@
 import pytest
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
+from haystack.query import EmptySearchQuerySet
 
 
 @pytest.mark.django_db
@@ -11,18 +12,24 @@ def test_home(client, user):
 
 
 @pytest.mark.django_db
-def test_search(client, user, document_and_fields):
+def test_search(client, user, document_and_fields, mocker):
     client.force_login(user)
     document, _ = document_and_fields
 
     Model = type(document)
     doctype_plural = Model._meta.verbose_name_plural.title()
 
+    mock_get_queryset = mocker.patch(
+        f'docsearch.views.{Model._meta.object_name}Search.get_queryset',
+        return_value=EmptySearchQuerySet()
+    )
+
     url = Model.get_search_url()
     response = client.get(url)
 
     assert response.status_code == 200
     assert f'Search for {doctype_plural}' in response.content.decode('utf-8')
+    mock_get_queryset.assert_called_once()
 
 
 @pytest.mark.django_db

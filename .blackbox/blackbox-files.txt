@@ -1,1 +1,2 @@
 configs/local_settings.dev.py
+configs/local_settings.staging.py
