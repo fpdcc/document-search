@@ -1,7 +1,6 @@
 branches:
   only:
   - master
-  - jfc/server-setup
   - "/^v[0-9].*$/"
 language: python
 python: '3.6'
@@ -20,4 +19,4 @@ deploy:
   deployment_group: staging
   on:
     repo: datamade/document-search
-    branch: jfc/server-setup
+    branch: master
