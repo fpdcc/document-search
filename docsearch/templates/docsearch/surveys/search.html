@@ -1,7 +1,7 @@
 {% extends "docsearch/base_search.html" %}
 
 {% load model_meta %}
-{% load display_array %}
+{% load display %}
 
 {% block thead %}
   <th>{{ view.model|field_name:"section"|capfirst }}</th>
