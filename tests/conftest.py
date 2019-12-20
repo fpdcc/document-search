@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from docsearch import models
 
 DOCUMENTS = [
-    (models.Book, {'township': 'foo', 'range': 'bar', 'section': 'baz'}),
+    (models.Book, {'township': '[1,1]', 'range': '[2,4]', 'section': '[3,5]'}),
     (models.ControlMonumentMap, {
         'township': 1, 'range': 2, 'section': [3, 4], 'part_of_section': 'bam'
     }),
