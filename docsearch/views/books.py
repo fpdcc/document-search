@@ -28,4 +28,4 @@ class BookDelete(base_views.BaseDeleteView):
 class BookSearch(base_views.BaseSearchView):
     model = models.Book
     template_name = 'docsearch/books/search.html'
-    facet_fields = ['township', 'range', 'section']
+    facet_fields = ['section', 'township', 'range']
