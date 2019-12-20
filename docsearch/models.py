@@ -134,7 +134,8 @@ class Dossier(BaseDocumentModel):
 
 
 class Easement(BaseDocumentModel):
-    easement_number = models.CharField(max_length=255)
+    easement_number = models.CharField(max_length=255, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
     source_file = models.FileField(upload_to='EASEMENTS')
 
 
@@ -168,7 +169,8 @@ class IndexCard(BaseDocumentModel):
 
 
 class License(BaseDocumentModel):
-    license_number = models.CharField(max_length=255)
+    license_number = models.CharField(max_length=255, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
     source_file = models.FileField(upload_to='LICENSES')
 
 

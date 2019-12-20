@@ -34,6 +34,16 @@ data/CONTROL_MONUMENT_MAPS.csv : data/raw/CONTROL_MONUMENT_MAPS.csv
 	# Split out township/section/range
 	cat $< | python data/processors/process_controlmonumentmaps.py > $@
 
+.INTERMEDIATE : data/EASEMENTS.csv data/raw/EASEMENTS.csv
+data/EASEMENTS.csv : data/raw/EASEMENTS.csv
+	# Extract descriptions
+	cat $< | python data/processors/extract_description.py "easement number" > $@
+
+.INTERMEDIATE : data/LICENSES.csv data/raw/LICENSES.csv
+data/LICENSES.csv : data/raw/LICENSES.csv
+	# Extract descriptions
+	cat $< | python data/processors/extract_description.py "license number" > $@
+
 data/indicator/% : data/%.csv
 	python manage.py import_data $< $(MODEL) --truncate
 
