@@ -2,7 +2,8 @@ VPATH = data data/raw
 
 .PHONY: all
 all: data/indicator/BOOKS data/indicator/CONTROL_MONUMENT_MAPS \
-     data/indicator/DEEP_PARCEL_+_SURPLUS data/indicator/DOSSIER data/indicator/EASEMENTS \
+     data/indicator/SURPLUS_PARCELS data/indicator/DEEP_TUNNELS \
+	 data/indicator/DOSSIER data/indicator/EASEMENTS \
      data/indicator/FLAT_DRAWINGS data/indicator/INDEX_CARDS data/indicator/LICENSES \
      data/indicator/PROJECT_FILES data/indicator/RIGHT_OF_WAY data/indicator/SURVEYS \
      data/indicator/TITLES
@@ -13,6 +14,11 @@ data/raw/%.csv : data/raw/%.txt
 
 data/%.csv : data/raw/%.csv
 	cp $< $@
+
+.INTERMEDIATE : data/BOOKS.csv data/raw/BOOKS.csv
+data/BOOKS.csv : data/raw/BOOKS.csv
+	# Convert X to null and format ranges
+	sed -e 's/X//g' $< | python data/processors/format_ranges.py section township range > $@
 
 .INTERMEDIATE : data/SURVEYS.csv data/raw/SURVEYS.csv
 data/SURVEYS.csv : data/raw/SURVEYS.csv

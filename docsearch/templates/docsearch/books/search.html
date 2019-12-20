@@ -1,6 +1,7 @@
 {% extends "docsearch/base_search.html" %}
 
 {% load model_meta %}
+{% load display %}
 {% load params %}
 
 {% block thead %}
@@ -11,9 +12,9 @@
 {% endblock %}
 
 {% block tr %}
-  <td>{{ result.object.section|default_if_none:"" }}</td>
-  <td>{{ result.object.township|default_if_none:"" }}</td>
-  <td>{{ result.object.range|default_if_none:"" }}</td>
+  <td>{{ result.object.section|display_range|default_if_none:"" }}</td>
+  <td>{{ result.object.township|display_range|default_if_none:"" }}</td>
+  <td>{{ result.object.range|display_range|default_if_none:"" }}</td>
   <td><a href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
 {% endblock %}
 

@@ -28,4 +28,9 @@ class BookDelete(base_views.BaseDeleteView):
 class BookSearch(base_views.BaseSearchView):
     model = models.Book
     template_name = 'docsearch/books/search.html'
-    facet_fields = ['section', 'township', 'range']
+    facet_fields = ['section_arr', 'township_arr', 'range_arr']
+    facet_field_name_overrides = {
+        'section_arr': 'section',
+        'township_arr': 'township',
+        'range_arr': 'range'
+    }

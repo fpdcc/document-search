@@ -102,9 +102,9 @@ class BaseDocumentModel(models.Model):
 
 
 class Book(BaseDocumentModel):
-    township = models.CharField(max_length=255)
-    range = models.CharField(max_length=255)
-    section = models.CharField(max_length=255, null=True, blank=True)
+    township = pg_fields.IntegerRangeField(max_length=255, null=True, blank=True)
+    range = pg_fields.IntegerRangeField(max_length=255, null=True, blank=True)
+    section = pg_fields.IntegerRangeField(max_length=255, null=True, blank=True)
     source_file = models.FileField(upload_to='BOOKS')
 
 

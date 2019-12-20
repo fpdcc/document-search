@@ -9,12 +9,28 @@ class IntegerMultiValueField(fields.MultiValueField):
 
 class BookIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    township = indexes.CharField(model_attr='township', faceted=True)
-    section = indexes.CharField(model_attr='section', null=True, faceted=True)
-    range = indexes.CharField(model_attr='range', faceted=True)
+    township_arr = IntegerMultiValueField(null=True, faceted=True)
+    range_arr = IntegerMultiValueField(null=True, faceted=True)
+    section_arr = IntegerMultiValueField(null=True, faceted=True)
 
     def get_model(self):
         return models.Book
+
+    def _convert_range_to_array(self, obj, fieldname):
+        range_ = getattr(obj, fieldname)
+        if range_:
+            return list(range(range_.lower, range_.upper))
+        else:
+            return range_
+
+    def prepare_township_arr(self, obj):
+        return self._convert_range_to_array(obj, 'township')
+
+    def prepare_range_arr(self, obj):
+        return self._convert_range_to_array(obj, 'range')
+
+    def prepare_section_arr(self, obj):
+        return self._convert_range_to_array(obj, 'section')
 
 
 class ControlMonumentMapIndex(indexes.SearchIndex, indexes.Indexable):
