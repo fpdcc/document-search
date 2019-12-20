@@ -56,7 +56,8 @@ class DossierIndex(indexes.SearchIndex, indexes.Indexable):
 
 class EasementIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    easement_number = indexes.CharField(model_attr='easement_number', faceted=True)
+    easement_number = indexes.CharField(model_attr='easement_number', null=True, faceted=True)
+    description = indexes.CharField(model_attr='description', null=True)
 
     def get_model(self):
         return models.Easement
@@ -93,7 +94,8 @@ class IndexCardIndex(indexes.SearchIndex, indexes.Indexable):
 
 class LicenseIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    license_number = indexes.CharField(model_attr='license_number', faceted=True)
+    license_number = indexes.CharField(model_attr='license_number', null=True, faceted=True)
+    description = indexes.CharField(model_attr='description', null=True)
 
     def get_model(self):
         return models.License

@@ -5,7 +5,7 @@ from . import base as base_views
 class LicenseDetail(base_views.BaseDetailView):
     model = models.License
     template_name = 'docsearch/licenses/detail.html'
-    metadata_fields = ['license_number', 'source_file']
+    metadata_fields = ['license_number', 'description', 'source_file']
 
 
 class LicenseCreate(base_views.BaseCreateView):
