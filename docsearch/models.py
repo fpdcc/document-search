@@ -122,6 +122,11 @@ class SurplusParcel(BaseDocumentModel):
     source_file = models.FileField(upload_to='DEEP_PARCEL_SURPLUS')
 
 
+class DeepTunnel(BaseDocumentModel):
+    description = models.TextField()
+    source_file = models.FileField(upload_to='DEEP_PARCEL_SURPLUS')
+
+
 class Dossier(BaseDocumentModel):
     file_number = models.CharField(max_length=255)
     document_number = models.CharField(max_length=3)
