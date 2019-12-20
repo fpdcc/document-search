@@ -1,6 +1,10 @@
-from haystack import indexes
+from haystack import indexes, fields
 
 from docsearch import models
+
+
+class IntegerMultiValueField(fields.MultiValueField):
+    field_type = 'integer'
 
 
 class BookIndex(indexes.SearchIndex, indexes.Indexable):
@@ -111,8 +115,9 @@ class RightOfWayIndex(indexes.SearchIndex, indexes.Indexable):
 
 class SurveyIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    area = indexes.IntegerField(model_attr='area', null=True, faceted=True)
-    section = indexes.IntegerField(model_attr='section', null=True, faceted=True)
+    township = IntegerMultiValueField(model_attr='township', null=True, faceted=True)
+    range = IntegerMultiValueField(model_attr='range', null=True, faceted=True)
+    section = IntegerMultiValueField(model_attr='section', null=True, faceted=True)
     map_number = indexes.CharField(model_attr='map_number', null=True, faceted=True)
     location = indexes.CharField(model_attr='location', null=True, faceted=True)
     description = indexes.CharField(model_attr='description', null=True)

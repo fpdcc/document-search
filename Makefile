@@ -7,9 +7,17 @@ all: data/indicator/BOOKS data/indicator/CONTROL_MONUMENT_MAPS \
      data/indicator/PROJECT_FILES data/indicator/RIGHT_OF_WAY data/indicator/SURVEYS \
      data/indicator/TITLES
 
-data/%.csv : data/raw/%.txt
+data/raw/%.csv : data/raw/%.txt
 	# Strip carriage returns/unecessary quotes and add source_file field to headers
 	sed -e 's/\r//' -e '1 s/"//g' -e '1 s/$$/|source_file/' $< | in2csv -d "|" -f csv > $@
+
+data/%.csv : data/raw/%.csv
+	cp $< $@
+
+.INTERMEDIATE : data/SURVEYS.csv data/raw/SURVEYS.csv
+data/SURVEYS.csv : data/raw/SURVEYS.csv
+	# Fix the mislabelled columns in surveys
+	sed -e '1 s/section/township/' -e '1 s/area/section/' $< | python data/processors/process_surveys.py > $@
 
 data/indicator/% : data/%.csv
 	python manage.py import_data $< $(MODEL) --truncate

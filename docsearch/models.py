@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.postgres import fields as pg_fields
 
 
 class ActionLog(models.Model):
@@ -190,8 +191,9 @@ class RightOfWay(BaseDocumentModel):
 
 
 class Survey(BaseDocumentModel):
-    area = models.PositiveIntegerField(null=True, blank=True)
-    section = models.PositiveIntegerField(null=True, blank=True)
+    township = pg_fields.ArrayField(models.PositiveIntegerField(null=True, blank=True))
+    section = pg_fields.ArrayField(models.PositiveIntegerField(null=True, blank=True))
+    range = pg_fields.ArrayField(models.PositiveIntegerField(null=True, blank=True))
     map_number = models.CharField(max_length=255, null=True, blank=True)
     location = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
