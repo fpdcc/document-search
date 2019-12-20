@@ -73,7 +73,7 @@
                       aria-expanded="false"
                       aria-controls="facet-{{ facet_field }}"
                     >
-                      {{ view.model|field_name:facet_field|capfirst }}
+                      {% get_facet_verbose_name facet_field view %}
                     </button>
                   </h5>
                 </div>
