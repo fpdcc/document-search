@@ -37,6 +37,14 @@ class SurplusParcelIndex(indexes.SearchIndex, indexes.Indexable):
         return models.SurplusParcel
 
 
+class DeepTunnelIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, use_template=True)
+    description = indexes.CharField(model_attr='description')
+
+    def get_model(self):
+        return models.DeepTunnel
+
+
 class DossierIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     file_number = indexes.CharField(model_attr='file_number', faceted=True)

@@ -6,6 +6,7 @@ from docsearch import models
 from .books import *
 from .controlmonumentmaps import *
 from .dossiers import *
+from .deeptunnels import *
 from .easements import *
 from .flatdrawings import *
 from .indexcards import *

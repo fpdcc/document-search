@@ -20,6 +20,7 @@ from docsearch import views
 from .books import urlpatterns as books_patterns
 from .controlmonumentmaps import urlpatterns as controlmonumentmaps_patterns
 from .dossiers import urlpatterns as dossiers_patterns
+from .deeptunnels import urlpatterns as deeptunnels_patterns
 from .easements import urlpatterns as easements_patterns
 from .flatdrawings import urlpatterns as flatdrawings_patterns
 from .indexcards import urlpatterns as indexcards_patterns
@@ -35,6 +36,7 @@ urlpatterns = [
     path('books/', include(books_patterns)),
     path('controlmonumentmaps/', include(controlmonumentmaps_patterns)),
     path('dossiers/', include(dossiers_patterns)),
+    path('deeptunnels/', include(deeptunnels_patterns)),
     path('easements/', include(easements_patterns)),
     path('flatdrawings/', include(flatdrawings_patterns)),
     path('indexcards/', include(indexcards_patterns)),

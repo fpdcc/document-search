@@ -6,9 +6,10 @@ from docsearch import models
 DOCUMENTS = [
     (models.Book, {'township': 'foo', 'range': 'bar', 'section': 'baz'}),
     (models.ControlMonumentMap, {
-        'township': 'foo', 'range': 'bar', 'section': 'baz', 'part_of_section': 'bam'
+        'township': 1, 'range': 2, 'section': [3, 4], 'part_of_section': 'bam'
     }),
     (models.SurplusParcel, {'surplus_parcel': 'foo', 'description': 'bar'}),
+    (models.DeepTunnel, {'description': 'foobarbaz'}),
     (models.Dossier, {'file_number': 'foo', 'document_number': 'bar'}),
     (models.Easement, {'easement_number': 'foo'}),
     (models.FlatDrawing, {
@@ -27,7 +28,7 @@ DOCUMENTS = [
     }),
     (models.RightOfWay, {'folder_tab': 'foo'}),
     (models.Survey, {
-        'area': 1, 'section': 2, 'map_number': 'foo', 'location': 'bar',
+        'township': [1], 'section': [2], 'range': [3], 'map_number': 'foo', 'location': 'bar',
         'description': 'baz', 'job_number': 'foo', 'number_of_sheets': 'bar',
         'date': 'baz', 'cross_ref_area': 1, 'cross_ref_section': 2,
         'cross_ref_map_number': 'foo', 'hash': 'bar'
