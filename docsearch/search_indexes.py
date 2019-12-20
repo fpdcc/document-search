@@ -21,7 +21,7 @@ class ControlMonumentMapIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     township = indexes.CharField(model_attr='township', null=True, faceted=True)
     range = indexes.CharField(model_attr='range', null=True, faceted=True)
-    section = indexes.CharField(model_attr='section', faceted=True)
+    section_arr = IntegerMultiValueField(model_attr='section', null=True, faceted=True)
     part_of_section = indexes.CharField(model_attr='part_of_section', null=True, faceted=True)
 
     def get_model(self):
@@ -115,9 +115,9 @@ class RightOfWayIndex(indexes.SearchIndex, indexes.Indexable):
 
 class SurveyIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    township = IntegerMultiValueField(model_attr='township', null=True, faceted=True)
-    range = IntegerMultiValueField(model_attr='range', null=True, faceted=True)
-    section = IntegerMultiValueField(model_attr='section', null=True, faceted=True)
+    township_arr = IntegerMultiValueField(model_attr='township', null=True, faceted=True)
+    range_arr = IntegerMultiValueField(model_attr='range', null=True, faceted=True)
+    section_arr = IntegerMultiValueField(model_attr='section', null=True, faceted=True)
     map_number = indexes.CharField(model_attr='map_number', null=True, faceted=True)
     location = indexes.CharField(model_attr='location', null=True, faceted=True)
     description = indexes.CharField(model_attr='description', null=True)

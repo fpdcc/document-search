@@ -19,6 +19,11 @@ data/SURVEYS.csv : data/raw/SURVEYS.csv
 	# Fix the mislabelled columns in surveys
 	sed -e '1 s/section/township/' -e '1 s/area/section/' $< | python data/processors/process_surveys.py > $@
 
+.INTERMEDIATE : data/CONTROL_MONUMENT_MAPS.csv data/raw/CONTROL_MONUMENT_MAPS.csv
+data/CONTROL_MONUMENT_MAPS.csv : data/raw/CONTROL_MONUMENT_MAPS.csv
+	# Split out township/section/range
+	cat $< | python data/processors/process_controlmonumentmaps.py > $@
+
 data/indicator/% : data/%.csv
 	python manage.py import_data $< $(MODEL) --truncate
 

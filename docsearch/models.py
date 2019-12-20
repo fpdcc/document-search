@@ -109,9 +109,9 @@ class Book(BaseDocumentModel):
 
 
 class ControlMonumentMap(BaseDocumentModel):
-    township = models.CharField(max_length=255, null=True, blank=True)
-    range = models.CharField(max_length=255, null=True, blank=True)
-    section = models.CharField(max_length=255)
+    township = models.PositiveIntegerField(null=True)
+    range = models.PositiveIntegerField(null=True)
+    section = pg_fields.ArrayField(models.PositiveIntegerField(null=True))
     part_of_section = models.CharField(max_length=255, null=True, blank=True)
     source_file = models.FileField(upload_to='CONTROL_MONUMENT_MAPS')
 
