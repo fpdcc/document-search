@@ -83,17 +83,17 @@
     
     <field name="text" type="text_en" indexed="true" stored="true" multiValued="false" />
     
-    <field name="township" type="text_en" indexed="true" stored="true" multiValued="false" />
+    <field name="township" type="long" indexed="true" stored="true" multiValued="true" />
     
-    <field name="township_exact" type="string" indexed="true" stored="true" multiValued="false" />
+    <field name="township_exact" type="string" indexed="true" stored="true" multiValued="true" />
     
-    <field name="section" type="text_en" indexed="true" stored="true" multiValued="false" />
+    <field name="section" type="long" indexed="true" stored="true" multiValued="true" />
     
-    <field name="section_exact" type="string" indexed="true" stored="true" multiValued="false" />
+    <field name="section_exact" type="string" indexed="true" stored="true" multiValued="true" />
     
-    <field name="range" type="text_en" indexed="true" stored="true" multiValued="false" />
+    <field name="range" type="long" indexed="true" stored="true" multiValued="true" />
     
-    <field name="range_exact" type="string" indexed="true" stored="true" multiValued="false" />
+    <field name="range_exact" type="string" indexed="true" stored="true" multiValued="true" />
     
     <field name="part_of_section" type="text_en" indexed="true" stored="true" multiValued="false" />
     
