@@ -3,13 +3,11 @@
 {% load model_meta %}
 
 {% block thead %}
-  <th>{{ view.model|field_name:"license_number"|capfirst }}</th>
   <th>{{ view.model|field_name:"description"|capfirst }}</th>
   <th></th>
 {% endblock %}
 {% block tr %}
-  <td>{{ result.object.license_number|default_if_none:"" }}</td>
   <td>{{ result.object.description|default_if_none:"" }}</td>
   <td><a href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
 {% endblock %}
-{% block empty_colspan %}3{% endblock %}
+{% block empty_colspan %}2{% endblock %}

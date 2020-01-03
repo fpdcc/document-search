@@ -95,6 +95,10 @@
     
     <field name="range_exact" type="string" indexed="true" stored="true" multiValued="false" />
     
+    <field name="section_arr" type="long" indexed="true" stored="true" multiValued="true" />
+    
+    <field name="section_arr_exact" type="string" indexed="true" stored="true" multiValued="true" />
+    
     <field name="part_of_section" type="text_en" indexed="true" stored="true" multiValued="false" />
     
     <field name="part_of_section_exact" type="string" indexed="true" stored="true" multiValued="false" />
@@ -186,6 +190,14 @@
     <field name="surplus_parcel" type="text_en" indexed="true" stored="true" multiValued="false" />
     
     <field name="surplus_parcel_exact" type="string" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="township_arr" type="long" indexed="true" stored="true" multiValued="true" />
+    
+    <field name="township_arr_exact" type="string" indexed="true" stored="true" multiValued="true" />
+    
+    <field name="range_arr" type="long" indexed="true" stored="true" multiValued="true" />
+    
+    <field name="range_arr_exact" type="string" indexed="true" stored="true" multiValued="true" />
     
     <field name="control_number" type="text_en" indexed="true" stored="true" multiValued="false" />
     

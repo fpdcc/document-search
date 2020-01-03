@@ -1,1 +1,21 @@
 {% extends "docsearch/base_detail.html" %}
+
+{% load display %}
+{% load get_attr %}
+{% load model_meta %}
+
+{% block metadata_body %}
+{% for field in view.metadata_fields %}
+  <tr>
+    <td><strong>{{ object|field_name:field|capfirst }}:</strong></td>
+    <td>
+      {% if field == 'section' %}
+        {{ object|get_attr:field|display_array|default_if_none:"" }}
+      {% else %}
+        {{ object|get_attr:field|default_if_none:"" }}
+      {% endif %}
+    </td>
+  </tr>
+{% endfor %}
+{% endblock %}
+
