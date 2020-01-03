@@ -1,1 +1,2 @@
-{{ object.license_number }}
+{{ object.license_number|default_if_none:"" }}
+{{ object.description|default_if_none:"" }}

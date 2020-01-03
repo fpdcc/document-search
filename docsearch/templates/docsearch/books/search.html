@@ -1,19 +1,20 @@
 {% extends "docsearch/base_search.html" %}
 
 {% load model_meta %}
+{% load display %}
 {% load params %}
 
 {% block thead %}
+  <th>{{ view.model|field_name:"section"|capfirst }}</th>
   <th>{{ view.model|field_name:"township"|capfirst }}</th>
   <th>{{ view.model|field_name:"range"|capfirst }}</th>
-  <th>{{ view.model|field_name:"section"|capfirst }}</th>
   <th></th>
 {% endblock %}
 
 {% block tr %}
-  <td>{{ result.object.township|default_if_none:"" }}</td>
-  <td>{{ result.object.range|default_if_none:"" }}</td>
-  <td>{{ result.object.section|default_if_none:"" }}</td>
+  <td>{{ result.object.section|display_range|default_if_none:"" }}</td>
+  <td>{{ result.object.township|display_range|default_if_none:"" }}</td>
+  <td>{{ result.object.range|display_range|default_if_none:"" }}</td>
   <td><a href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
 {% endblock %}
 

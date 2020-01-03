@@ -23,12 +23,14 @@
     <div class="table-responsive">
       <table class="table table-sm table-borderless">
         <tbody>
-          {% for field in view.metadata_fields %}
-            <tr>
-              <td><strong>{{ object|field_name:field|capfirst }}:</strong></td>
-              <td>{{ object|get_attr:field|default_if_none:"" }}</td>
-            </tr>
-          {% endfor %}
+          {% block metadata_body %}
+            {% for field in view.metadata_fields %}
+              <tr>
+                <td><strong>{{ object|field_name:field|capfirst }}:</strong></td>
+                <td>{{ object|get_attr:field|default_if_none:"" }}</td>
+              </tr>
+            {% endfor %}
+          {% endblock %}
         </tbody>
       </table>
     </div>

@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.postgres import fields as pg_fields
 
 
 class ActionLog(models.Model):
@@ -100,17 +101,45 @@ class BaseDocumentModel(models.Model):
         return reverse(f'{self.get_slug()}-delete', args=(self.pk,))
 
 
+RANGE_FIELD_HELP_TEXT = (
+    'Specify the lower and upper bounds for the range of values represented '
+    'by this field. If this field only has one value, set it as both the '
+    'lower and upper bounds.'
+)
+
+
+ARRAY_FIELD_HELP_TEXT = (
+    'Set multiple values for this field by separating them with commas. E.g. '
+    'to save the values 1, 2, and 3, record them as 1,2,3.'
+)
+
+
 class Book(BaseDocumentModel):
-    township = models.CharField(max_length=255)
-    range = models.CharField(max_length=255)
-    section = models.CharField(max_length=255, null=True, blank=True)
+    township = pg_fields.IntegerRangeField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text=RANGE_FIELD_HELP_TEXT)
+    range = pg_fields.IntegerRangeField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text=RANGE_FIELD_HELP_TEXT)
+    section = pg_fields.IntegerRangeField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text=RANGE_FIELD_HELP_TEXT)
     source_file = models.FileField(upload_to='BOOKS')
 
 
 class ControlMonumentMap(BaseDocumentModel):
-    township = models.CharField(max_length=255, null=True, blank=True)
-    range = models.CharField(max_length=255, null=True, blank=True)
-    section = models.CharField(max_length=255)
+    township = models.PositiveIntegerField(null=True)
+    range = models.PositiveIntegerField(null=True)
+    section = pg_fields.ArrayField(
+        models.PositiveIntegerField(null=True),
+        help_text=ARRAY_FIELD_HELP_TEXT
+    )
     part_of_section = models.CharField(max_length=255, null=True, blank=True)
     source_file = models.FileField(upload_to='CONTROL_MONUMENT_MAPS')
 
@@ -121,6 +150,11 @@ class SurplusParcel(BaseDocumentModel):
     source_file = models.FileField(upload_to='DEEP_PARCEL_SURPLUS')
 
 
+class DeepTunnel(BaseDocumentModel):
+    description = models.TextField()
+    source_file = models.FileField(upload_to='DEEP_PARCEL_SURPLUS')
+
+
 class Dossier(BaseDocumentModel):
     file_number = models.CharField(max_length=255)
     document_number = models.CharField(max_length=3)
@@ -128,7 +162,8 @@ class Dossier(BaseDocumentModel):
 
 
 class Easement(BaseDocumentModel):
-    easement_number = models.CharField(max_length=255)
+    easement_number = models.CharField(max_length=255, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
     source_file = models.FileField(upload_to='EASEMENTS')
 
 
@@ -162,7 +197,8 @@ class IndexCard(BaseDocumentModel):
 
 
 class License(BaseDocumentModel):
-    license_number = models.CharField(max_length=255)
+    license_number = models.CharField(max_length=255, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
     source_file = models.FileField(upload_to='LICENSES')
 
 
@@ -190,8 +226,18 @@ class RightOfWay(BaseDocumentModel):
 
 
 class Survey(BaseDocumentModel):
-    area = models.PositiveIntegerField(null=True, blank=True)
-    section = models.PositiveIntegerField(null=True, blank=True)
+    township = pg_fields.ArrayField(
+        models.PositiveIntegerField(null=True, blank=True),
+        help_text=ARRAY_FIELD_HELP_TEXT
+    )
+    section = pg_fields.ArrayField(
+        models.PositiveIntegerField(null=True, blank=True),
+        help_text=ARRAY_FIELD_HELP_TEXT
+    )
+    range = pg_fields.ArrayField(
+        models.PositiveIntegerField(null=True, blank=True),
+        help_text=ARRAY_FIELD_HELP_TEXT
+    )
     map_number = models.CharField(max_length=255, null=True, blank=True)
     location = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)

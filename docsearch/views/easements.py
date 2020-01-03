@@ -5,7 +5,7 @@ from . import base as base_views
 class EasementDetail(base_views.BaseDetailView):
     model = models.Easement
     template_name = 'docsearch/easements/detail.html'
-    metadata_fields = ['easement_number', 'source_file']
+    metadata_fields = ['easement_number', 'description', 'source_file']
 
 
 class EasementCreate(base_views.BaseCreateView):
