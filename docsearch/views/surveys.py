@@ -36,3 +36,4 @@ class SurveySearch(base_views.BaseSearchView):
                     'cross_ref_section', 'cross_ref_map_number', 'hash']
     facet_field_name_overrides = {'township_arr': 'township', 'section_arr': 'section',
                                   'range_arr': 'range'}
+    sort_fields = facet_fields
