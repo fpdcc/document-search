@@ -81,6 +81,7 @@ class EasementIndex(indexes.SearchIndex, indexes.Indexable):
 
 class FlatDrawingIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    area = indexes.IntegerField(model_attr='area', null=True, faceted=True)
     section = indexes.IntegerField(model_attr='section', null=True, faceted=True)
     map_number = indexes.CharField(model_attr='map_number', null=True, faceted=True)
     location = indexes.CharField(model_attr='location', null=True, faceted=True)
