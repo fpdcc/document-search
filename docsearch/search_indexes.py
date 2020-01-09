@@ -55,7 +55,7 @@ class SurplusParcelIndex(indexes.SearchIndex, indexes.Indexable):
 
 class DeepTunnelIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    description = indexes.CharField(model_attr='description')
+    description = indexes.CharField(model_attr='description', faceted=True)
 
     def get_model(self):
         return models.DeepTunnel
@@ -73,7 +73,7 @@ class DossierIndex(indexes.SearchIndex, indexes.Indexable):
 class EasementIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     easement_number = indexes.CharField(model_attr='easement_number', null=True, faceted=True)
-    description = indexes.CharField(model_attr='description', null=True)
+    description = indexes.CharField(model_attr='description', null=True, faceted=True)
 
     def get_model(self):
         return models.Easement
@@ -111,7 +111,7 @@ class IndexCardIndex(indexes.SearchIndex, indexes.Indexable):
 class LicenseIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     license_number = indexes.CharField(model_attr='license_number', null=True, faceted=True)
-    description = indexes.CharField(model_attr='description', null=True)
+    description = indexes.CharField(model_attr='description', null=True, faceted=True)
 
     def get_model(self):
         return models.License
@@ -123,7 +123,7 @@ class ProjectFileIndex(indexes.SearchIndex, indexes.Indexable):
     section = indexes.IntegerField(model_attr='section', null=True, faceted=True)
     job_number = indexes.CharField(model_attr='job_number', null=True, faceted=True)
     job_name = indexes.CharField(model_attr='job_name', null=True, faceted=True)
-    description = indexes.CharField(model_attr='description', null=True)
+    description = indexes.CharField(model_attr='description', null=True, faceted=True)
     cabinet_number = indexes.CharField(model_attr='cabinet_number', null=True, faceted=True)
     drawer_number = indexes.CharField(model_attr='drawer_number', null=True, faceted=True)
 
