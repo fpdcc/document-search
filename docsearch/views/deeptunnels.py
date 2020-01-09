@@ -29,3 +29,4 @@ class DeepTunnelSearch(base_views.BaseSearchView):
     model = models.DeepTunnel
     template_name = 'docsearch/deeptunnels/search.html'
     facet_fields = []
+    sort_fields = ['description_exact']

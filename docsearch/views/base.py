@@ -1,3 +1,5 @@
+import re
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 from haystack.generic_views import FacetedSearchView
@@ -94,7 +96,7 @@ class BaseSearchView(LoginRequiredMixin, FacetedSearchView):
         sqs = super().get_queryset().models(self.model)
         sort = self._get_sort()
         if sort:
-            sqs = sqs.order_by(sort, 'score')  # Backup ordering by relevance
+            sqs = sqs.order_by(sort)
         return sqs
 
     def _get_sort(self):
@@ -113,5 +115,15 @@ class BaseSearchView(LoginRequiredMixin, FacetedSearchView):
         # We may eventually need a specialized data structure to store
         # the values and labels of sort fields, but for now the
         # conversion rule is pretty simple
-        return [{'value': sort_field, 'label': sort_field.replace('_', ' ').replace(' arr', '')}
-                for sort_field in self.sort_fields]
+        sort_options = []
+        for sort_field in self.sort_fields:
+            label = sort_field
+            replacements = [
+                ('_exact$', ''),
+                ('_arr$', ''),
+                ('_', ' ')
+            ]
+            for pattern, new_pattern in replacements:
+                label = re.sub(pattern, new_pattern, label)
+            sort_options.append({'value': sort_field, 'label': label})
+        return sort_options
