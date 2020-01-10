@@ -34,6 +34,8 @@ def set_facet_param(parameters, facet, value):
     facet_str = f'{facet}:{value}'
     if facet_str not in params.getlist('selected_facets'):
         params.update({'selected_facets': facet_str})
+    if params.get('page'):
+        params['page'] = 1
     return params.urlencode()
 
 
@@ -54,4 +56,6 @@ def remove_facet_param(parameters, facet, value):
     if facet_str in selected_facets:
         selected_facets.remove(facet_str)
         params.setlist('selected_facets', selected_facets)
+    if params.get('page'):
+        params['page'] = 1
     return params.urlencode()
