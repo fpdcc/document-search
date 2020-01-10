@@ -94,6 +94,9 @@ class BaseSearchView(LoginRequiredMixin, FacetedSearchView):
 
     def get_queryset(self):
         sqs = super().get_queryset().models(self.model)
+        for facet_field in self.facet_fields:
+            # Sort facet options alphabetically, not by hit count
+            sqs = sqs.facet(facet_field, sort='index')
         sort = self._get_sort()
         if sort:
             sqs = sqs.order_by(sort)

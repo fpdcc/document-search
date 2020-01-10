@@ -32,10 +32,10 @@ class FlatDrawingDelete(base_views.BaseDeleteView):
 class FlatDrawingSearch(base_views.BaseSearchView):
     model = models.FlatDrawing
     template_name = 'docsearch/flatdrawings/search.html'
-    facet_fields = ['section', 'map_number', 'location', 'job_number',
+    facet_fields = ['area', 'section', 'map_number', 'location', 'job_number',
                     'number_of_sheets', 'date', 'cross_ref_area',
-                    'cross_ref_section', 'cross_ref_map_number', 'hash']
-    sort_fields = ['section', 'map_number', 'location_exact', 'description_exact',
+                    'cross_ref_section', 'cross_ref_map_number']
+    sort_fields = ['area', 'section', 'map_number', 'location_exact', 'description_exact',
                    'job_number_exact', 'number_of_sheets', 'date_exact',
                    'cross_ref_area', 'cross_ref_section',
-                   'cross_ref_map_number_exact', 'hash']
+                   'cross_ref_map_number_exact']

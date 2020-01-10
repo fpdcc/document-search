@@ -81,6 +81,7 @@ class EasementIndex(indexes.SearchIndex, indexes.Indexable):
 
 class FlatDrawingIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    area = indexes.IntegerField(model_attr='area', null=True, faceted=True)
     section = indexes.IntegerField(model_attr='section', null=True, faceted=True)
     map_number = indexes.CharField(model_attr='map_number', null=True, faceted=True)
     location = indexes.CharField(model_attr='location', null=True, faceted=True)
@@ -91,7 +92,6 @@ class FlatDrawingIndex(indexes.SearchIndex, indexes.Indexable):
     cross_ref_area = indexes.IntegerField(model_attr='cross_ref_area', null=True, faceted=True)
     cross_ref_section = indexes.IntegerField(model_attr='cross_ref_section', null=True, faceted=True)
     cross_ref_map_number = indexes.CharField(model_attr='cross_ref_map_number', null=True, faceted=True)
-    hash = indexes.CharField(model_attr='hash', null=True, faceted=True)
 
     def get_model(self):
         return models.FlatDrawing
@@ -150,10 +150,6 @@ class SurveyIndex(indexes.SearchIndex, indexes.Indexable):
     job_number = indexes.CharField(model_attr='job_number', null=True, faceted=True)
     number_of_sheets = indexes.CharField(model_attr='number_of_sheets', null=True, faceted=True)
     date = indexes.CharField(model_attr='date', null=True, faceted=True)
-    cross_ref_area = indexes.IntegerField(model_attr='cross_ref_area', null=True, faceted=True)
-    cross_ref_section = indexes.IntegerField(model_attr='cross_ref_section', null=True, faceted=True)
-    cross_ref_map_number = indexes.CharField(model_attr='cross_ref_map_number', null=True, faceted=True)
-    hash = indexes.CharField(model_attr='hash', null=True, faceted=True)
 
     def get_model(self):
         return models.Survey
