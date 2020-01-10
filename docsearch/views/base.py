@@ -1,3 +1,5 @@
+import re
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 from haystack.generic_views import FacetedSearchView
@@ -74,6 +76,7 @@ class BaseDeleteView(LoginRequiredMixin, DeleteView):
 class BaseSearchView(LoginRequiredMixin, FacetedSearchView):
     form_class = forms.BaseSearchForm
     template_name = 'docsearch/search.html'
+    sort_fields = []
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -81,6 +84,8 @@ class BaseSearchView(LoginRequiredMixin, FacetedSearchView):
         context['selected_facets'] = self.request.GET.getlist('selected_facets', [])
         context['selected_facet_fields'] = set([facet.split(':')[0] for facet in
                                                 context['selected_facets']])
+        context['sort'] = self.request.GET.get('sort')
+        context['sortdir'] = self.request.GET.get('sortdir')
         return context
 
     def form_valid(self, form):
@@ -88,4 +93,37 @@ class BaseSearchView(LoginRequiredMixin, FacetedSearchView):
         return super().form_valid(form)
 
     def get_queryset(self):
-        return super().get_queryset().models(self.model)
+        sqs = super().get_queryset().models(self.model)
+        sort = self._get_sort()
+        if sort:
+            sqs = sqs.order_by(sort)
+        return sqs
+
+    def _get_sort(self):
+        """
+        Extract the 'sort' parameter from the URL if it's valid; otherwise,
+        suppress it by returning None.
+        """
+        sort = self.request.GET.get('sort')
+        if sort and sort in self.sort_fields:
+            sortdir = self.request.GET.get('sortdir')
+            return f'-{sort}' if sortdir == 'desc' else sort
+        else:
+            return None
+
+    def get_sort_options(self):
+        # We may eventually need a specialized data structure to store
+        # the values and labels of sort fields, but for now the
+        # conversion rule is pretty simple
+        sort_options = []
+        for sort_field in self.sort_fields:
+            label = sort_field
+            replacements = [
+                ('_exact$', ''),
+                ('_arr$', ''),
+                ('_', ' ')
+            ]
+            for pattern, new_pattern in replacements:
+                label = re.sub(pattern, new_pattern, label)
+            sort_options.append({'value': sort_field, 'label': label})
+        return sort_options

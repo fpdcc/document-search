@@ -29,3 +29,4 @@ class LicenseSearch(base_views.BaseSearchView):
     model = models.License
     template_name = 'docsearch/licenses/search.html'
     facet_fields = ['license_number']
+    sort_fields = ['license_number', 'description_exact']

@@ -34,3 +34,4 @@ class BookSearch(base_views.BaseSearchView):
         'township_arr': 'township',
         'range_arr': 'range'
     }
+    sort_fields = facet_fields

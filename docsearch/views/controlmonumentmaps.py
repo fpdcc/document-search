@@ -31,3 +31,4 @@ class ControlMonumentMapSearch(base_views.BaseSearchView):
     template_name = 'docsearch/controlmonumentmaps/search.html'
     facet_fields = ['section_arr', 'township', 'range', 'part_of_section']
     facet_field_name_overrides = {'section_arr': 'section'}
+    sort_fields = ['section_arr', 'township', 'range', 'part_of_section_exact']
