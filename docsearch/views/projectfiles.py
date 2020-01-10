@@ -32,3 +32,5 @@ class ProjectFileSearch(base_views.BaseSearchView):
     template_name = 'docsearch/projectfiles/search.html'
     facet_fields = ['area', 'section', 'job_number', 'job_name',
                     'cabinet_number', 'drawer_number']
+    sort_fields = ['area', 'section', 'description_exact', 'job_number',
+                   'job_name_exact', 'cabinet_number', 'drawer_number']

@@ -117,12 +117,48 @@
       {% endif %}
     </div>
     <div class="col-sm-8">
-      <h3>
-        Results
-        <small class="text-muted">
-          {{ paginator.count|intcomma }} {{ view.model|verbose_name_plural }} found
-        </small>
-      </h3>
+      <div class="row">
+        <div class="col-xs-12 col-lg-7 order-lg-2">
+          {% if view.get_sort_options %}
+            <h6 class="float-lg-right">
+              Sort by:
+              <select class="sort-select">
+                <option value=""></option>
+                {% for sort_option in view.get_sort_options %}
+                  <option
+                    value="?{% set_param parameters 'sort' sort_option.value %}"
+                    {% if sort == sort_option.value %}selected{% endif %}
+                  >
+                    {{ sort_option.label }}
+                  </option>
+                {% endfor %}
+              </select>
+              <select class="sort-select">
+                <option
+                  value="?{% set_param parameters 'sortdir' 'asc' %}"
+                  {% if not sortdir or sortdir == "asc" %}selected{% endif %}
+                >
+                  ascending
+                </option>
+                <option
+                  value="?{% set_param parameters 'sortdir' 'desc' %}"
+                  {% if sortdir == 'desc' %}selected{% endif %}
+                >
+                  descending
+                </option>
+              </select>
+            </h6>
+          {% endif %}
+        </div>
+        <div class="col-xs-12 col-lg-5">
+          <h3>
+            Results
+            <small class="text-muted">
+              {{ paginator.count|intcomma }} found
+            </small>
+          </h3>
+        </div>
+      </div>
       <div class="table-responsive">
         <table class="table table-bordered">
           <thead>
@@ -196,4 +232,14 @@
       {% endif %}
     </div>
   </div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('select.sort-select').change(function(e) {
+      window.location.assign(e.target.value);
+    });
+  });
+</script>
 {% endblock %}

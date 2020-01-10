@@ -29,3 +29,4 @@ class TitleSearch(base_views.BaseSearchView):
     model = models.Title
     template_name = 'docsearch/titles/search.html'
     facet_fields = ['control_number']
+    sort_fields = ['control_number_exact']
