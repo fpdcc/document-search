@@ -1,5 +1,6 @@
 {% extends "docsearch/base.html" %}
 
+{% load static %}
 {% load crispy_forms_tags %}
 {% load model_meta %}
 {% load humanize %}
@@ -8,6 +9,10 @@
 {% load get_attr %}
 
 {% block title %}Search for {{ view.model|verbose_name_plural|title }}{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'css/leaflet.css' %}" rel="stylesheet">
+{% endblock %}
 
 {% block body %}
 <div class="container-fluid">
@@ -83,28 +88,40 @@
                     class="collapse {% if facet_field_exact in selected_facet_fields %}show{% endif %}"
                     aria-labelledby="facet-{{ facet_field }}-header"
                   >
-                    <div class="card-body pb-0">
-                      <ul class="pl-0" style="list-style-type:none">
-                        {% for value, count in facets.fields|get_key:facet_field %}
-                          {% if count > 0 %}
-                            {% with facet_field_exact|add:":"|add:value as facet_query %}
-                              <li>
-                                {% if facet_query in selected_facets %}
-                                  <a href="?{% remove_facet_param parameters facet_field_exact value %}" title="{{ value }}">
-                                    <strong>{{ value }}</strong>&nbsp;<i class="fa fa-fw fa-times"></i>
+                    {% if facet_field in view.geo_facet_fields %}
+                      <div class="card-body p-0">
+                        <div
+                          class="map"
+                          style="height:300px"
+                          data-facet-field="{{ facet_field }}"
+                          id="map-{{ facet_field }}"
+                        >
+                        </div>
+                      </div>
+                    {% else %}
+                      <div class="card-body pb-0">
+                        <ul class="pl-0" style="list-style-type:none">
+                          {% for value, count in facets.fields|get_key:facet_field %}
+                            {% if count > 0 %}
+                              {% with facet_field_exact|add:":"|add:value as facet_query %}
+                                <li>
+                                  {% if facet_query in selected_facets %}
+                                    <a href="?{% remove_facet_param parameters facet_field_exact value %}" title="{{ value }}">
+                                      <strong>{{ value }}</strong>&nbsp;<i class="fa fa-fw fa-times"></i>
+                                    </a>
+                                  {% else %}
+                                  <a href="?{% set_facet_param parameters facet_field_exact value %}" title="{{ value }}">
+                                    {{ value }}
                                   </a>
-                                {% else %}
-                                <a href="?{% set_facet_param parameters facet_field_exact value %}" title="{{ value }}">
-                                  {{ value }}
-                                </a>
-                                {% endif %}
-                                <span class="badge badge-secondary rounded-pill float-right">{{ count }}</span>
-                              </li>
-                            {% endwith %}
-                          {% endif %}
-                        {% endfor %}
-                      </ul>
-                    </div>
+                                  {% endif %}
+                                  <span class="badge badge-secondary rounded-pill float-right">{{ count }}</span>
+                                </li>
+                              {% endwith %}
+                            {% endif %}
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    {% endif %}
                   </div>
                 </div>
               {% endwith %}
@@ -235,10 +252,37 @@
 {% endblock %}
 
 {% block extra_js %}
+<!-- TODO: Swap out this API key -->
+<script src="https://maps.google.com/maps/api/js?libraries=places&v=3.32&key=AIzaSyBY-seQ_j3E_04VZ4YZ4ydszpHmPJsS038"></script>
+<script src="{% static 'js/leaflet.js' %}"></script>
+<script src="{% static 'js/leaflet-google.js' %}"></script>
 <script type="text/javascript">
   $(document).ready(function(){
     $('select.sort-select').change(function(e) {
       window.location.assign(e.target.value);
+    });
+    $('.map').each(function(idx, elem) {
+      var map = L.map(elem, {
+        center: [41.85, -87.69],
+        zoom: 8,
+        dragging: true,
+        touchZoom: true,
+        zoomControl: !L.Browser.mobile,
+        tap: true,
+        scrollWheelZoom: false
+      });
+      var streets = new L.Google('ROADMAP', {
+        mapOptions: {
+          styles: [
+            {stylers: [{saturation: -100}, {lightness: 40}]},
+            {featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }]}
+          ]
+        }
+      });
+      map.addLayer(streets);
+      $('#facet-' + elem.dataset.facetField).on('shown.bs.collapse', function() {
+        map.invalidateSize();
+      })
     });
   });
 </script>
