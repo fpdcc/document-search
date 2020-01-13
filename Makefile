@@ -1,7 +1,10 @@
 VPATH = data data/raw
 
 .PHONY: all
-all: data/indicator/BOOKS data/indicator/CONTROL_MONUMENT_MAPS \
+all : entities geojson
+
+.PHONY: entities
+entities : data/indicator/BOOKS data/indicator/CONTROL_MONUMENT_MAPS \
      data/indicator/SURPLUS_PARCELS data/indicator/DEEP_TUNNELS \
 	 data/indicator/DOSSIER data/indicator/EASEMENTS \
      data/indicator/FLAT_DRAWINGS data/indicator/INDEX_CARDS data/indicator/LICENSES \
@@ -67,3 +70,27 @@ data/indicator/PROJECT_FILES : MODEL = ProjectFile
 data/indicator/RIGHT_OF_WAY : MODEL = RightOfWay
 data/indicator/SURVEYS : MODEL = Survey
 data/indicator/TITLES : MODEL = Title
+
+.PHONY: geojson
+shapes : docsearch/static/geojson/township.geojson \
+         docsearch/static/geojson/range.geojson \
+         docsearch/static/geojson/section.geojson
+
+data/shapefiles/PLSSpolys.shp : data/shapefiles/PLSS.zip
+data/shapefiles/areanumbers.shp : data/shapefiles/Areas.zip
+data/shapefiles/PLSSpolys.shp data/shapefiles/areanumbers.shp:
+	unzip -d $(dir $@) "$<"
+
+docsearch/static/geojson/%.geojson : data/shapefiles/PLSSpolys.shp
+	ogr2ogr $@ $< -f GeoJSON -t_srs EPSG:4326 -dialect SQLite -sql "\
+		SELECT ST_Union(geometry) AS geometry, $(notdir $(basename $@)) \
+		FROM $(notdir $(basename $<)) \
+		GROUP BY $(notdir $(basename $@)) \
+	"
+
+docsearch/static/geojson/section.geojson : data/shapefiles/PLSSpolys.shp
+	ogr2ogr $@ $< -f GeoJSON -t_srs EPSG:4326 -dialect SQLite -sql "\
+		SELECT ST_Union(geometry) AS geometry, township, range, sectn AS section \
+		FROM $(notdir $(basename $<)) \
+		GROUP BY township, range, section \
+	"
