@@ -83,14 +83,20 @@ data/shapefiles/PLSSpolys.shp data/shapefiles/areanumbers.shp:
 
 docsearch/static/geojson/%.geojson : data/shapefiles/PLSSpolys.shp
 	ogr2ogr $@ $< -f GeoJSON -t_srs EPSG:4326 -dialect SQLite -sql "\
-		SELECT ST_Union(geometry) AS geometry, $(notdir $(basename $@)) \
+		SELECT \
+		ST_Simplify(ST_Union(GEOMETRY), 10) AS geometry, \
+		$(notdir $(basename $@)) AS $(notdir $(basename $@)) \
 		FROM $(notdir $(basename $<)) \
 		GROUP BY $(notdir $(basename $@)) \
 	"
 
 docsearch/static/geojson/section.geojson : data/shapefiles/PLSSpolys.shp
 	ogr2ogr $@ $< -f GeoJSON -t_srs EPSG:4326 -dialect SQLite -sql "\
-		SELECT ST_Union(geometry) AS geometry, township, range, sectn AS section \
+		SELECT \
+		ST_Simplify(ST_Union(GEOMETRY), 10) AS geometry, \
+		TOWNSHIP AS township, \
+		RANGE AS range, \
+		SECTN AS section \
 		FROM $(notdir $(basename $<)) \
 		GROUP BY township, range, section \
 	"
