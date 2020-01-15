@@ -294,6 +294,39 @@
 
     var query = '{{ query }}';
     var selectedFacets = [{% for facet in selected_facets %}'{{ facet }}',{% endfor %}];
+    var geoFacets = [{% for facet in view.facet_fields %}{% if facet in view.geo_facet_fields %}'{{ facet }}',{% endif %}{% endfor %}]
+    var townshipRangeFacets = [];
+
+    if (geoFacets.indexOf('section') >= 0 || geoFacets.indexOf('section_arr') >= 0) {
+      // Parse out township and range facets for use in the section map widget
+      var relatedEntities = ['township', 'range'];
+      for (var i=0; i<relatedEntities.length; i++) {
+        var relatedEntity = relatedEntities[i];
+        for (var j=0; j<geoFacets.length; j++) {
+          var geoFacet = geoFacets[j];
+          if (geoFacet.startsWith(relatedEntity)) {
+            townshipRangeFacets.push([geoFacet, relatedEntity]);
+            break;
+          }
+        }
+      }
+    }
+
+    // Check if township or range are selected in order to determine
+    // if we need to filter sections
+    var townshipIsSelected = false;
+    var rangeIsSelected = false;
+    for (var i=0; i<selectedFacets.length; i++) {
+      var selectedFacet = selectedFacets[i];
+      if (selectedFacet.startsWith('township')) {
+        townshipIsSelected = true;
+      } else if (selectedFacet.startsWith('range')) {
+        rangeIsSelected = true;
+      }
+      if (townshipIsSelected && rangeIsSelected) {
+        break;
+      }
+    }
 
     var baseStyle = {weight: 0.75, color: '#445721', fillOpacity: 0.25};
     var selectedStyle = {weight: 1, color: '#445721', fillOpacity: 0.75};
@@ -352,13 +385,54 @@
       };
       infoBox.addTo(map);
 
+      if (entity === 'section') {
+        var warningBox = L.control({position: 'bottomleft'});
+        warningBox.onAdd = function() {
+          this._infoDiv = L.DomUtil.create('div', 'info hover');
+          this._infoDiv.innerHTML = '<p class="small">' +
+                                      'Selecting a section from<br/>' +
+                                      'the map will also select<br/>' +
+                                      'its township and range.' +
+                                    '</p>';
+        return this._infoDiv;
+        };
+        warningBox.addTo(map);
+      }
+
       var geojsonLayer = L.geoJSON(undefined, {
         style: function(feature) {
           var featureIsSelected = selectedFacets.indexOf(formatFacetString(facetField, feature, entity)) >= 0;
-          if (featureIsSelected) {
-            return selectedStyle;
-          } else {
+          if (!featureIsSelected) {
             return baseStyle;
+          } else {
+            if (entity !== 'section') {
+              return selectedStyle;
+            } else {
+              // Default to not highlighting if township or range are selected
+              if (!townshipIsSelected && !rangeIsSelected) {
+                return selectedStyle;
+              } else {
+                var isInTownship = (townshipIsSelected) ? false : true;
+                var isInRange = (rangeIsSelected) ? false : true;
+                for (var i=0; i<selectedFacets.length; i++) {
+                  var selectedFacet = selectedFacets[i];
+                  var townshipFacetString = formatFacetString('township', feature, 'township');
+                  var arrTownshipFacetString = formatFacetString('township_arr', feature, 'township');
+                  var rangeFacetString = formatFacetString('range', feature, 'range');
+                  var arrRangeFacetString = formatFacetString('range_arr', feature, 'range');
+                  if (selectedFacet === townshipFacetString || selectedFacet === arrTownshipFacetString) {
+                    isInTownship = true;
+                  } else if (selectedFacet === rangeFacetString || selectedFacet === arrRangeFacetString) {
+                    isInRange = true;
+                  }
+                }
+                if (isInTownship && isInRange) {
+                  return selectedStyle;
+                } else {
+                  return baseStyle;
+                }
+              }
+            }
           }
         },
         onEachFeature: function(feature, layer) {
@@ -386,6 +460,16 @@
               selectedFacets.splice(facetIndex, 1);
             } else {
               // Add the facet to the query string
+              if (entity == 'section') {
+                // Add both township and range as well
+                for (var i=0; i<townshipRangeFacets.length; i++) {
+                  var geoFacet = townshipRangeFacets[i][0];
+                  var relatedEntity = townshipRangeFacets[i][1];
+                  if (feature.properties[relatedEntity]) {
+                    selectedFacets.push(formatFacetString(geoFacet, feature, relatedEntity));
+                  }
+                }
+              }
               selectedFacets.push(facetString);
             }
             // Redirect to page 1 of the new faceted view
