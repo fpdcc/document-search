@@ -288,6 +288,7 @@
       window.location.assign(e.target.value);
     });
 
+    var areaUrl = '{% static "geojson/area.geojson" %}';
     var townshipUrl = '{% static "geojson/township.geojson" %}';
     var rangeUrl = '{% static "geojson/range.geojson" %}';
     var sectionUrl = '{% static "geojson/section.geojson" %}';
@@ -295,36 +296,38 @@
     var query = '{{ query }}';
     var selectedFacets = [{% for facet in selected_facets %}'{{ facet }}',{% endfor %}];
     var geoFacets = [{% for facet in view.facet_fields %}{% if facet in view.geo_facet_fields %}'{{ facet }}',{% endif %}{% endfor %}]
-    var townshipRangeFacets = [];
+    var hasSectionFacet = (geoFacets.indexOf('section') >= 0 || geoFacets.indexOf('section_arr') >= 0);
+    var hasTownshipFacet = (geoFacets.indexOf('township') >= 0 || geoFacets.indexOf('township_arr') >= 0);
+    var hasAreaFacet = (geoFacets.indexOf('area') >= 0 || geoFacets.indexOf('area_arr') >= 0);
+    var relatedGeoEntityFacets = [];
 
-    if (geoFacets.indexOf('section') >= 0 || geoFacets.indexOf('section_arr') >= 0) {
-      // Parse out township and range facets for use in the section map widget
-      var relatedEntities = ['township', 'range'];
+    if (hasSectionFacet) {
+      // Parse out area, township, and range facets for use in the section map widget
+      var relatedEntities = ['area', 'township', 'range'];
       for (var i=0; i<relatedEntities.length; i++) {
         var relatedEntity = relatedEntities[i];
         for (var j=0; j<geoFacets.length; j++) {
           var geoFacet = geoFacets[j];
           if (geoFacet.startsWith(relatedEntity)) {
-            townshipRangeFacets.push([geoFacet, relatedEntity]);
+            relatedGeoEntityFacets.push([geoFacet, relatedEntity]);
             break;
           }
         }
       }
-    }
-
-    // Check if township or range are selected in order to determine
-    // if we need to filter sections
-    var townshipIsSelected = false;
-    var rangeIsSelected = false;
-    for (var i=0; i<selectedFacets.length; i++) {
-      var selectedFacet = selectedFacets[i];
-      if (selectedFacet.startsWith('township')) {
-        townshipIsSelected = true;
-      } else if (selectedFacet.startsWith('range')) {
-        rangeIsSelected = true;
-      }
-      if (townshipIsSelected && rangeIsSelected) {
-        break;
+      // Check if area, township, or range are selected in order to determine
+      // if we need to filter sections
+      var areaIsSelected = false;
+      var townshipIsSelected = false;
+      var rangeIsSelected = false;
+      for (var i=0; i<selectedFacets.length; i++) {
+        var selectedFacet = selectedFacets[i];
+        if (selectedFacet.startsWith('township')) {
+          townshipIsSelected = true;
+        } else if (selectedFacet.startsWith('range')) {
+          rangeIsSelected = true;
+        } else if (selectedFacet.startsWith('area')) {
+          areaIsSelected = true;
+        }
       }
     }
 
@@ -355,6 +358,11 @@
       var geojsonUrl;
       var entity = '';
       switch (facetField) {
+        case 'area':
+        case 'area_arr':
+          entity = 'area';
+          geojsonUrl = areaUrl;
+          break;
         case 'township':
         case 'township_arr':
           entity = 'township';
@@ -389,10 +397,20 @@
         var warningBox = L.control({position: 'bottomleft'});
         warningBox.onAdd = function() {
           this._infoDiv = L.DomUtil.create('div', 'info hover');
+          var geoString = '';
+          if (hasAreaFacet) {
+            if (hasTownshipFacet) {
+              geoString = 'area, township, and range';
+            } else {
+              geoString = 'area'
+            }
+          } else {
+            geoString = 'township and range'
+          }
           this._infoDiv.innerHTML = '<p class="small">' +
                                       'Selecting a section from<br/>' +
                                       'the map will also select<br/>' +
-                                      'its township and range.' +
+                                      'its ' + geoString + '.' +
                                     '</p>';
         return this._infoDiv;
         };
@@ -409,24 +427,31 @@
               return selectedStyle;
             } else {
               // Default to not highlighting if township or range are selected
-              if (!townshipIsSelected && !rangeIsSelected) {
+              if (!townshipIsSelected && !rangeIsSelected && !areaIsSelected) {
                 return selectedStyle;
               } else {
-                var isInTownship = (townshipIsSelected) ? false : true;
-                var isInRange = (rangeIsSelected) ? false : true;
+                // If any geo facets are selected, start by assuming that the
+                // selected section is not in the area
+                var isInArea = (areaIsSelected) ? false : true;
+                var isInTownship = (townshipIsSelected || areaIsSelected) ? false : true;
+                var isInRange = (rangeIsSelected || areaIsSelected) ? false : true;
                 for (var i=0; i<selectedFacets.length; i++) {
                   var selectedFacet = selectedFacets[i];
                   var townshipFacetString = formatFacetString('township', feature, 'township');
                   var arrTownshipFacetString = formatFacetString('township_arr', feature, 'township');
                   var rangeFacetString = formatFacetString('range', feature, 'range');
                   var arrRangeFacetString = formatFacetString('range_arr', feature, 'range');
+                  var areaFacetString = formatFacetString('area', feature, 'area');
+                  var arrAreaFacetString = formatFacetString('area_arr', feature, 'area');
                   if (selectedFacet === townshipFacetString || selectedFacet === arrTownshipFacetString) {
                     isInTownship = true;
                   } else if (selectedFacet === rangeFacetString || selectedFacet === arrRangeFacetString) {
                     isInRange = true;
+                  } else if (selectedFacet === areaFacetString || selectedFacet === arrAreaFacetString) {
+                    isInArea = true;
                   }
                 }
-                if (isInTownship && isInRange) {
+                if ((isInTownship && isInRange) || isInArea) {
                   return selectedStyle;
                 } else {
                   return baseStyle;
@@ -461,10 +486,10 @@
             } else {
               // Add the facet to the query string
               if (entity == 'section') {
-                // Add both township and range as well
-                for (var i=0; i<townshipRangeFacets.length; i++) {
-                  var geoFacet = townshipRangeFacets[i][0];
-                  var relatedEntity = townshipRangeFacets[i][1];
+                // Add area, township, and range as well
+                for (var i=0; i<relatedGeoEntityFacets.length; i++) {
+                  var geoFacet = relatedGeoEntityFacets[i][0];
+                  var relatedEntity = relatedGeoEntityFacets[i][1];
                   if (feature.properties[relatedEntity]) {
                     selectedFacets.push(formatFacetString(geoFacet, feature, relatedEntity));
                   }
