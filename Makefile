@@ -74,11 +74,13 @@ data/indicator/TITLES : MODEL = Title
 .PHONY: geojson
 shapes : docsearch/static/geojson/township.geojson \
          docsearch/static/geojson/range.geojson \
-         docsearch/static/geojson/section.geojson
+         docsearch/static/geojson/section.geojson \
+         docsearch/static/geojson/area.geojson
 
 data/shapefiles/PLSSpolys.shp : data/shapefiles/PLSS.zip
 data/shapefiles/areanumbers.shp : data/shapefiles/Areas.zip
-data/shapefiles/PLSSpolys.shp data/shapefiles/areanumbers.shp:
+data/shapefiles/PLSS_to_Areas.shp : data/shapefiles/PLSStoAreas.zip
+data/shapefiles/PLSSpolys.shp data/shapefiles/areanumbers.shp data/shapefiles/PLSS_to_Areas:
 	unzip -d $(dir $@) "$<"
 
 docsearch/static/geojson/%.geojson : data/shapefiles/PLSSpolys.shp
@@ -99,4 +101,15 @@ docsearch/static/geojson/section.geojson : data/shapefiles/PLSSpolys.shp
 		SECTN AS section \
 		FROM $(notdir $(basename $<)) \
 		GROUP BY township, range, section \
+	"
+
+docsearch/static/geojson/area.geojson : data/shapefiles/PLSS_to_Areas.shp
+	ogr2ogr $@ $< -f GeoJSON -t_srs EPSG:4326 -dialect SQLite -sql "\
+		SELECT \
+		ST_Simplify(ST_Union(GEOMETRY), 10) AS geometry, \
+		TOWNSHIP AS township, \
+		RANGE AS range, \
+		AREANO AS area \
+		FROM $(notdir $(basename $<)) \
+		GROUP BY township, range, area \
 	"
