@@ -135,7 +135,7 @@
                       {% if facet_field in view.geo_facet_fields %}
                         <button
                           type="button"
-                          class="btn btn-link"
+                          class="btn btn-link switch-to-map-view"
                           onclick="switchToMapView('{{ facet_field }}');"
                         >
                           <i class="fa fa-fw fa-globe-africa"></i>
@@ -282,16 +282,19 @@
     return facetField + '_exact:' + feature.properties[entity];
   }
 
+  var modelVerboseName = '{{ view.model|verbose_name }}';
+
   function switchToListView(facetField) {
     $('#' + facetField + '-map-widget').hide();
     $('#' + facetField + '-list-widget').show();
-    window.localStorage.setItem(facetField, 'list');
+    // Namespace the storage key according to the view model
+    window.localStorage.setItem(modelVerboseName + ':' + facetField, 'list');
   }
 
   function switchToMapView(facetField) {
     $('#' + facetField + '-list-widget').hide();
     $('#' + facetField + '-map-widget').show();
-    window.localStorage.removeItem(facetField);
+    window.localStorage.removeItem(modelVerboseName + ':' + facetField);
   }
 
   $(document).ready(function(){
@@ -307,7 +310,7 @@
     // Display saved list views as appropriate for geo field facets
     for (var i=0; i<geoFacets.length; i++) {
       var facetField = geoFacets[i];
-      var facetCookie = window.localStorage.getItem(facetField);
+      var facetCookie = window.localStorage.getItem(modelVerboseName + ':' + facetField);
       if (facetCookie && facetCookie === 'list') {
         switchToListView(facetField);
       }
@@ -537,7 +540,10 @@
 
       $('#facet-' + facetField).on('shown.bs.collapse', function() {
         map.invalidateSize();
-      })
+      });
+      $('.switch-to-map-view').click(function() {
+        map.invalidateSize();
+      });
     });
   });
 </script>
