@@ -93,7 +93,7 @@ docsearch/static/geojson/%.geojson : data/shapefiles/PLSSpolys.shp
 	"
 
 docsearch/static/geojson/section.geojson : data/shapefiles/PLSSpolys.shp
-	ogr2ogr $@ $< -f GeoJSON -t_srs EPSG:4326 -dialect SQLite -sql "\
+	ogr2ogr tmp_section.geojson $< -f GeoJSON -t_srs EPSG:4326 -dialect SQLite -sql "\
 		SELECT \
 		ST_Simplify(ST_Union(GEOMETRY), 10) AS geometry, \
 		TOWNSHIP AS township, \
@@ -102,14 +102,14 @@ docsearch/static/geojson/section.geojson : data/shapefiles/PLSSpolys.shp
 		FROM $(notdir $(basename $<)) \
 		GROUP BY township, range, section \
 	"
+	cat tmp_section.geojson | python data/processors/add_area_to_section.py > $@
+	rm tmp_section.geojson
 
 docsearch/static/geojson/area.geojson : data/shapefiles/PLSS_to_Areas.shp
 	ogr2ogr $@ $< -f GeoJSON -t_srs EPSG:4326 -dialect SQLite -sql "\
 		SELECT \
 		ST_Simplify(ST_Union(GEOMETRY), 10) AS geometry, \
-		TOWNSHIP AS township, \
-		RANGE AS range, \
 		AREANO AS area \
 		FROM $(notdir $(basename $<)) \
-		GROUP BY township, range, area \
+		GROUP BY area \
 	"
