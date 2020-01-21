@@ -67,3 +67,14 @@ Run tests with Docker Compose:
 ```
 docker-compose -f docker-compose.yml -f tests/docker-compose.yml run --rm app
 ```
+
+## Deployment
+
+This repo is configured to deploy in the following ways:
+
+| environment | deploys on                |
+| ----------- | ------------------------- |
+| staging     | commit to `master` branch |
+| production  | tagged commit or release  |
+
+In both cases, Travis CI will run tests before triggering a new deployment with AWS CodeDeploy.
