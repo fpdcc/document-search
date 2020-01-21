@@ -2,6 +2,7 @@ branches:
   only:
   - master
   - "/^v[0-9].*$/"
+  - jfc/production-instance
 language: python
 python: '3.6'
 services:
