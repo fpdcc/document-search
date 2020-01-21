@@ -80,7 +80,7 @@ shapes : docsearch/static/geojson/township.geojson \
 data/shapefiles/PLSSpolys.shp : data/shapefiles/PLSS.zip
 data/shapefiles/areanumbers.shp : data/shapefiles/Areas.zip
 data/shapefiles/PLSS_to_Areas.shp : data/shapefiles/PLSStoAreas.zip
-data/shapefiles/PLSSpolys.shp data/shapefiles/areanumbers.shp data/shapefiles/PLSS_to_Areas:
+data/shapefiles/PLSSpolys.shp data/shapefiles/areanumbers.shp data/shapefiles/PLSS_to_Areas.shp:
 	unzip -d $(dir $@) "$<"
 
 docsearch/static/geojson/%.geojson : data/shapefiles/PLSSpolys.shp
