@@ -2,7 +2,6 @@ branches:
   only:
   - master
   - "/^v[0-9].*$/"
-  - jfc/production-instance
 language: python
 python: '3.6'
 services:
@@ -29,4 +28,4 @@ deploy:
     deployment_group: production
     on:
       repo: datamade/document-search
-      branch: jfc/production-instance
+      tags: true
