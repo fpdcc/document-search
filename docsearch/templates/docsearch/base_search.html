@@ -98,6 +98,22 @@
                             id="map-{{ facet_field }}"
                           >
                           </div>
+                          {% if facet_field_exact in selected_facet_fields %}
+                            <p class="small mb-0 mt-2 ml-2">
+                              Selected:
+                              {% for facet, values in selected_facet_map.items %}
+                                {% if facet == facet_field_exact %}
+                                  <strong>
+                                    {% get_facet_verbose_name facet_field view %}
+                                    {% for value in values %}
+                                      {{ value }}
+                                      {% if not forloop.last %}+{% endif %}
+                                    {% endfor %}
+                                  </strong>
+                                {% endif %}
+                              {% endfor %}
+                            </p>
+                          {% endif %}
                           <button
                             type="button"
                             class="btn btn-link"
@@ -410,11 +426,15 @@
       var infoBox = L.control({position: 'topright'});
       infoBox.onAdd = function() {
         this._infoDiv = L.DomUtil.create('div', 'info hover');
-        this._infoDiv.innerHTML = '<p>' +
-                                    '<i class="fa fa-fw fa-mouse-pointer"></i>' +
-                                    'Hover over a shape' +
-                                  '</p>';
+        this.update();
         return this._infoDiv;
+      };
+      infoBox.update = function(html) {
+        var innerHTML = html ? html : '<p>' +
+                                        '<i class="fa fa-fw fa-mouse-pointer"></i>' +
+                                        'Hover over a shape' +
+                                      '</p>';
+        this._infoDiv.innerHTML = innerHTML;
       };
       infoBox.addTo(map);
 

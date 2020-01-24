@@ -88,6 +88,13 @@ class BaseSearchView(LoginRequiredMixin, FacetedSearchView):
         context['selected_facets'] = self.request.GET.getlist('selected_facets', [])
         context['selected_facet_fields'] = set([facet.split(':')[0] for facet in
                                                 context['selected_facets']])
+
+        context['selected_facet_map'] = {facet: [] for facet in
+                                         context['selected_facet_fields']}
+        for facet in context['selected_facets']:
+            key, val = facet.split(':')
+            context['selected_facet_map'][key].append(val)
+
         context['sort'] = self.request.GET.get('sort')
         context['sortdir'] = self.request.GET.get('sortdir')
         return context
