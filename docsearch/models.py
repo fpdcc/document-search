@@ -6,6 +6,16 @@ from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelatio
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres import fields as pg_fields
 
+from docsearch import forms
+
+
+class InclusiveIntegerRangeField(pg_fields.IntegerRangeField):
+    def formfield(self, **kwargs):
+        return super().formfield(**{
+            'form_class': forms.InclusiveIntegerRangeField,
+            **kwargs,
+        })
+
 
 class ActionLog(models.Model):
 
@@ -115,17 +125,17 @@ ARRAY_FIELD_HELP_TEXT = (
 
 
 class Book(BaseDocumentModel):
-    township = pg_fields.IntegerRangeField(
+    township = InclusiveIntegerRangeField(
         max_length=255,
         null=True,
         blank=True,
         help_text=RANGE_FIELD_HELP_TEXT)
-    range = pg_fields.IntegerRangeField(
+    range = InclusiveIntegerRangeField(
         max_length=255,
         null=True,
         blank=True,
         help_text=RANGE_FIELD_HELP_TEXT)
-    section = pg_fields.IntegerRangeField(
+    section = InclusiveIntegerRangeField(
         max_length=255,
         null=True,
         blank=True,
