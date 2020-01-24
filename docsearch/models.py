@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres import fields as pg_fields
+from django.contrib.gis.db import models as gis_models
 
 from docsearch import forms
 
@@ -209,6 +210,7 @@ class IndexCard(BaseDocumentModel):
 class License(BaseDocumentModel):
     license_number = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
+    geometry = gis_models.GeometryCollectionField(blank=True, null=True)
     source_file = models.FileField(upload_to='LICENSES')
 
 
