@@ -455,31 +455,42 @@
               if (!townshipIsSelected && !rangeIsSelected && !areaIsSelected) {
                 return selectedStyle;
               } else {
-                // If any geo facets are selected, start by assuming that the
-                // selected section is not in the area
-                var isInArea = (areaIsSelected) ? false : true;
-                var isInTownship = (townshipIsSelected || areaIsSelected) ? false : true;
-                var isInRange = (rangeIsSelected || areaIsSelected) ? false : true;
-                for (var i=0; i<selectedFacets.length; i++) {
-                  var selectedFacet = selectedFacets[i];
-                  var townshipFacetString = formatFacetString('township', feature, 'township');
-                  var arrTownshipFacetString = formatFacetString('township_arr', feature, 'township');
-                  var rangeFacetString = formatFacetString('range', feature, 'range');
-                  var arrRangeFacetString = formatFacetString('range_arr', feature, 'range');
-                  var areaFacetString = formatFacetString('area', feature, 'area');
-                  var arrAreaFacetString = formatFacetString('area_arr', feature, 'area');
-                  if (selectedFacet === townshipFacetString || selectedFacet === arrTownshipFacetString) {
-                    isInTownship = true;
-                  } else if (selectedFacet === rangeFacetString || selectedFacet === arrRangeFacetString) {
-                    isInRange = true;
-                  } else if (selectedFacet === areaFacetString || selectedFacet === arrAreaFacetString) {
-                    isInArea = true;
+                if (areaIsSelected) {
+                  // If Area is selected, start by assuming the section is not in
+                  // the area 
+                  var isInArea = (areaIsSelected) ? false : true;
+                  for (var i=0; i<selectedFacets.length; i++) {
+                    var selectedFacet = selectedFacets[i];
+                    var areaFacetString = formatFacetString('area', feature, 'area');
+                    var arrAreaFacetString = formatFacetString('area_arr', feature, 'area');
+                    if (selectedFacet === areaFacetString || selectedFacet === arrAreaFacetString) {
+                      return selectedStyle;
+                    }
+                    return baseStyle;
                   }
-                }
-                if ((isInTownship && isInRange) || isInArea) {
-                  return selectedStyle;
                 } else {
-                  return baseStyle;
+                  // If Area is not selected, check whether township and range
+                  // are selected, and if they are, assume that the section is not
+                  // in the township and range
+                  var isInTownship = (townshipIsSelected || areaIsSelected) ? false : true;
+                  var isInRange = (rangeIsSelected || areaIsSelected) ? false : true;
+                  for (var i=0; i<selectedFacets.length; i++) {
+                    var selectedFacet = selectedFacets[i];
+                    var townshipFacetString = formatFacetString('township', feature, 'township');
+                    var arrTownshipFacetString = formatFacetString('township_arr', feature, 'township');
+                    var rangeFacetString = formatFacetString('range', feature, 'range');
+                    var arrRangeFacetString = formatFacetString('range_arr', feature, 'range');
+                    if (selectedFacet === townshipFacetString || selectedFacet === arrTownshipFacetString) {
+                      isInTownship = true;
+                    } else if (selectedFacet === rangeFacetString || selectedFacet === arrRangeFacetString) {
+                      isInRange = true;
+                    }
+                  }
+                  if (isInTownship && isInRange) {
+                    return selectedStyle;
+                  } else {
+                    return baseStyle;
+                  }
                 }
               }
             }
