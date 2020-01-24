@@ -49,9 +49,10 @@ data/EASEMENTS.csv : data/raw/EASEMENTS.csv
 	cat $< | python data/processors/extract_description.py "easement number" > $@
 
 .INTERMEDIATE : data/LICENSES.csv data/raw/LICENSES.csv
-data/LICENSES.csv : data/raw/LICENSES.csv
-	# Extract descriptions
-	cat $< | python data/processors/extract_description.py "license number" > $@
+data/LICENSES.csv : data/raw/LICENSES.csv data/shapefiles/license_iga.geojson
+	# Extract descriptions and add license geographies
+	cat $< | python data/processors/extract_description.py "license number" |\
+		python data/processors/link_geometries.py $(word 2,$^) > $@
 
 data/indicator/% : data/%.csv
 	python manage.py import_data $< $(MODEL) --truncate

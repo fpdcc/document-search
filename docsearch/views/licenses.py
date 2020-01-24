@@ -1,5 +1,17 @@
 from docsearch import models
+from leaflet.forms.widgets import LeafletWidget
 from . import base as base_views
+
+
+class MapWidgetMixin:
+    def get_form(self):
+        form = super().get_form()
+        form.fields['geometry'].widget = LeafletWidget(attrs={
+            'map_height': '400px',
+            'map_width': '100%',
+            'display_raw': True
+        })
+        return form
 
 
 class LicenseDetail(base_views.BaseDetailView):
@@ -8,13 +20,13 @@ class LicenseDetail(base_views.BaseDetailView):
     metadata_fields = ['license_number', 'description', 'source_file']
 
 
-class LicenseCreate(base_views.BaseCreateView):
+class LicenseCreate(MapWidgetMixin, base_views.BaseCreateView):
     model = models.License
     template_name = 'docsearch/licenses/form.html'
     fields = '__all__'
 
 
-class LicenseUpdate(base_views.BaseUpdateView):
+class LicenseUpdate(MapWidgetMixin, base_views.BaseUpdateView):
     model = models.License
     template_name = 'docsearch/licenses/form.html'
     fields = '__all__'

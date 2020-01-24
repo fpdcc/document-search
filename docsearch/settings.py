@@ -27,6 +27,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'django.contrib.gis',
+    'leaflet',
     'crispy_forms',
     'haystack',
     'docsearch',
@@ -104,3 +106,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# Leaflet configuration
+LEAFLET_CONFIG = {
+    'DEFAULT_CENTER': [41.82, -87.85],
+    'DEFAULT_ZOOM': 9,
+    'TILES': [],
+}
