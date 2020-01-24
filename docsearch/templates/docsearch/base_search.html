@@ -457,7 +457,7 @@
               } else {
                 if (areaIsSelected) {
                   // If Area is selected, start by assuming the section is not in
-                  // the area 
+                  // the area
                   var isInArea = (areaIsSelected) ? false : true;
                   for (var i=0; i<selectedFacets.length; i++) {
                     var selectedFacet = selectedFacets[i];
@@ -503,9 +503,19 @@
           var featureIsSelected = facetIndex >= 0;
           // Set the tooltip
           var tooltip = '';
-          $.each(feature.properties, function(key, value) {
-            tooltip += '<strong>' + key + '</strong>: ' + value + '<br/>';
-          });
+          if (entity === 'section') {
+            // Format section tooltips as tables
+            tooltip = '<table>';
+            $.each(feature.properties, function(key, value) {
+              tooltip += '<tr><td><strong>' + key + ':</strong></td><td>' + value + '</td></tr>';
+            });
+            tooltip += '</table>'
+          } else {
+            // Format all other tooltips as key-value pairs
+            $.each(feature.properties, function(key, value) {
+              tooltip += '<strong>' + key + '</strong>: ' + value + '<br/>';
+            });
+          }
           layer.bindTooltip(tooltip);
           // Define interactivity
           if (!featureIsSelected) {
