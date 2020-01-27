@@ -24,5 +24,16 @@
       });
       map.addLayer(streets);
     });
+    $(document).ready(function() {
+      // Make sure the textarea input is a Bootstrap form-control. We need to
+      // do this because django-leaflet doesn't allow us to configure the
+      // classes of the textarea input directly.
+      $('textarea#id_geometry').addClass('form-control');
+      // Add appropriate error class for geometry textareas. This is necessary
+      // Because django-leaflet doesn't add the appropriate error class to the
+      // GeoJSON raw textarea in cases when there is a validation error.
+      var geometryError = '[id^="error_"][id$="id_geometry"][class="invalid-feedback"]';
+      $(geometryError).siblings('textarea').addClass('is-invalid');
+    });
   </script>
 {% endblock %}
