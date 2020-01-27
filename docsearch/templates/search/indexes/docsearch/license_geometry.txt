@@ -1,0 +1,1 @@
+{{ object.geometry.geojson|safe }}

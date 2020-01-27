@@ -202,7 +202,9 @@
     <field name="control_number" type="text_en" indexed="true" stored="true" multiValued="false" />
     
     <field name="control_number_exact" type="string" indexed="true" stored="true" multiValued="false" />
-    
+
+    <field name="geometry" type="string" indexed="false" stored="true" multiValued="false" />
+
     <uniqueKey>id</uniqueKey>
 
     <!--
