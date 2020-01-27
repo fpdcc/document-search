@@ -1,5 +1,7 @@
 from docsearch import models
 from leaflet.forms.widgets import LeafletWidget
+
+from docsearch.forms import LicenseForm
 from . import base as base_views
 
 
@@ -23,13 +25,13 @@ class LicenseDetail(base_views.BaseDetailView):
 class LicenseCreate(MapWidgetMixin, base_views.BaseCreateView):
     model = models.License
     template_name = 'docsearch/licenses/form.html'
-    fields = '__all__'
+    form_class = LicenseForm
 
 
 class LicenseUpdate(MapWidgetMixin, base_views.BaseUpdateView):
     model = models.License
     template_name = 'docsearch/licenses/form.html'
-    fields = '__all__'
+    form_class = LicenseForm
 
 
 class LicenseDelete(base_views.BaseDeleteView):
