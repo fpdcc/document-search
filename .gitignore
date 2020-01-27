@@ -104,6 +104,21 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+# Local Mac index
+.DS_Store
+
+# Unzipped shapefiles
+data/shapefiles/*.cpg
+data/shapefiles/*.dbf
+data/shapefiles/*.prj
+data/shapefiles/*.qix
+data/shapefiles/*.qpj
+data/shapefiles/*.sbn
+data/shapefiles/*.sbx
+data/shapefiles/*.shp
+data/shapefiles/*.shp.xml
+data/shapefiles/*.shx
+
 # Blackbox
 /.blackbox/pubring.gpg~
 /.blackbox/pubring.kbx~

@@ -1,5 +1,6 @@
 {% extends "docsearch/base.html" %}
 
+{% load static %}
 {% load crispy_forms_tags %}
 {% load model_meta %}
 {% load humanize %}
@@ -8,6 +9,10 @@
 {% load get_attr %}
 
 {% block title %}Search for {{ view.model|verbose_name_plural|title }}{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'css/leaflet.css' %}" rel="stylesheet">
+{% endblock %}
 
 {% block body %}
 <div class="container-fluid">
@@ -83,27 +88,76 @@
                     class="collapse {% if facet_field_exact in selected_facet_fields %}show{% endif %}"
                     aria-labelledby="facet-{{ facet_field }}-header"
                   >
-                    <div class="card-body pb-0">
-                      <ul class="pl-0" style="list-style-type:none">
-                        {% for value, count in facets.fields|get_key:facet_field %}
-                          {% if count > 0 %}
-                            {% with facet_field_exact|add:":"|add:value as facet_query %}
-                              <li>
-                                {% if facet_query in selected_facets %}
-                                  <a href="?{% remove_facet_param parameters facet_field_exact value %}" title="{{ value }}">
-                                    <strong>{{ value }}</strong>&nbsp;<i class="fa fa-fw fa-times"></i>
-                                  </a>
-                                {% else %}
-                                <a href="?{% set_facet_param parameters facet_field_exact value %}" title="{{ value }}">
-                                  {{ value }}
-                                </a>
+                    {% if facet_field in view.geo_facet_fields %}
+                      <div id="{{ facet_field }}-map-widget">
+                        <div class="card-body p-0">
+                          <div
+                            class="map"
+                            style="height:350px"
+                            data-facet-field="{{ facet_field }}"
+                            id="map-{{ facet_field }}"
+                          >
+                          </div>
+                          {% if facet_field_exact in selected_facet_fields %}
+                            <p class="small mb-0 mt-2 ml-2">
+                              Selected:
+                              {% for facet, values in selected_facet_map.items %}
+                                {% if facet == facet_field_exact %}
+                                  <strong>
+                                    {% get_facet_verbose_name facet_field view %}
+                                    {% for value in values %}
+                                      {{ value }}
+                                      {% if not forloop.last %}+{% endif %}
+                                    {% endfor %}
+                                  </strong>
                                 {% endif %}
-                                <span class="badge badge-secondary rounded-pill float-right">{{ count }}</span>
-                              </li>
-                            {% endwith %}
+                              {% endfor %}
+                            </p>
                           {% endif %}
-                        {% endfor %}
-                      </ul>
+                          <button
+                            type="button"
+                            class="btn btn-link"
+                            onclick="switchToListView('{{ facet_field }}');"
+                          >
+                            <i class="fa fa-fw fa-list"></i>
+                            Switch to list view
+                          </button>
+                        </div>
+                      </div>
+                    {% endif %}
+                    <div id="{{ facet_field }}-list-widget" {% if facet_field in view.geo_facet_fields %}style="display:none"{% endif %}>
+                      <div class="card-body pb-0">
+                        <ul class="pl-0" style="list-style-type:none">
+                          {% for value, count in facets.fields|get_key:facet_field %}
+                            {% if count > 0 %}
+                              {% with facet_field_exact|add:":"|add:value as facet_query %}
+                                <li>
+                                  {% if facet_query in selected_facets %}
+                                    <a href="?{% remove_facet_param parameters facet_field_exact value %}" title="{{ value }}">
+                                      <strong>{{ value }}</strong>&nbsp;<i class="fa fa-fw fa-times"></i>
+                                    </a>
+                                  {% else %}
+                                  <a href="?{% set_facet_param parameters facet_field_exact value %}" title="{{ value }}">
+                                    {{ value }}
+                                  </a>
+                                  {% endif %}
+                                  <span class="badge badge-secondary rounded-pill float-right">{{ count }}</span>
+                                </li>
+                              {% endwith %}
+                            {% endif %}
+                          {% endfor %}
+                        </ul>
+                      </div>
+                      {% if facet_field in view.geo_facet_fields %}
+                        <button
+                          type="button"
+                          class="btn btn-link switch-to-map-view"
+                          onclick="switchToMapView('{{ facet_field }}');"
+                        >
+                          <i class="fa fa-fw fa-globe-africa"></i>
+                          Switch to map view
+                        </button>
+                      {% endif %}
                     </div>
                   </div>
                 </div>
@@ -235,10 +289,301 @@
 {% endblock %}
 
 {% block extra_js %}
+<script src="https://maps.google.com/maps/api/js?libraries=places&v=3.32&key=AIzaSyACDxffNfGV_39n2-javu9mxDbgdCAQnqg"></script>
+<script src="{% static 'js/leaflet.js' %}"></script>
+<script src="{% static 'js/leaflet-google.js' %}"></script>
 <script type="text/javascript">
+  function formatFacetString(facetField, feature, entity) {
+    return facetField + '_exact:' + feature.properties[entity];
+  }
+
+  var modelVerboseName = '{{ view.model|verbose_name }}';
+
+  function switchToListView(facetField) {
+    $('#' + facetField + '-map-widget').hide();
+    $('#' + facetField + '-list-widget').show();
+    // Namespace the storage key according to the view model
+    window.localStorage.setItem(modelVerboseName + ':' + facetField, 'list');
+  }
+
+  function switchToMapView(facetField) {
+    $('#' + facetField + '-list-widget').hide();
+    $('#' + facetField + '-map-widget').show();
+    window.localStorage.removeItem(modelVerboseName + ':' + facetField);
+  }
+
   $(document).ready(function(){
     $('select.sort-select').change(function(e) {
+      // Reload the page when a user selects a facet
       window.location.assign(e.target.value);
+    });
+
+    var query = '{{ query }}';
+    var selectedFacets = [{% for facet in selected_facets %}'{{ facet }}',{% endfor %}];
+    var geoFacets = [{% for facet in view.facet_fields %}{% if facet in view.geo_facet_fields %}'{{ facet }}',{% endif %}{% endfor %}]
+
+    // Display saved list views as appropriate for geo field facets
+    for (var i=0; i<geoFacets.length; i++) {
+      var facetField = geoFacets[i];
+      var facetCookie = window.localStorage.getItem(modelVerboseName + ':' + facetField);
+      if (facetCookie && facetCookie === 'list') {
+        switchToListView(facetField);
+      }
+    }
+
+    var areaUrl = '{% static "geojson/area.geojson" %}';
+    var townshipUrl = '{% static "geojson/township.geojson" %}';
+    var rangeUrl = '{% static "geojson/range.geojson" %}';
+    var sectionUrl = '{% static "geojson/section.geojson" %}';
+
+    var hasSectionFacet = (geoFacets.indexOf('section') >= 0 || geoFacets.indexOf('section_arr') >= 0);
+    var hasTownshipFacet = (geoFacets.indexOf('township') >= 0 || geoFacets.indexOf('township_arr') >= 0);
+    var hasAreaFacet = (geoFacets.indexOf('area') >= 0 || geoFacets.indexOf('area_arr') >= 0);
+    var relatedGeoEntityFacets = [];
+
+    if (hasSectionFacet) {
+      // Parse out area, township, and range facets for use in the section map widget
+      var relatedEntities = ['area', 'township', 'range'];
+      for (var i=0; i<relatedEntities.length; i++) {
+        var relatedEntity = relatedEntities[i];
+        for (var j=0; j<geoFacets.length; j++) {
+          var geoFacet = geoFacets[j];
+          if (geoFacet.startsWith(relatedEntity)) {
+            relatedGeoEntityFacets.push([geoFacet, relatedEntity]);
+            break;
+          }
+        }
+      }
+      // Check if area, township, or range are selected in order to determine
+      // if we need to filter sections
+      var areaIsSelected = false;
+      var townshipIsSelected = false;
+      var rangeIsSelected = false;
+      for (var i=0; i<selectedFacets.length; i++) {
+        var selectedFacet = selectedFacets[i];
+        if (selectedFacet.startsWith('township')) {
+          townshipIsSelected = true;
+        } else if (selectedFacet.startsWith('range')) {
+          rangeIsSelected = true;
+        } else if (selectedFacet.startsWith('area')) {
+          areaIsSelected = true;
+        }
+      }
+    }
+
+    var baseStyle = {weight: 0.75, color: '#445721', fillOpacity: 0.25};
+    var selectedStyle = {weight: 1, color: '#445721', fillOpacity: 0.75};
+
+    $('.map').each(function(idx, elem) {
+      var map = L.map(elem, {
+        center: [41.82, -87.85],
+        zoom: 9,
+        dragging: true,
+        touchZoom: true,
+        zoomControl: !L.Browser.mobile,
+        tap: true,
+        scrollWheelZoom: false
+      });
+      var streets = new L.Google('ROADMAP', {
+        mapOptions: {
+          styles: [
+            {stylers: [{saturation: -100}, {lightness: 40}]},
+            {featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }]}
+          ]
+        }
+      });
+      map.addLayer(streets);
+
+      var facetField = elem.dataset.facetField;
+      var geojsonUrl;
+      var entity = '';
+      switch (facetField) {
+        case 'area':
+        case 'area_arr':
+          entity = 'area';
+          geojsonUrl = areaUrl;
+          break;
+        case 'township':
+        case 'township_arr':
+          entity = 'township';
+          geojsonUrl = townshipUrl;
+          break;
+        case 'range':
+        case 'range_arr':
+          entity = 'range';
+          geojsonUrl = rangeUrl;
+          break;
+        case 'section':
+        case 'section_arr':
+          entity = 'section';
+          geojsonUrl = sectionUrl;
+          break;
+        default:
+          console.log('Unrecognized geo facetField: ' + facetField);
+      }
+
+      var infoBox = L.control({position: 'topright'});
+      infoBox.onAdd = function() {
+        this._infoDiv = L.DomUtil.create('div', 'info hover');
+        this.update();
+        return this._infoDiv;
+      };
+      infoBox.update = function(html) {
+        var innerHTML = html ? html : '<p>' +
+                                        '<i class="fa fa-fw fa-mouse-pointer"></i>' +
+                                        'Hover over a shape' +
+                                      '</p>';
+        this._infoDiv.innerHTML = innerHTML;
+      };
+      infoBox.addTo(map);
+
+      if (entity === 'section') {
+        var warningBox = L.control({position: 'bottomleft'});
+        warningBox.onAdd = function() {
+          this._infoDiv = L.DomUtil.create('div', 'info hover');
+          var geoString = '';
+          if (hasAreaFacet) {
+            if (hasTownshipFacet) {
+              geoString = 'area, township, and range';
+            } else {
+              geoString = 'area'
+            }
+          } else {
+            geoString = 'township and range'
+          }
+          this._infoDiv.innerHTML = '<p class="small">' +
+                                      'Selecting a section from<br/>' +
+                                      'the map will also select<br/>' +
+                                      'its ' + geoString + '.' +
+                                    '</p>';
+        return this._infoDiv;
+        };
+        warningBox.addTo(map);
+      }
+
+      var geojsonLayer = L.geoJSON(undefined, {
+        style: function(feature) {
+          var featureIsSelected = selectedFacets.indexOf(formatFacetString(facetField, feature, entity)) >= 0;
+          if (!featureIsSelected) {
+            return baseStyle;
+          } else {
+            if (entity !== 'section') {
+              return selectedStyle;
+            } else {
+              // Default to not highlighting if township or range are selected
+              if (!townshipIsSelected && !rangeIsSelected && !areaIsSelected) {
+                return selectedStyle;
+              } else {
+                if (areaIsSelected) {
+                  // If Area is selected, start by assuming the section is not in
+                  // the area
+                  var isInArea = (areaIsSelected) ? false : true;
+                  for (var i=0; i<selectedFacets.length; i++) {
+                    var selectedFacet = selectedFacets[i];
+                    var areaFacetString = formatFacetString('area', feature, 'area');
+                    var arrAreaFacetString = formatFacetString('area_arr', feature, 'area');
+                    if (selectedFacet === areaFacetString || selectedFacet === arrAreaFacetString) {
+                      return selectedStyle;
+                    }
+                    return baseStyle;
+                  }
+                } else {
+                  // If Area is not selected, check whether township and range
+                  // are selected, and if they are, assume that the section is not
+                  // in the township and range
+                  var isInTownship = (townshipIsSelected || areaIsSelected) ? false : true;
+                  var isInRange = (rangeIsSelected || areaIsSelected) ? false : true;
+                  for (var i=0; i<selectedFacets.length; i++) {
+                    var selectedFacet = selectedFacets[i];
+                    var townshipFacetString = formatFacetString('township', feature, 'township');
+                    var arrTownshipFacetString = formatFacetString('township_arr', feature, 'township');
+                    var rangeFacetString = formatFacetString('range', feature, 'range');
+                    var arrRangeFacetString = formatFacetString('range_arr', feature, 'range');
+                    if (selectedFacet === townshipFacetString || selectedFacet === arrTownshipFacetString) {
+                      isInTownship = true;
+                    } else if (selectedFacet === rangeFacetString || selectedFacet === arrRangeFacetString) {
+                      isInRange = true;
+                    }
+                  }
+                  if (isInTownship && isInRange) {
+                    return selectedStyle;
+                  } else {
+                    return baseStyle;
+                  }
+                }
+              }
+            }
+          }
+        },
+        onEachFeature: function(feature, layer) {
+          // Check if the feature is selected
+          var facetString = formatFacetString(facetField, feature, entity);
+          var facetIndex = selectedFacets.indexOf(facetString);
+          var featureIsSelected = facetIndex >= 0;
+          // Set the tooltip
+          var tooltip = '';
+          if (entity === 'section') {
+            // Format section tooltips as tables
+            tooltip = '<table>';
+            $.each(feature.properties, function(key, value) {
+              tooltip += '<tr><td><strong>' + key + ':</strong></td><td>' + value + '</td></tr>';
+            });
+            tooltip += '</table>'
+          } else {
+            // Format all other tooltips as key-value pairs
+            $.each(feature.properties, function(key, value) {
+              tooltip += '<strong>' + key + '</strong>: ' + value + '<br/>';
+            });
+          }
+          layer.bindTooltip(tooltip);
+          // Define interactivity
+          if (!featureIsSelected) {
+            layer.on('mouseover', function() {
+              layer.setStyle(selectedStyle);
+            }).on('mouseout', function() {
+              layer.setStyle(baseStyle);
+            });
+          }
+          layer.on('mousedown', function() {
+            if (featureIsSelected) {
+              // Remove the facet from the query string
+              selectedFacets.splice(facetIndex, 1);
+            } else {
+              // Add the facet to the query string
+              if (entity == 'section') {
+                // Add area, township, and range as well
+                for (var i=0; i<relatedGeoEntityFacets.length; i++) {
+                  var geoFacet = relatedGeoEntityFacets[i][0];
+                  var relatedEntity = relatedGeoEntityFacets[i][1];
+                  if (feature.properties[relatedEntity]) {
+                    selectedFacets.push(formatFacetString(geoFacet, feature, relatedEntity));
+                  }
+                }
+              }
+              selectedFacets.push(facetString);
+            }
+            // Redirect to page 1 of the new faceted view
+            window.location.search = $.param({
+              'q': query,
+              'selected_facets': selectedFacets,
+            }, traditional=true);
+          });
+        }
+      }).addTo(map);
+
+      // Defer the loading of the GeoJSON layer
+      if (geojsonUrl) {
+        $.getJSON(geojsonUrl, function(data) {
+          geojsonLayer.addData(data);
+        });
+      }
+
+      $('#facet-' + facetField).on('shown.bs.collapse', function() {
+        map.invalidateSize();
+      });
+      $('.switch-to-map-view').click(function() {
+        map.invalidateSize();
+      });
     });
   });
 </script>

@@ -77,6 +77,10 @@ class BaseSearchView(LoginRequiredMixin, FacetedSearchView):
     form_class = forms.BaseSearchForm
     template_name = 'docsearch/search.html'
     sort_fields = []
+    geo_facet_fields = [
+        'area', 'section', 'section_arr', 'township', 'township_arr',
+        'range', 'range_arr',
+    ]
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -84,6 +88,13 @@ class BaseSearchView(LoginRequiredMixin, FacetedSearchView):
         context['selected_facets'] = self.request.GET.getlist('selected_facets', [])
         context['selected_facet_fields'] = set([facet.split(':')[0] for facet in
                                                 context['selected_facets']])
+
+        context['selected_facet_map'] = {facet: [] for facet in
+                                         context['selected_facet_fields']}
+        for facet in context['selected_facets']:
+            key, val = facet.split(':')
+            context['selected_facet_map'][key].append(val)
+
         context['sort'] = self.request.GET.get('sort')
         context['sortdir'] = self.request.GET.get('sortdir')
         return context

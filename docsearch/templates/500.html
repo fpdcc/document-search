@@ -1,0 +1,13 @@
+{% extends "docsearch/base_content.html" %}
+
+{% block title %}Not found{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+    <h1>Server error</h1>
+    <p>An error has occurred and the development team has been notified.</p>
+    <p><a href="{% url 'home' %}"><i class="fa fa-fw fa-arrow-left"> Back home</i></a></p>
+  </div>
+</div>
+{% endblock %}

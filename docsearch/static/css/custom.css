@@ -106,6 +106,19 @@ body {
   text-decoration: none;
 }
 
+/* Infobox */
+.info {
+  padding: 6px 8px;
+  background: white;
+  background: rgba(255,255,255,1);
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  border-radius: 5px;
+}
+
+.info p {
+  margin-bottom: 2px;
+}
+
 /* Fix for flickering tooltip */
 /* See: https://stackoverflow.com/a/48665379 */
 .tooltip {
