@@ -30,6 +30,7 @@
                 <td>{{ object|get_attr:field|default_if_none:"" }}</td>
               </tr>
             {% endfor %}
+            {% block extra_fields %}{% endblock %}
           {% endblock %}
         </tbody>
       </table>

@@ -4,6 +4,11 @@ register = template.Library()
 
 
 @register.filter
+def concat(a, b):
+    return str(a) + str(b)
+
+
+@register.filter
 def display_array(obj):
     return str(obj).replace('[', '').replace(']', '')
 

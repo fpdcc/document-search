@@ -112,6 +112,7 @@ class LicenseIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     license_number = indexes.CharField(model_attr='license_number', null=True, faceted=True)
     description = indexes.CharField(model_attr='description', null=True, faceted=True)
+    geometry = indexes.CharField(use_template=True, indexed=False)
 
     def get_model(self):
         return models.License
