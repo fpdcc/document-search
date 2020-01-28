@@ -113,6 +113,9 @@ class LicenseIndex(indexes.SearchIndex, indexes.Indexable):
     license_number = indexes.CharField(model_attr='license_number', null=True, faceted=True)
     description = indexes.CharField(model_attr='description', null=True, faceted=True)
     geometry = indexes.CharField(use_template=True, indexed=False)
+    township_arr = IntegerMultiValueField(null=True, faceted=True)
+    range_arr = IntegerMultiValueField(null=True, faceted=True)
+    section_arr = IntegerMultiValueField(null=True, faceted=True)
 
     def get_model(self):
         return models.License
