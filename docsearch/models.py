@@ -211,6 +211,21 @@ class License(BaseDocumentModel):
     license_number = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     geometry = gis_models.GeometryCollectionField(blank=True, null=True)
+    township = pg_fields.ArrayField(
+        models.PositiveIntegerField(null=True),
+        help_text=ARRAY_FIELD_HELP_TEXT,
+        default=list
+    )
+    range = pg_fields.ArrayField(
+        models.PositiveIntegerField(null=True),
+        help_text=ARRAY_FIELD_HELP_TEXT,
+        default=list
+    )
+    section = pg_fields.ArrayField(
+        models.PositiveIntegerField(null=True),
+        help_text=ARRAY_FIELD_HELP_TEXT,
+        default=list
+    )
     source_file = models.FileField(upload_to='LICENSES')
 
 
