@@ -22,6 +22,12 @@
   <th>{{ view.model|field_name:"township"|capfirst }}</th>
   <th>{{ view.model|field_name:"range"|capfirst }}</th>
   <th>{{ view.model|field_name:"section"|capfirst }}</th>
+  <th>{{ view.model|field_name:"type"|capfirst }}</th>
+  <th>{{ view.model|field_name:"diameter"|capfirst }}</th>
+  <th>{{ view.model|field_name:"material"|capfirst }}</th>
+  <th>{{ view.model|field_name:"status"|capfirst }}</th>
+  <th>{{ view.model|field_name:"end_date"|capfirst }}</th>
+  <th>{{ view.model|field_name:"agreement_type"|capfirst }}</th>
   <th></th>
 {% endblock %}
 {% block tr %}
@@ -52,6 +58,12 @@
   <td>{{ result.object.township|display_array|default_if_none:"" }}</td>
   <td>{{ result.object.section|display_array|default_if_none:"" }}</td>
   <td>{{ result.object.range|display_array|default_if_none:"" }}</td>
+  <td>{{ result.object.type|default_if_none:"" }}</td>
+  <td>{{ result.object.diameter|default_if_none:"" }}</td>
+  <td>{{ result.object.material|default_if_none:"" }}</td>
+  <td>{{ result.object.status|default_if_none:"" }}</td>
+  <td>{{ result.object.end_date|default_if_none:"" }}</td>
+  <td>{{ result.object.agreement_type|default_if_none:"" }}</td>
   <td><a href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
 {% endblock %}
-{% block empty_colspan %}7{% endblock %}
+{% block empty_colspan %}13{% endblock %}

@@ -42,8 +42,10 @@ class LicenseDelete(base_views.BaseDeleteView):
 class LicenseSearch(base_views.BaseSearchView):
     model = models.License
     template_name = 'docsearch/licenses/search.html'
-    # TODO: Why aren't these facets loading values?
-    facet_fields = ['license_number', 'township_arr', 'range_arr', 'section_arr']
+    facet_fields = [
+        'license_number', 'township_arr', 'range_arr', 'section_arr',
+        'type', 'diameter', 'material', 'status', 'end_date', 'agreement_type'
+    ]
     facet_field_name_overrides = {
         'section_arr': 'section',
         'township_arr': 'township',
