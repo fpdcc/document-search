@@ -1,5 +1,8 @@
+import json
+
 import pytest
 from django.contrib.auth.models import User
+from django.contrib.gis.geos import GEOSGeometry
 
 from docsearch import models
 
@@ -21,7 +24,16 @@ DOCUMENTS = [
     (models.IndexCard, {
         'monument_number': 'foo', 'township': 'foo', 'corner': 'bar', 'section': 'baz'
     }),
-    (models.License, {'license_number': 'foo'}),
+    (models.License, {
+        'license_number': 'foo',
+        'township': [42],
+        'section': [30],
+        'range': [12],
+        'geometry': json.dumps({
+            "type": "GeometryCollection",
+            "geometries": [{"type": "Point", "coordinates": [0, 0]}]
+        }),
+    }),
     (models.ProjectFile, {
         'area': 1, 'section': 2, 'job_number': 'foo', 'job_name': 'bar',
         'description': 'baz', 'cabinet_number': 'foo', 'drawer_number': 'bar',
@@ -46,4 +58,7 @@ def user():
 def document_and_fields(request):
     Model, fields = request.param
     fields['source_file'] = 'foobarbaz.pdf'
-    return Model.objects.create(**fields), fields
+    updated_fields = fields.copy()
+    if fields.get('geometry'):
+        updated_fields['geometry'] = GEOSGeometry(fields['geometry'])
+    return Model.objects.create(**updated_fields), fields
