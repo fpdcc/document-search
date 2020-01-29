@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('docsearch', '0010_license_geometry'),
+        ('docsearch', '0011_license_geometry'),
     ]
 
     operations = [

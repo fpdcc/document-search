@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('docsearch', '0011_license_plss_fields'),
+        ('docsearch', '0012_license_plss_fields'),
     ]
 
     operations = [

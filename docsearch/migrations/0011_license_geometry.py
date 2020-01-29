@@ -7,7 +7,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('docsearch', '0009_range_and_array_help_text'),
+        ('docsearch', '0010_inclusive_integer_range_field'),
     ]
 
     operations = [
