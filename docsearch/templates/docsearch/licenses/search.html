@@ -18,7 +18,10 @@
 {% block thead %}
   <th>{{ view.model|field_name:"license_number"|capfirst }}</th>
   <th>{{ view.model|field_name:"description"|capfirst }}</th>
-  <th style="min-width:200px">{{ view.model|field_name:"geometry"|capfirst }}</th>
+  <th style="min-width:300px">{{ view.model|field_name:"geometry"|capfirst }}</th>
+  <th>{{ view.model|field_name:"township"|capfirst }}</th>
+  <th>{{ view.model|field_name:"range"|capfirst }}</th>
+  <th>{{ view.model|field_name:"section"|capfirst }}</th>
   <th></th>
 {% endblock %}
 {% block tr %}
@@ -46,12 +49,9 @@
       }
     </script>
   {% endwith %}
+  <td>{{ result.object.township|display_array|default_if_none:"" }}</td>
+  <td>{{ result.object.section|display_array|default_if_none:"" }}</td>
+  <td>{{ result.object.range|display_array|default_if_none:"" }}</td>
   <td><a href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
 {% endblock %}
-{% block empty_colspan %}3{% endblock %}
-
-{% block extra_js %}
-  {% leaflet_js %}
-  <script src="https://maps.google.com/maps/api/js?libraries=places&v=3.32&key=AIzaSyACDxffNfGV_39n2-javu9mxDbgdCAQnqg"></script>
-  <script src="{% static 'js/leaflet-google.js' %}"></script>
-{% endblock %}
+{% block empty_colspan %}7{% endblock %}
