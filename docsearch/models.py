@@ -5,15 +5,36 @@ from django.utils import timezone
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres import fields as pg_fields
+from django.contrib.postgres import forms as pg_forms
 from django.contrib.gis.db import models as gis_models
 
-from docsearch import forms
+
+class InclusiveIntegerRangeFormField(pg_forms.IntegerRangeField):
+    """
+    Adjust the built-in Postgres range field so that its upper bound is
+    inclusive instead of exclusive. See:
+    https://code.djangoproject.com/ticket/27147#comment:5
+    """
+    _unit_value = 1
+
+    def compress(self, values):
+        range_value = super().compress(values)
+        if range_value:
+            return self.range_type(range_value.lower, range_value.upper, bounds='[]')
+
+    def prepare_value(self, value):
+        value = super().prepare_value(value)
+        # We need to clean both fields
+        value = [field.clean(val) for field, val in zip(self.fields, value)]
+        if value[1] is not None:
+            value[1] = value[1] - self._unit_value
+        return value
 
 
 class InclusiveIntegerRangeField(pg_fields.IntegerRangeField):
     def formfield(self, **kwargs):
         return super().formfield(**{
-            'form_class': forms.InclusiveIntegerRangeField,
+            'form_class': InclusiveIntegerRangeFormField,
             **kwargs,
         })
 
