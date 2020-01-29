@@ -1,6 +1,7 @@
 {% extends "docsearch/base_content.html" %}
 
 {% load get_attr %}
+{% load display %}
 {% load model_meta %}
 
 {% block title %}{{ view.model|verbose_name|title }}{% endblock %}
@@ -27,7 +28,13 @@
             {% for field in view.metadata_fields %}
               <tr>
                 <td><strong>{{ object|field_name:field|capfirst }}:</strong></td>
-                <td>{{ object|get_attr:field|default_if_none:"" }}</td>
+                <td>
+                  {% if field in view.array_fields %}
+                    {{ object|get_attr:field|display_array|default_if_none:"" }}
+                  {% else %}
+                    {{ object|get_attr:field|default_if_none:"" }}
+                  {% endif %}
+                  </td>
               </tr>
             {% endfor %}
             {% block extra_fields %}{% endblock %}
