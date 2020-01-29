@@ -211,6 +211,13 @@ class License(BaseDocumentModel):
     license_number = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     geometry = gis_models.GeometryCollectionField(blank=True, null=True)
+    type = models.CharField(max_length=255, null=True, blank=True)
+    entity = models.CharField(max_length=255, null=True, blank=True)
+    diameter = models.PositiveIntegerField(null=True, blank=True)
+    material = models.CharField(max_length=255, null=True, blank=True)
+    end_date = models.CharField(max_length=255, null=True, blank=True)
+    status = models.CharField(max_length=255, null=True, blank=True)
+    agreement_type = models.CharField(max_length=255, null=True, blank=True)
     township = pg_fields.ArrayField(
         models.PositiveIntegerField(null=True),
         help_text=ARRAY_FIELD_HELP_TEXT,
