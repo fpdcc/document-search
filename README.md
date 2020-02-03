@@ -42,7 +42,21 @@ Create a superuser to view the application:
 docker-compose run --rm app ./manage.py createsuperuser
 ```
 
-Load initial data:
+### Loading initial data
+
+Initial data is available in a separate repo, `document-search-data`, that is
+kept private in order to respect the privacy of entities mentioned in the
+metadata. Request access to this repo, or open an issue to request assistance
+preparing your own metadata for an initial import.
+
+Once you have access to `document-search-data`, clone it and copy it to a
+subdirectory of this repo called `data/`:
+
+```
+cp -R ./document-search-data/ ./document-search/data/
+```
+
+Then, load initial data using GNU Make:
 
 ```
 docker-compose -f docker-compose.yml -f data/docker-compose.yml run --rm app make all
