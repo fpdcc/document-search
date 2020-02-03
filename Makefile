@@ -73,10 +73,10 @@ data/indicator/SURVEYS : MODEL = Survey
 data/indicator/TITLES : MODEL = Title
 
 .PHONY: geojson
-shapes : docsearch/static/geojson/township.geojson \
-         docsearch/static/geojson/range.geojson \
-         docsearch/static/geojson/section.geojson \
-         docsearch/static/geojson/area.geojson
+geojson : docsearch/static/geojson/township.geojson \
+          docsearch/static/geojson/range.geojson \
+          docsearch/static/geojson/section.geojson \
+          docsearch/static/geojson/area.geojson
 
 data/shapefiles/PLSSpolys.shp : data/shapefiles/PLSS.zip
 data/shapefiles/areanumbers.shp : data/shapefiles/Areas.zip
