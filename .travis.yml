@@ -9,7 +9,7 @@ services:
 before_install:
 - pip install -U pip
 - pip install -U docker-compose
-- touch data/requirements.txt
+- mkdir data && touch data/requirements.txt
 script: docker-compose -f docker-compose.yml -f tests/docker-compose.yml run --rm app
 deploy:
   provider: codedeploy
