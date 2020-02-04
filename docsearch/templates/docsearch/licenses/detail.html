@@ -1,1 +1,47 @@
 {% extends "docsearch/base_detail.html" %}
+
+{% load model_meta %}
+{% load leaflet_tags %}
+{% load static %}
+
+{% block extra_css %}
+  {% leaflet_css %}
+  <style>
+    .leaflet-container {
+      width: '100%';
+      height: '500px';
+    }
+  </style>
+{% endblock %}
+
+{% block extra_fields %}
+<tr>
+  <td><strong>{{ object|field_name:"geometry"|capfirst }}:</strong></td>
+  <td>{% leaflet_map "geometry" callback="window.map_init" %}</td>
+</tr>
+{% endblock %}
+
+{% block extra_js %}
+  {% leaflet_js %}
+  <script src="https://maps.google.com/maps/api/js?libraries=places&v=3.32&key=AIzaSyACDxffNfGV_39n2-javu9mxDbgdCAQnqg"></script>
+  <script src="{% static 'js/leaflet-google.js' %}"></script>
+  <script type="text/javascript">
+    function map_init(map, options) {
+      var streets = new L.Google('ROADMAP', {
+        mapOptions: {
+          styles: [
+            {stylers: [{saturation: -100}, {lightness: 40}]},
+            {featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }]}
+          ]
+        }
+      });
+      map.addLayer(streets);
+      {% if object.geometry %}
+        var featureCollection = JSON.parse("{{ object.geometry.geojson|escapejs }}");
+        var geoJsonLayer = L.geoJSON(featureCollection);
+        geoJsonLayer.addTo(map);
+        map.fitBounds(geoJsonLayer.getBounds());
+      {% endif %}
+    }
+  </script>
+{% endblock %}

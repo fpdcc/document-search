@@ -6,3 +6,4 @@ boto3==1.10.38
 django-haystack==2.8.1
 pysolr==3.8.1
 gunicorn==20.0.4
+django-leaflet==0.26.0

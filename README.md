@@ -45,7 +45,7 @@ docker-compose run --rm app ./manage.py createsuperuser
 Load initial data:
 
 ```
-docker-compose run --rm app make all
+docker-compose -f docker-compose.yml -f data/docker-compose.yml run --rm app make all
 ```
 
 To create the search index, start by bringing up Solr in one shell:

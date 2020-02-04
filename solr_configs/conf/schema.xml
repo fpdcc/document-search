@@ -202,7 +202,37 @@
     <field name="control_number" type="text_en" indexed="true" stored="true" multiValued="false" />
     
     <field name="control_number_exact" type="string" indexed="true" stored="true" multiValued="false" />
+
+    <field name="geometry" type="string" indexed="false" stored="true" multiValued="false" />
+
+    <field name="type" type="text_en" indexed="true" stored="true" multiValued="false" />
     
+    <field name="type_exact" type="string" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="entity" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="entity_exact" type="string" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="diameter" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="diameter_exact" type="string" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="material" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="material_exact" type="string" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="end_date" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="end_date_exact" type="string" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="status" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="status_exact" type="string" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="agreement_type" type="text_en" indexed="true" stored="true" multiValued="false" />
+    
+    <field name="agreement_type_exact" type="string" indexed="true" stored="true" multiValued="false" />
+
     <uniqueKey>id</uniqueKey>
 
     <!--

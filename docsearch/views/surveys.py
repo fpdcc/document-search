@@ -9,6 +9,7 @@ class SurveyDetail(base_views.BaseDetailView):
                        'description', 'job_number', 'number_of_sheets',
                        'date', 'cross_ref_area', 'cross_ref_section',
                        'cross_ref_map_number', 'hash', 'source_file']
+    array_fields = ['township', 'range', 'section']
 
 
 class SurveyCreate(base_views.BaseCreateView):

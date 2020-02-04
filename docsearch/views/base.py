@@ -51,6 +51,8 @@ class BaseUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class BaseDetailView(LoginRequiredMixin, DetailView):
+    array_fields = []
+
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['update_url'] = self.get_update_url(obj=context['object'])

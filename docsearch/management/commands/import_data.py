@@ -3,6 +3,7 @@ import csv
 
 from django.core.management.base import BaseCommand
 from django.db import connection, transaction
+from django.contrib.gis.geos import GEOSGeometry
 
 import docsearch.models
 
@@ -45,9 +46,16 @@ class Command(BaseCommand):
                                   for field in reader.fieldnames}
 
         for row in reader:
-            # Make sure to convert empty strings to NULL
-            metadata = {header_to_model_fields[field]: value or None
-                        for field, value in row.items()}
+            metadata = {}
+            for field, value in row.items():
+                # Convert empty strings to NULL
+                if not value:
+                    value = None
+                # Check for geometry fields, and import them as geometries
+                if field == 'geometry' and value is not None:
+                    value = GEOSGeometry(value)
+                metadata[header_to_model_fields[field]] = value
+
             # Document files are stored on S3, so we need to save a file string
             # corresponding to the appropriate S3 prefix for each document type
             s3_path = f'{Model.source_file.field.upload_to}/{metadata["source_file"]}'

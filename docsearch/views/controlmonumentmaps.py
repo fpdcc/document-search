@@ -7,6 +7,7 @@ class ControlMonumentMapDetail(base_views.BaseDetailView):
     template_name = 'docsearch/controlmonumentmaps/detail.html'
     metadata_fields = ['township', 'range', 'section', 'part_of_section',
                        'source_file']
+    array_fields = ['section']
 
 
 class ControlMonumentMapCreate(base_views.BaseCreateView):

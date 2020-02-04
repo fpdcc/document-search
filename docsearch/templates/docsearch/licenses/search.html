@@ -1,15 +1,65 @@
 {% extends "docsearch/base_search.html" %}
 
 {% load model_meta %}
+{% load display %}
+{% load leaflet_tags %}
+{% load static %}
+
+{% block extra_css %}
+  {% leaflet_css %}
+  <style>
+    .leaflet-container {
+      width: '100%';
+      height: '200px';
+    }
+  </style>
+{% endblock %}
 
 {% block thead %}
   <th>{{ view.model|field_name:"license_number"|capfirst }}</th>
   <th>{{ view.model|field_name:"description"|capfirst }}</th>
+  <th style="min-width:300px">{{ view.model|field_name:"geometry"|capfirst }}</th>
+  <th>{{ view.model|field_name:"township"|capfirst }}</th>
+  <th>{{ view.model|field_name:"range"|capfirst }}</th>
+  <th>{{ view.model|field_name:"section"|capfirst }}</th>
+  <th>{{ view.model|field_name:"type"|capfirst }}</th>
+  <th>{{ view.model|field_name:"status"|capfirst }}</th>
+  <th>{{ view.model|field_name:"end_date"|capfirst }}</th>
+  <th>{{ view.model|field_name:"agreement_type"|capfirst }}</th>
   <th></th>
 {% endblock %}
 {% block tr %}
   <td>{{ result.object.license_number|default_if_none:"" }}</td>
   <td>{{ result.object.description|default_if_none:"" }}</td>
+  {% with "geometry-"|concat:forloop.counter as map_id %}
+    <td>{% leaflet_map map_id callback="window.map_init_"|concat:forloop.counter %}</td>
+    <script type="text/javascript">
+      function map_init_{{ forloop.counter }}(map, options) {
+        var streets = new L.Google('ROADMAP', {
+          mapOptions: {
+            styles: [
+              {stylers: [{saturation: -100}, {lightness: 40}]},
+              {featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }]}
+            ]
+          }
+        });
+        map.addLayer(streets);
+        {% if result.geometry %}
+          var featureCollection = JSON.parse('{{ result.geometry|safe }}');
+          var geoJsonLayer = L.geoJSON(featureCollection);
+          geoJsonLayer.addTo(map);
+          map.fitBounds(geoJsonLayer.getBounds());
+        {% endif %}
+      }
+    </script>
+  {% endwith %}
+  <td>{{ result.object.township|display_array|default_if_none:"" }}</td>
+  <td>{{ result.object.section|display_array|default_if_none:"" }}</td>
+  <td>{{ result.object.range|display_array|default_if_none:"" }}</td>
+  <td>{{ result.object.type|default_if_none:"" }}</td>
+  <td>{{ result.object.status|default_if_none:"" }}</td>
+  <td>{{ result.object.end_date|default_if_none:"" }}</td>
+  <td>{{ result.object.agreement_type|default_if_none:"" }}</td>
   <td><a href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
 {% endblock %}
-{% block empty_colspan %}3{% endblock %}
+{% block empty_colspan %}11{% endblock %}

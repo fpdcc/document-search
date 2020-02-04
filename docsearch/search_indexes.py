@@ -112,6 +112,18 @@ class LicenseIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     license_number = indexes.CharField(model_attr='license_number', null=True, faceted=True)
     description = indexes.CharField(model_attr='description', null=True, faceted=True)
+    geometry = indexes.CharField(use_template=True, indexed=False)
+    township_arr = IntegerMultiValueField(model_attr='township', null=True, faceted=True)
+    range_arr = IntegerMultiValueField(model_attr='range', null=True, faceted=True)
+    section_arr = IntegerMultiValueField(model_attr='section', null=True, faceted=True)
+    township_arr = IntegerMultiValueField(model_attr='township', null=True, faceted=True)
+    type = indexes.CharField(model_attr='type', null=True, faceted=True)
+    entity = indexes.CharField(model_attr='entity', null=True, faceted=True)
+    diameter = indexes.CharField(model_attr='diameter', null=True, faceted=True)
+    material = indexes.CharField(model_attr='material', null=True, faceted=True)
+    end_date = indexes.CharField(model_attr='end_date', null=True, faceted=True)
+    status = indexes.CharField(model_attr='status', null=True, faceted=True)
+    agreement_type = indexes.CharField(model_attr='agreement_type', null=True, faceted=True)
 
     def get_model(self):
         return models.License
