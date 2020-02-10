@@ -116,3 +116,4 @@ data/*
 /.blackbox/secring.gpg
 /configs/local_settings.dev.py
 /configs/local_settings.staging.py
+/configs/local_settings.production.py
