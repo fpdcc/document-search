@@ -2,6 +2,7 @@ branches:
   only:
   - master
   - "/^v[0-9].*$/"
+  - jfc/repo-transfer
 language: python
 python: '3.6'
 services:
@@ -19,8 +20,8 @@ deploy:
     application: document-search
     deployment_group: staging
     on:
-      repo: datamade/document-search
-      branch: master
+      repo: fpdcc/document-search
+      branch: jfc/repo-transfer
   - provider: codedeploy
     access_key_id: AKIAQJGP4DUASZSYFRWW
     secret_access_key:
@@ -28,5 +29,5 @@ deploy:
     application: document-search
     deployment_group: production
     on:
-      repo: datamade/document-search
+      repo: fpdcc/document-search
       tags: true
