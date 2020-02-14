@@ -2,7 +2,6 @@ branches:
   only:
   - master
   - "/^v[0-9].*$/"
-  - jfc/repo-transfer
 language: python
 python: '3.6'
 services:
@@ -21,7 +20,7 @@ deploy:
     deployment_group: staging
     on:
       repo: fpdcc/document-search
-      branch: jfc/repo-transfer
+      branch: master
   - provider: codedeploy
     access_key_id: AKIAQJGP4DUASZSYFRWW
     secret_access_key:
