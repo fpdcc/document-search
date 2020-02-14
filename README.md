@@ -46,8 +46,13 @@ docker-compose run --rm app ./manage.py createsuperuser
 
 Initial data is available in a separate repo, `document-search-data`, that is
 kept private in order to respect the privacy of entities mentioned in the
-metadata. Request access to this repo, or open an issue to request assistance
+metadata. The repo is hosted on AWS CodeCommit in the Forest Preserves AWS account.
+Request access to the repo, or open an issue here to request assistance
 preparing your own metadata for an initial import.
+
+For guidance on configuring your local environment to work with AWS CodeCommit,
+see the [official AWS
+docs](https://docs.aws.amazon.com/codecommit/latest/userguide/getting-started-cc.html).
 
 Once you have access to `document-search-data`, clone it and copy it to a
 subdirectory of this repo called `data/`:
