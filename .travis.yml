@@ -19,7 +19,7 @@ deploy:
     application: document-search
     deployment_group: staging
     on:
-      repo: datamade/document-search
+      repo: fpdcc/document-search
       branch: master
   - provider: codedeploy
     access_key_id: AKIAQJGP4DUASZSYFRWW
@@ -28,5 +28,5 @@ deploy:
     application: document-search
     deployment_group: production
     on:
-      repo: datamade/document-search
+      repo: fpdcc/document-search
       tags: true
