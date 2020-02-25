@@ -8,14 +8,17 @@ Development requires a local installation of [Docker](https://docs.docker.com/in
 and [Docker Compose](https://docs.docker.com/compose/install/).
 
 Before you start, you'll need a local settings file for development. If you're
-on the Blackbox keyring for this repo, you can decrypt the canonical settings
-file:
+on the Blackbox keyring for this repo, you can decrypt a canonical settings
+file that is encrypted and stored in the `configs` directory. See [the
+Blackbox documentation](https://github.com/StackExchange/blackbox) for
+details on how to install and use Blackbox, and run this command to decrypt
+the settings file once you have Blackbox set up:
 
 ```
 blackbox_cat configs/local_settings.dev.py.gpg > docsearch/local_settings.dev.py
 ```
 
-Otherwise, copy and edit the example settings file:
+If you're not on the keyring for this repo, copy and edit the example settings file:
 
 ```
 cp docsearch/local_settings.example.py docsearch/local_settings.dev.py
