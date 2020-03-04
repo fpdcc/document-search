@@ -57,7 +57,7 @@ class LicenseSearch(base_views.BaseSearchView):
         'range_arr': 'range'
     }
     sort_fields = [
-        'license_number_exact', 'township_arr', 'range_arr', 'section_arr',
-        'type_exact', 'status_exact', 'end_date_exact', 'agreement_type_exact',
-        'description_exact'
+        'license_number_exact', 'description_exact', 'township_arr', 'range_arr',
+        'section_arr', 'type_exact', 'status_exact', 'end_date_exact',
+        'agreement_type_exact'
     ]
