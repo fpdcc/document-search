@@ -44,7 +44,7 @@
           </div>
         </div>
       </form>
-      {% if selected_facet_fields %}
+      {% if selected_facet_fields or sort or query %}
           <a href="{{ request.path }}" class="btn btn-outline-secondary">
             <i class="fa fa-fw fa-times"></i> Start over
           </a>

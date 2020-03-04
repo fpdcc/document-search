@@ -30,4 +30,4 @@ class IndexCardSearch(base_views.BaseSearchView):
     model = models.IndexCard
     template_name = 'docsearch/indexcards/search.html'
     facet_fields = ['monument_number', 'township', 'section', 'corner']
-    sort_fields = ['monument_number', 'township', 'section', 'corner_exact']
+    sort_fields = ['monument_number_exact', 'township', 'section_exact', 'corner_exact']
