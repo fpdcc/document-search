@@ -56,4 +56,8 @@ class LicenseSearch(base_views.BaseSearchView):
         'township_arr': 'township',
         'range_arr': 'range'
     }
-    sort_fields = facet_fields + ['description_exact']
+    sort_fields = [
+        'license_number_exact', 'township_arr', 'range_arr', 'section_arr',
+        'type_exact', 'status_exact', 'end_date_exact', 'agreement_type_exact',
+        'description_exact'
+    ]

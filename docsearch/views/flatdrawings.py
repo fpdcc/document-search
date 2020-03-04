@@ -35,7 +35,7 @@ class FlatDrawingSearch(base_views.BaseSearchView):
     facet_fields = ['area', 'section', 'map_number', 'location', 'job_number',
                     'number_of_sheets', 'date', 'cross_ref_area',
                     'cross_ref_section', 'cross_ref_map_number']
-    sort_fields = ['area', 'section_exact', 'map_number', 'location_exact', 'description_exact',
-                   'job_number_exact', 'number_of_sheets', 'date_exact',
-                   'cross_ref_area', 'cross_ref_section',
+    sort_fields = ['area', 'section_exact', 'map_number_exact', 'location_exact',
+                   'description_exact', 'job_number_exact', 'number_of_sheets_exact',
+                   'date_exact', 'cross_ref_area', 'cross_ref_section',
                    'cross_ref_map_number_exact']

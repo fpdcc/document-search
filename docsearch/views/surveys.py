@@ -36,6 +36,6 @@ class SurveySearch(base_views.BaseSearchView):
                     'job_number', 'number_of_sheets', 'date']
     facet_field_name_overrides = {'township_arr': 'township', 'section_arr': 'section',
                                   'range_arr': 'range'}
-    sort_fields = ['township_arr', 'range_arr', 'section_arr', 'map_number',
+    sort_fields = ['township_arr', 'range_arr', 'section_arr', 'map_number_exact',
                    'location_exact', 'description_exact', 'job_number_exact',
-                   'number_of_sheets', 'date']
+                   'number_of_sheets_exact', 'date_exact']
