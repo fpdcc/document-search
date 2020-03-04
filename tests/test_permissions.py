@@ -31,7 +31,7 @@ def test_anonymous_users_cannot_read(client, document_and_fields):
     for url in get_read_urls_from_document(document):
         response = client.get(url)
         assert response.status_code == 302
-        assert response.url.startswith(settings.LOGIN_URL)
+        assert response.url.startswith('/' + settings.LOGIN_URL)
 
 
 @pytest.mark.django_db
@@ -40,7 +40,7 @@ def test_anonymous_users_cannot_write(client, document_and_fields):
     for url in get_write_urls_from_document(document):
         response = client.get(url)
         assert response.status_code == 302
-        assert response.url.startswith(settings.LOGIN_URL)
+        assert response.url.startswith('/' + settings.LOGIN_URL)
 
 
 @pytest.mark.django_db
