@@ -52,8 +52,8 @@ DOCUMENTS = [
 
 
 @pytest.fixture
-def user():
-    return User.objects.create(username='testuser', password='foobarbaz')
+def superuser():
+    return User.objects.create_superuser('testuser', 'test@example.com', 'foobarbaz')
 
 
 @pytest.fixture

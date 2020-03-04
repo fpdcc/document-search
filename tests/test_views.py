@@ -4,15 +4,15 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 
 
 @pytest.mark.django_db
-def test_home(client, user):
-    client.force_login(user)
+def test_home(client, superuser):
+    client.force_login(superuser)
     response = client.get(reverse('home'))
     assert response.status_code == 200
 
 
 @pytest.mark.django_db
-def test_search(client, user, document_and_fields, mock_get_queryset):
-    client.force_login(user)
+def test_search(client, superuser, document_and_fields, mock_get_queryset):
+    client.force_login(superuser)
     document, _ = document_and_fields
 
     Model = type(document)
@@ -27,8 +27,8 @@ def test_search(client, user, document_and_fields, mock_get_queryset):
 
 
 @pytest.mark.django_db
-def test_create(client, user, document_and_fields):
-    client.force_login(user)
+def test_create(client, superuser, document_and_fields):
+    client.force_login(superuser)
     document, fields = document_and_fields
     # Mock out a file for upload
     fields['source_file'] = SimpleUploadedFile(
@@ -54,13 +54,13 @@ def test_create(client, user, document_and_fields):
     assert new_doc != document
     most_recent_action = new_doc.actions.first()
 
-    assert most_recent_action.user == user
+    assert most_recent_action.user == superuser
     assert most_recent_action.action == 'create'
 
 
 @pytest.mark.django_db
-def test_detail(client, user, document_and_fields):
-    client.force_login(user)
+def test_detail(client, superuser, document_and_fields):
+    client.force_login(superuser)
     document, _ = document_and_fields
 
     response = client.get(document.get_absolute_url())
@@ -69,8 +69,8 @@ def test_detail(client, user, document_and_fields):
 
 
 @pytest.mark.django_db
-def test_update(client, user, document_and_fields):
-    client.force_login(user)
+def test_update(client, superuser, document_and_fields):
+    client.force_login(superuser)
     document, fields = document_and_fields
 
     Model = type(document)
@@ -89,13 +89,13 @@ def test_update(client, user, document_and_fields):
     document.refresh_from_db()
     most_recent_action = document.actions.first()
 
-    assert most_recent_action.user == user
+    assert most_recent_action.user == superuser
     assert most_recent_action.action == 'update'
 
 
 @pytest.mark.django_db
-def test_delete(client, user, document_and_fields):
-    client.force_login(user)
+def test_delete(client, superuser, document_and_fields):
+    client.force_login(superuser)
     document, _ = document_and_fields
 
     Model = type(document)
