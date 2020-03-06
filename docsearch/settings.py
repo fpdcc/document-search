@@ -85,8 +85,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# TODO: Replace this with a custom login form.
-LOGIN_URL = '/admin/login/'
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/

@@ -47,6 +47,7 @@ urlpatterns = [
     path('surveys/', include(surveys_patterns)),
     path('titles/', include(titles_patterns)),
     path('admin/', admin.site.urls),
-    path('logout/', auth.views.LogoutView.as_view(), name='logout'),
+    path('login/', auth.views.LoginView.as_view(template_name='docsearch/login.html'), name='login'),
+    path('logout/', auth.views.LogoutView.as_view(template_name='docsearch/logout.html'), name='logout'),
     path('pong/', views.pong),
 ]

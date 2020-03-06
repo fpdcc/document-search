@@ -1,13 +1,40 @@
 import re
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 from haystack.generic_views import FacetedSearchView
 
 from docsearch import models, forms
 
 
-class BaseCreateView(LoginRequiredMixin, CreateView):
+class DocumentPermissionRequiredMixin(PermissionRequiredMixin):
+    permission_action = None
+
+    def get_permission_required(self):
+        """
+        Override ths method to allow base classes to specify default permissions
+        based on the specific models that those base classes are concerned with.
+        """
+        if self.permission_required is None:
+            if not self.permission_action:
+                raise NotImplementedError(
+                    '{} is missing the permission_required '
+                    'attribute.'.format(self.__class__.__name__)
+                )
+            return [
+                '{app}.{action}_{model}'.format(
+                    app=self.model._meta.app_label,
+                    action=self.permission_action,
+                    model=self.model.get_slug()
+                )
+            ]
+        else:
+            return super().get_permission_required()
+
+
+class BaseCreateView(LoginRequiredMixin, DocumentPermissionRequiredMixin, CreateView):
+    permission_action = 'add'
+
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['cancel_url'] = self.get_cancel_url()
@@ -28,7 +55,9 @@ class BaseCreateView(LoginRequiredMixin, CreateView):
         return response
 
 
-class BaseUpdateView(LoginRequiredMixin, UpdateView):
+class BaseUpdateView(LoginRequiredMixin, DocumentPermissionRequiredMixin, UpdateView):
+    permission_action = 'change'
+
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['cancel_url'] = self.get_cancel_url(obj=context['object'])
@@ -50,8 +79,9 @@ class BaseUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
-class BaseDetailView(LoginRequiredMixin, DetailView):
+class BaseDetailView(LoginRequiredMixin, DocumentPermissionRequiredMixin, DetailView):
     array_fields = []
+    permission_action = 'view'
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -62,7 +92,9 @@ class BaseDetailView(LoginRequiredMixin, DetailView):
         return obj.get_update_url()
 
 
-class BaseDeleteView(LoginRequiredMixin, DeleteView):
+class BaseDeleteView(LoginRequiredMixin, DocumentPermissionRequiredMixin, DeleteView):
+    permission_action = 'delete'
+
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['cancel_url'] = self.get_cancel_url(obj=context['object'])
@@ -75,9 +107,10 @@ class BaseDeleteView(LoginRequiredMixin, DeleteView):
         return self.model.get_search_url()
 
 
-class BaseSearchView(LoginRequiredMixin, FacetedSearchView):
+class BaseSearchView(LoginRequiredMixin, DocumentPermissionRequiredMixin, FacetedSearchView):
     form_class = forms.BaseSearchForm
     template_name = 'docsearch/search.html'
+    permission_action = 'view'
     sort_fields = []
     geo_facet_fields = [
         'area', 'section', 'section_arr', 'township', 'township_arr',

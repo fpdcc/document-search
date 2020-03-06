@@ -107,6 +107,9 @@ venv.bak/
 # Local Mac index
 .DS_Store
 
+# Editor config
+settings.json
+
 # Raw data
 data/*
 

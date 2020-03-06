@@ -1,4 +1,5 @@
 {% load static %}
+{% load permissions %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -73,15 +74,19 @@
       </div>
       <div class="collapse navbar-collapse" id="navbar-supported-content">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item dropdown">
-            {% include "docsearch/partials/dropdown_search.html" %}
-          </li>
-          <li class="nav-item dropdown">
-            {% include "docsearch/partials/dropdown_add.html" %}
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'logout' %}">Sign out</a>
-          </li>
+          {% if request.user.is_authenticated %}
+            <li class="nav-item dropdown">
+              {% include "docsearch/partials/dropdown_search.html" %}
+            </li>
+            {% if request.user|can_create %}
+              <li class="nav-item dropdown">
+                {% include "docsearch/partials/dropdown_add.html" %}
+              </li>
+            {% endif %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}">Sign out</a>
+            </li>
+          {% endif %}
         </ul>
       </div>
     </nav>
@@ -99,19 +104,23 @@
           alt="Forest Preserves of Cook County logo"
         />
         <h3 class="mb-1">Document Search</h3>
-        <div class="d-flex justify-content-center">
-          <ul class="nav mx-auto">
-            <li class="nav-item dropdown">
-              {% include "docsearch/partials/dropdown_search.html" %}
-            </li>
-            <li class="nav-item dropdown">
-              {% include "docsearch/partials/dropdown_add.html" %}
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'logout' %}">Sign out</a>
-            </li>
-          </ul>
-        </div>
+        {% if request.user.is_authenticated %}
+          <div class="d-flex justify-content-center">
+            <ul class="nav mx-auto">
+              <li class="nav-item dropdown">
+                {% include "docsearch/partials/dropdown_search.html" %}
+              </li>
+              {% if request.user|can_create %}
+                <li class="nav-item dropdown">
+                  {% include "docsearch/partials/dropdown_add.html" %}
+                </li>
+              {% endif %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">Sign out</a>
+              </li>
+            </ul>
+          </div>
+        {% endif %}
 
         <p class="mt-4">
           Website by <br/>
@@ -123,6 +132,11 @@
             />
           </a>
         </p>
+        {% if request.user.is_staff %}
+          <p>
+            <a href="{% url 'admin:index' %}">Admin console</a>
+          </p>
+        {% endif %}
       </div>
     </footer>
     {% block modals %}{% endblock %}

@@ -1,7 +1,7 @@
 VPATH = data data/raw
 
 .PHONY: all
-all : entities geojson
+all : entities geojson permissions
 
 .PHONY: entities
 entities : data/indicator/BOOKS data/indicator/CONTROL_MONUMENT_MAPS \
@@ -114,3 +114,7 @@ docsearch/static/geojson/area.geojson : data/shapefiles/PLSS_to_Areas.shp
 		FROM $(notdir $(basename $<)) \
 		GROUP BY area \
 	"
+
+.PHONY: permissions
+permissions:
+	python manage.py create_permission_groups --verbose

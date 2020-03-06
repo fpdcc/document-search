@@ -1,8 +1,10 @@
 import json
 
 import pytest
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.gis.geos import GEOSGeometry
+from django.core.management import call_command
+from haystack.query import EmptySearchQuerySet
 
 from docsearch import models
 
@@ -50,8 +52,31 @@ DOCUMENTS = [
 
 
 @pytest.fixture
-def user():
-    return User.objects.create(username='testuser', password='foobarbaz')
+def superuser():
+    return User.objects.create_superuser('testuser', 'test@example.com', 'foobarbaz')
+
+
+@pytest.fixture
+def permission_groups():
+    call_command('create_permission_groups')
+
+
+@pytest.fixture
+def read_only_user(permission_groups):
+    group = Group.objects.get(name='Read Only')
+    user = User.objects.create(username='read_only', password='foobarbaz')
+    user.groups.add(group)
+    user.save()
+    return user
+
+
+@pytest.fixture
+def read_write_user(permission_groups):
+    group = Group.objects.get(name='Read/Write')
+    user = User.objects.create(username='read_write', password='foobarbaz')
+    user.groups.add(group)
+    user.save()
+    return user
 
 
 @pytest.fixture(params=DOCUMENTS)
@@ -62,3 +87,15 @@ def document_and_fields(request):
     if fields.get('geometry'):
         updated_fields['geometry'] = GEOSGeometry(fields['geometry'])
     return Model.objects.create(**updated_fields), fields
+
+
+@pytest.fixture
+def mock_get_queryset(mocker):
+    """
+    Mock the BaseSearchView.get_queryset method to prevent search views from
+    actually querying Solr.
+    """
+    return mocker.patch(
+        f'docsearch.views.base.BaseSearchView.get_queryset',
+        return_value=EmptySearchQuerySet()
+    )

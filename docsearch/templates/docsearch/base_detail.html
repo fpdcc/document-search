@@ -3,6 +3,7 @@
 {% load get_attr %}
 {% load display %}
 {% load model_meta %}
+{% load permissions %}
 
 {% block title %}{{ view.model|verbose_name|title }}{% endblock %}
 
@@ -16,10 +17,12 @@
           <i class="fa fa-fw fa-download"></i>
           Download
         </a>
-        <a class="btn btn-secondary bg-fpdcc-light-green" href="{{ update_url }}">
-          <i class="fa fa-fw fa-edit"></i>
-          Edit
-        </a>
+        {% if request.user|can_update:view.model %}
+          <a class="btn btn-secondary bg-fpdcc-light-green" href="{{ update_url }}">
+            <i class="fa fa-fw fa-edit"></i>
+            Edit
+          </a>
+        {% endif %}
       </small>
     </h1>
     <p class="text-muted">{{ object.actions.first.get_action_string|capfirst }}</p>

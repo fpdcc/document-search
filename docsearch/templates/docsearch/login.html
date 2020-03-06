@@ -1,0 +1,20 @@
+{% extends 'docsearch/base_content.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-sm-8 offset-sm-2">
+    <h1 class="mb-3">Log in</h1>
+    <form class="login" method="POST">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <button class="btn btn-secondary bg-fpdcc-light-green" type="submit">
+        Log in
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}
