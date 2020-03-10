@@ -1,0 +1,49 @@
+{% extends "docsearch/base_content.html" %}
+
+{% load static %}
+
+{% block title %}Activity{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'css/jquery.dataTables.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-sm-12">
+    <h1 class="mb-3">
+      Activity
+    </h1>
+    <p>This table displays a full edit history of the site.</p>
+    <div class="table-responsive">
+      <table class="table table-sm" id="version-history-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>User</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for action in actions %}
+            <tr>
+              <td>{{ action.timestamp }}</td>
+              <td>{{ action.user }}</td>
+              <td>{{ action.action }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#version-history-table').DataTable();
+  });
+</script>
+{% endblock %}

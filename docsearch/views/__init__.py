@@ -1,6 +1,5 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView
-from django.http import Http404
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic import ListView, TemplateView
 
 from docsearch import models
 from .books import *
@@ -20,6 +19,15 @@ from .titles import *
 
 class Home(LoginRequiredMixin, TemplateView):
     template_name = 'docsearch/index.html'
+
+
+class Activity(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    model = models.ActionLog
+    context_object_name = 'actions'
+    template_name = 'docsearch/activity.html'
+
+    def test_func(self):
+        return self.request.user.is_staff
 
 
 def pong(request):

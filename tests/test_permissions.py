@@ -1,5 +1,6 @@
 import pytest
 from django.conf import settings
+from django.urls import reverse
 
 
 def get_read_urls_from_document(document):
@@ -77,3 +78,20 @@ def test_write_users_can_write(client, read_write_user, document_and_fields):
     for url in get_write_urls_from_document(document):
         response = client.get(url)
         assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_non_staff_users_cannot_see_activity_log(client, read_write_user):
+    client.force_login(read_write_user)
+    url = reverse('activity')
+    response = client.get(url)
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db
+def test_staff_users_can_see_activity_log(client, superuser):
+    client.force_login(superuser)
+    url = reverse('activity')
+    response = client.get(url)
+    assert response.status_code == 200
+    assert 'Activity' in response.content.decode('utf-8')
