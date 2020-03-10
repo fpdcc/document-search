@@ -93,7 +93,7 @@
           <tbody>
             {% for action in object.actions.all %}
               <tr>
-                <td>{{ action.timestamp }}</td>
+                <td data-order="{{ action.timestamp|date:'U' }}">{{ action.timestamp }}</td>
                 <td>{{ action.user }}</td>
                 <td>{{ action.action }}</td>
               </tr>
