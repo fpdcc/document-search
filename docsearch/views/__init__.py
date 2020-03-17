@@ -2,6 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, TemplateView
 
 from docsearch import models
+from docsearch.templatetags.permissions import can_create
 from .books import *
 from .controlmonumentmaps import *
 from .dossiers import *
@@ -27,7 +28,8 @@ class Activity(LoginRequiredMixin, UserPassesTestMixin, ListView):
     template_name = 'docsearch/activity.html'
 
     def test_func(self):
-        return self.request.user.is_staff
+        # Only Read/Write users should be able to see this view.
+        return can_create(self.request.user)
 
 
 def pong(request):

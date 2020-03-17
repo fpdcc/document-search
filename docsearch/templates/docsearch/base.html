@@ -82,8 +82,6 @@
               <li class="nav-item dropdown">
                 {% include "docsearch/partials/dropdown_add.html" %}
               </li>
-            {% endif %}
-            {% if request.user.is_staff %}
               <li class="nav-item dropdown">
                 <a class="nav-link" href="{% url 'activity' %}">Activity</a>
               </li>
@@ -119,8 +117,6 @@
                 <li class="nav-item dropdown">
                   {% include "docsearch/partials/dropdown_add.html" %}
                 </li>
-              {% endif %}
-              {% if request.user.is_staff %}
                 <li class="nav-item dropdown">
                   <a class="nav-link" href="{% url 'activity' %}">Activity</a>
                 </li>

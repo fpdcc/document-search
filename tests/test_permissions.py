@@ -81,16 +81,16 @@ def test_write_users_can_write(client, read_write_user, document_and_fields):
 
 
 @pytest.mark.django_db
-def test_non_staff_users_cannot_see_activity_log(client, read_write_user):
-    client.force_login(read_write_user)
+def test_read_only_users_cannot_see_activity_log(client, read_only_user):
+    client.force_login(read_only_user)
     url = reverse('activity')
     response = client.get(url)
     assert response.status_code == 403
 
 
 @pytest.mark.django_db
-def test_staff_users_can_see_activity_log(client, superuser):
-    client.force_login(superuser)
+def test_write_users_can_see_activity_log(client, read_write_user):
+    client.force_login(read_write_user)
     url = reverse('activity')
     response = client.get(url)
     assert response.status_code == 200
