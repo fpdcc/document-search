@@ -57,6 +57,11 @@ def superuser():
 
 
 @pytest.fixture
+def staff_user():
+    return User.objects.create(username='staff_user', password='foobarbaz', is_staff=True)
+
+
+@pytest.fixture
 def permission_groups():
     call_command('create_permission_groups')
 

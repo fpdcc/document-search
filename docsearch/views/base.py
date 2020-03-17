@@ -92,8 +92,10 @@ class BaseDetailView(LoginRequiredMixin, DocumentPermissionRequiredMixin, Detail
         return obj.get_update_url()
 
 
-class BaseDeleteView(LoginRequiredMixin, DocumentPermissionRequiredMixin, DeleteView):
-    permission_action = 'delete'
+class BaseDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    def has_permission(self):
+        # Only Staff users should be able to delete
+        return self.request.user.is_staff
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)

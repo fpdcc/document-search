@@ -22,8 +22,7 @@ def get_write_urls_from_document(document):
     Model = type(document)
     create_url = Model.get_create_url()
     update_url = document.get_update_url()
-    delete_url = document.get_delete_url()
-    return (create_url, update_url, delete_url)
+    return (create_url, update_url)
 
 
 @pytest.mark.django_db
@@ -63,6 +62,15 @@ def test_read_only_users_cannot_write(client, read_only_user, document_and_field
 
 
 @pytest.mark.django_db
+def test_read_only_users_cannot_delete(client, read_only_user, document_and_fields):
+    client.force_login(read_only_user)
+    document, _ = document_and_fields
+    url = document.get_delete_url()
+    response = client.get(url)
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db
 def test_write_users_can_read(client, read_write_user, document_and_fields, mock_get_queryset):
     client.force_login(read_write_user)
     document, _ = document_and_fields
@@ -78,6 +86,28 @@ def test_write_users_can_write(client, read_write_user, document_and_fields):
     for url in get_write_urls_from_document(document):
         response = client.get(url)
         assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_write_users_cannot_delete(client, read_write_user, document_and_fields):
+    client.force_login(read_write_user)
+    document, _ = document_and_fields
+    url = document.get_delete_url()
+    response = client.get(url)
+    assert response.status_code == 403
+
+
+@pytest.mark.django_db
+def test_staff_users_can_delete(client, staff_user, document_and_fields):
+    client.force_login(staff_user)
+    document, _ = document_and_fields
+
+    url = document.get_delete_url()
+    get_response = client.get(url)
+    assert get_response.status_code == 200
+
+    post_response = client.post(url)
+    assert post_response.status_code == 302
 
 
 @pytest.mark.django_db
