@@ -53,7 +53,9 @@
 <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
 <script type="text/javascript">
   $(document).ready(function() {
-    $('#version-history-table').DataTable();
+    $('#version-history-table').DataTable({
+      order: [[0, 'desc']]
+    });
   });
 </script>
 {% endblock %}
