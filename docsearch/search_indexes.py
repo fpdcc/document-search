@@ -158,7 +158,7 @@ class SurveyIndex(indexes.SearchIndex, indexes.Indexable):
     section_arr = IntegerMultiValueField(model_attr='section', null=True, faceted=True)
     map_number = indexes.CharField(model_attr='map_number', null=True, faceted=True)
     location = indexes.CharField(model_attr='location', null=True, faceted=True)
-    description = indexes.CharField(model_attr='description', null=True)
+    description = indexes.CharField(model_attr='description', null=True, faceted=True)
     job_number = indexes.CharField(model_attr='job_number', null=True, faceted=True)
     number_of_sheets = indexes.CharField(model_attr='number_of_sheets', null=True, faceted=True)
     date = indexes.CharField(model_attr='date', null=True, faceted=True)
