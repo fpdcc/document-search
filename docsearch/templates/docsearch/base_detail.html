@@ -17,6 +17,14 @@
   <div class="col-12">
     <h1>
       {{ view.model|verbose_name|title }}
+      {% if not object.active %}
+        <small>
+          <span class="badge badge-danger">
+            <i class="fa fa-fw fa-times"></i>
+            Deleted
+          </span>
+        </small>
+      {% endif %}
       <small class="float-right">
         <a class="btn btn-secondary bg-fpdcc-light-green" href="{{ object.source_file.url }}">
           <i class="fa fa-fw fa-download"></i>

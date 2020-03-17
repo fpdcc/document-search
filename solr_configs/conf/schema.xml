@@ -82,7 +82,9 @@
     <field name="django_id" type="string" indexed="true" stored="true" multiValued="false"/>
     
     <field name="text" type="text_en" indexed="true" stored="true" multiValued="false" />
-    
+
+    <field name="active" type="boolean" indexed="true" stored="true" multiValued="false" />
+
     <field name="township" type="text_en" indexed="true" stored="true" multiValued="false" />
     
     <field name="township_exact" type="string" indexed="true" stored="true" multiValued="false" />

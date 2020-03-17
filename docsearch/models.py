@@ -44,7 +44,8 @@ class ActionLog(models.Model):
     class Action:
         CREATE = 'create'
         UPDATE = 'update'
-        CHOICES = ((CREATE, CREATE), (UPDATE, UPDATE))
+        DELETE = 'delete'
+        CHOICES = ((CREATE, CREATE), (UPDATE, UPDATE), (DELETE, DELETE))
 
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(
@@ -64,7 +65,7 @@ class ActionLog(models.Model):
         ordering = ['-timestamp']
 
     def get_action_string(self):
-        verb = 'created' if self.action == self.Action.CREATE else 'updated'
+        verb = '{action}d'.format(action=self.action)
         user = self.user or 'Unknown'
         local_time = timezone.localtime(self.timestamp)
         timestamp = local_time.strftime("%b %-d, %Y, %-I:%M %p")
@@ -75,6 +76,7 @@ class ActionLog(models.Model):
 
 
 class BaseDocumentModel(models.Model):
+    active = models.BooleanField(default=True)
     actions = GenericRelation(ActionLog)
 
     class Meta:

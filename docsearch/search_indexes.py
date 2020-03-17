@@ -54,6 +54,7 @@ class SurplusParcelIndex(indexes.SearchIndex, indexes.Indexable):
 
 
 class DeepTunnelIndex(indexes.SearchIndex, indexes.Indexable):
+    active = indexes.BooleanField(model_attr='active')
     text = indexes.CharField(document=True, use_template=True)
     description = indexes.CharField(model_attr='description', faceted=True)
 

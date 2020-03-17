@@ -1,5 +1,6 @@
 import re
 
+from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 from haystack.generic_views import FacetedSearchView
@@ -106,6 +107,28 @@ class BaseDeleteView(LoginRequiredMixin, DocumentPermissionRequiredMixin, Delete
     def get_success_url(self):
         return self.model.get_search_url()
 
+    def delete(self, request, *args, **kwargs):
+        """
+        Override the delete() method to soft-delete objects by setting them to
+        be inactive.
+        """
+        # Set the object to inactive
+        self.object = self.get_object()
+        self.object.active = False
+        self.object.save()
+        # Create a new ActionLog representing this change
+        models.ActionLog.objects.create(
+            user=request.user,
+            content_object=self.object,
+            action=models.ActionLog.Action.DELETE
+        )
+        # Redirect to the success_url
+        success_url = self.get_success_url()
+        return HttpResponseRedirect(success_url)
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
 
 class BaseSearchView(LoginRequiredMixin, DocumentPermissionRequiredMixin, FacetedSearchView):
     form_class = forms.BaseSearchForm
@@ -140,6 +163,8 @@ class BaseSearchView(LoginRequiredMixin, DocumentPermissionRequiredMixin, Facete
 
     def get_queryset(self):
         sqs = super().get_queryset().models(self.model)
+        # Exclude deactivated documents
+        sqs = sqs.exclude(active=False)
         for facet_field in self.facet_fields:
             # Sort facet options alphabetically, not by hit count
             sqs = sqs.facet(facet_field, sort='index')
