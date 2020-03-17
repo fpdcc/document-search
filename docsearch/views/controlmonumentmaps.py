@@ -33,3 +33,7 @@ class ControlMonumentMapSearch(base_views.BaseSearchView):
     facet_fields = ['township', 'range', 'section_arr', 'part_of_section']
     facet_field_name_overrides = {'section_arr': 'section'}
     sort_fields = ['township', 'range', 'section_arr', 'part_of_section_exact']
+
+
+class ControlMonumentMapData(base_views.BaseDocumentData):
+    document_model = models.ControlMonumentMap

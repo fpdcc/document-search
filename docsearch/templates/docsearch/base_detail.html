@@ -90,15 +90,7 @@
               <th>Action</th>
             </tr>
           </thead>
-          <tbody>
-            {% for action in object.actions.all %}
-              <tr>
-                <td data-order="{{ action.timestamp|date:'U' }}">{{ action.timestamp }}</td>
-                <td>{{ action.user }}</td>
-                <td>{{ action.action }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
+          <tbody></tbody>
         </table>
       </div>
     </div>
@@ -111,7 +103,10 @@
 <script type="text/javascript">
   $(document).ready(function() {
     $('#version-history-table').DataTable({
-      order: [[0, 'desc']]
+      processing: true,
+      serverSide: true,
+      ajax: "{{ object.get_data_url }}",
+      order: [[0, 'desc']],
     });
   });
 </script>

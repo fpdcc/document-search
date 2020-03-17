@@ -30,3 +30,7 @@ class EasementSearch(base_views.BaseSearchView):
     template_name = 'docsearch/easements/search.html'
     facet_fields = ['easement_number']
     sort_fields = ['easement_number_exact', 'description_exact']
+
+
+class EasementData(base_views.BaseDocumentData):
+    document_model = models.Easement

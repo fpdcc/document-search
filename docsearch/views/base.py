@@ -1,8 +1,10 @@
 import re
 
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.contenttypes.models import ContentType
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 from haystack.generic_views import FacetedSearchView
+from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from docsearch import models, forms
 
@@ -178,3 +180,28 @@ class BaseSearchView(LoginRequiredMixin, DocumentPermissionRequiredMixin, Facete
                 label = re.sub(pattern, new_pattern, label)
             sort_options.append({'value': sort_field, 'label': label})
         return sort_options
+
+
+class BaseDocumentData(BaseDatatableView, DocumentPermissionRequiredMixin):
+    model = models.ActionLog
+    document_model = None  # Children must set this attribute
+    permission_action = 'view'
+    columns = ['timestamp', 'user', 'action']
+    order_columns = ['timestamp', 'user', 'action']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+        if column == 'timestamp':
+            return row.timestamp.strftime("%B %-m, %Y, %-I:%-M %p")
+        else:
+            return super().render_column(row, column)
+
+    def filter_queryset(self, qs):
+        if self.document_model is None:
+            raise NotImplementedError(
+                'Child classes must implement the document_model attribute'
+            )
+        else:
+            content_type = ContentType.objects.get_for_model(self.document_model)
+            qs = qs.filter(content_type=content_type)
+            return super().filter_queryset(qs)

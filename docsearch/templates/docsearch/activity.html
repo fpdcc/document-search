@@ -27,22 +27,7 @@
             <th>Document</th>
           </tr>
         </thead>
-        <tbody>
-          {% for action in actions %}
-            <tr>
-              <td data-order="{{ action.timestamp|date:'U' }}">{{ action.timestamp }}</td>
-              <td>{{ action.user }}</td>
-              <td>{{ action.action }}</td>
-              <td>{{ action.content_type }}</td>
-              <td>{{ action.object_id }}</td>
-              <td>
-                <a href="{{ action.content_object.get_absolute_url }}">
-                  {{ action.content_object }}
-                </a>
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
+        <tbody></tbody>
       </table>
     </div>
   </div>
@@ -54,7 +39,18 @@
 <script type="text/javascript">
   $(document).ready(function() {
     $('#version-history-table').DataTable({
-      order: [[0, 'desc']]
+      processing: true,
+      serverSide: true,
+      ajax: "{% url 'activity-data' %}",
+      order: [[0, 'desc']],
+      columns: [
+        null,
+        null,
+        null,
+        null,
+        null,
+        {orderable: false}, // Disable ordering on detail view link
+      ]
     });
   });
 </script>

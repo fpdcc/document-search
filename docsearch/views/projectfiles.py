@@ -34,3 +34,7 @@ class ProjectFileSearch(base_views.BaseSearchView):
                     'cabinet_number', 'drawer_number']
     sort_fields = ['area', 'section_exact', 'description_exact', 'job_number_exact',
                    'job_name_exact', 'cabinet_number_exact', 'drawer_number_exact']
+
+
+class ProjectFileData(base_views.BaseDocumentData):
+    document_model = models.ProjectFile
