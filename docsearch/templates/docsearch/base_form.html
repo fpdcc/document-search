@@ -2,7 +2,6 @@
 
 {% load crispy_forms_tags %}
 {% load model_meta %}
-{% load permissions %}
 
 {% block title %}{% if object %}Edit{% else %}Add new{% endif %} {{ view.model|verbose_name|title }}{% endblock %}
 
@@ -20,7 +19,7 @@
         <button class="btn btn-secondary bg-fpdcc-light-green" type="submit">
           {% if object %}Update{% else %}Create{% endif %}
         </button>
-        {% if object and request.user|can_delete:view.model %}
+        {% if object and request.user.is_staff %}
           <a class="btn btn-danger" href="{{ delete_url }}">Delete</a>
         {% endif %}
       </div>
