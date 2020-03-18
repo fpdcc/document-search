@@ -31,3 +31,7 @@ class SurplusParcelSearch(base_views.BaseSearchView):
     facet_fields = ['surplus_parcel']
     search_fields = facet_fields
     sort_fields = facet_fields + ['description_exact']
+
+
+class SurplusParcelData(base_views.BaseDocumentData):
+    document_model = models.SurplusParcel

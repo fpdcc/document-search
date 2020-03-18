@@ -101,18 +101,26 @@ class BaseDocumentModel(models.Model):
         return f'{cls.get_slug()}s'
 
     @classmethod
-    def get_create_url(self):
+    def get_create_url(cls):
         """
         Return the canonical URL referring to this object's CreateView.
         """
-        return reverse(f'{self.get_slug()}-create')
+        return reverse(f'{cls.get_slug()}-create')
 
     @classmethod
-    def get_search_url(self):
+    def get_search_url(cls):
         """
         Return the canonical URL referring to this object's Search view.
         """
-        return reverse(f'{self.get_slug()}-search')
+        return reverse(f'{cls.get_slug()}-search')
+
+    @classmethod
+    def get_data_url(cls):
+        """
+        Return the canonical URL referring to this object's DocumentData view
+        (for returning DataTables search results).
+        """
+        return reverse(f'{cls.get_slug()}-data')
 
     def get_absolute_url(self):
         """

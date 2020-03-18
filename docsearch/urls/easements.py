@@ -6,6 +6,7 @@ urlpatterns = [
     path('<int:pk>/', views.EasementDetail.as_view(), name="easement-detail"),
     path('create/', views.EasementCreate.as_view(), name="easement-create"),
     path('search/', views.EasementSearch.as_view(), name="easement-search"),
+    path('data/', views.EasementData.as_view(), name="easement-data"),
     path('update/<int:pk>/', views.EasementUpdate.as_view(), name="easement-update"),
     path('delete/<int:pk>/', views.EasementDelete.as_view(), name="easement-delete"),
 ]

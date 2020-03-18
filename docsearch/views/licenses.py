@@ -61,3 +61,7 @@ class LicenseSearch(base_views.BaseSearchView):
         'section_arr', 'type_exact', 'status_exact', 'end_date_exact',
         'agreement_type_exact'
     ]
+
+
+class LicenseData(base_views.BaseDocumentData):
+    document_model = models.License

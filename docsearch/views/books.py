@@ -35,3 +35,7 @@ class BookSearch(base_views.BaseSearchView):
         'range_arr': 'range'
     }
     sort_fields = facet_fields
+
+
+class BookData(base_views.BaseDocumentData):
+    document_model = models.Book

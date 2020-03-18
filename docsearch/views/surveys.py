@@ -39,3 +39,7 @@ class SurveySearch(base_views.BaseSearchView):
     sort_fields = ['township_arr', 'range_arr', 'section_arr', 'map_number_exact',
                    'location_exact', 'description_exact', 'job_number_exact',
                    'number_of_sheets_exact', 'date_exact']
+
+
+class SurveyData(base_views.BaseDocumentData):
+    document_model = models.Survey

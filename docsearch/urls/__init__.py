@@ -49,5 +49,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', auth.views.LoginView.as_view(template_name='docsearch/login.html'), name='login'),
     path('logout/', auth.views.LogoutView.as_view(template_name='docsearch/logout.html'), name='logout'),
+    path('activity/', views.Activity.as_view(), name='activity'),
+    path('activity/data/', views.ActivityData.as_view(), name='activity-data'),
     path('pong/', views.pong),
 ]

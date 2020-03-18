@@ -1,11 +1,16 @@
 {% extends "docsearch/base_content.html" %}
 
+{% load static %}
 {% load get_attr %}
 {% load display %}
 {% load model_meta %}
 {% load permissions %}
 
 {% block title %}{{ view.model|verbose_name|title }}{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'css/jquery.dataTables.min.css' %}" rel="stylesheet">
+{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -69,4 +74,40 @@
     </object>
   </div>
 </div>
+{% if object.actions.count > 0 %}
+  <div class="row">
+    <div class="col-12">
+      <h2 class="my-4">
+        <i class="fa fa-fw fa-history"></i>
+        Version history
+      </h2>
+      <div class="table-responsive">
+        <table class="table table-sm" id="version-history-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>User</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#version-history-table').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: "{{ object.get_data_url }}",
+      order: [[0, 'desc']],
+    });
+  });
+</script>
 {% endblock %}

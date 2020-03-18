@@ -29,4 +29,8 @@ class RightOfWaySearch(base_views.BaseSearchView):
     model = models.RightOfWay
     template_name = 'docsearch/rightsofway/search.html'
     facet_fields = ['folder_tab']
-    sort_fields = ['folder_tab_exact'] 
+    sort_fields = ['folder_tab_exact']
+
+
+class RightOfWayData(base_views.BaseDocumentData):
+    document_model = models.RightOfWay

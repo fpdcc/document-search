@@ -115,3 +115,33 @@ def test_delete(client, superuser, document_and_fields):
     Model = type(document)
     with pytest.raises(Model.DoesNotExist):
         type(document).objects.get(id=document.id)
+
+
+@pytest.mark.django_db
+def test_version_history(client, superuser, document_and_fields):
+    client.force_login(superuser)
+    document, fields = document_and_fields
+
+    # Post an update to create an ActionLog for this document
+    client.post(document.get_update_url(), data=fields)
+    document.refresh_from_db()
+    assert document.actions.count() == 1
+
+    # Test the detail view
+    detail_response = client.get(document.get_absolute_url())
+    assert detail_response.status_code == 200
+    assert 'Version history' in detail_response.content.decode('utf-8')
+
+    # Test the DataTables API endpoint for the detail view
+    detail_data_response = client.get(document.get_data_url())
+    assert detail_data_response.status_code == 200
+    assert detail_data_response.json()['recordsTotal'] == 1
+
+    # Test the global activity view
+    activity_response = client.get(reverse('activity'))
+    assert activity_response.status_code == 200
+
+    # Test the DataTables API endpoint for the global activity view
+    activity_data_response = client.get(reverse('activity-data'))
+    assert activity_data_response.status_code == 200
+    assert activity_data_response.json()['recordsTotal'] == 1

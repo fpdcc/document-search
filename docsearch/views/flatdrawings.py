@@ -39,3 +39,7 @@ class FlatDrawingSearch(base_views.BaseSearchView):
                    'description_exact', 'job_number_exact', 'number_of_sheets_exact',
                    'date_exact', 'cross_ref_area', 'cross_ref_section',
                    'cross_ref_map_number_exact']
+
+
+class FlatDrawingData(base_views.BaseDocumentData):
+    document_model = models.FlatDrawing
