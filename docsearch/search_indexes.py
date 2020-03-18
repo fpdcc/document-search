@@ -85,6 +85,7 @@ class FlatDrawingIndex(indexes.SearchIndex, indexes.Indexable):
     section = indexes.IntegerField(model_attr='section', null=True, faceted=True)
     map_number = indexes.CharField(model_attr='map_number', null=True, faceted=True)
     location = indexes.CharField(model_attr='location', null=True, faceted=True)
+    building_id = indexes.IntegerField(model_attr='building_id', null=True, faceted=True)
     description = indexes.CharField(model_attr='description', null=True, faceted=True)
     job_number = indexes.CharField(model_attr='job_number', null=True, faceted=True)
     number_of_sheets = indexes.CharField(model_attr='number_of_sheets', null=True, faceted=True)

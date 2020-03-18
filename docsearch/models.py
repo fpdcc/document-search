@@ -212,6 +212,7 @@ class FlatDrawing(BaseDocumentModel):
     section = models.PositiveIntegerField(null=True, blank=True)
     map_number = models.CharField(max_length=255, null=True, blank=True)
     location = models.TextField(blank=True, null=True)
+    building_id = models.IntegerField(verbose_name='Building ID', null=True, blank=True)
     description = models.TextField(blank=True, null=True)
     job_number = models.CharField(max_length=255, blank=True, null=True)
     number_of_sheets = models.CharField(max_length=255, null=True, blank=True)
