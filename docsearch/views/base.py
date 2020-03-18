@@ -6,7 +6,7 @@ from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 from haystack.generic_views import FacetedSearchView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
-from docsearch import models, forms
+from docsearch import models, forms, query
 
 
 class DocumentPermissionRequiredMixin(PermissionRequiredMixin):
@@ -113,6 +113,7 @@ class BaseDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
 
 class BaseSearchView(LoginRequiredMixin, DocumentPermissionRequiredMixin, FacetedSearchView):
     form_class = forms.BaseSearchForm
+    queryset = query.FuzzySearchQuerySet()
     template_name = 'docsearch/search.html'
     permission_action = 'view'
     sort_fields = []

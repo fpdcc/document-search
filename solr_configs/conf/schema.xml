@@ -233,6 +233,10 @@
     
     <field name="agreement_type_exact" type="string" indexed="true" stored="true" multiValued="false" />
 
+    <field name="building_id" type="long" indexed="true" stored="true" multiValued="false" />
+
+    <field name="building_id_exact" type="long" indexed="true" stored="true" multiValued="false" />
+
     <uniqueKey>id</uniqueKey>
 
     <!--
