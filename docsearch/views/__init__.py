@@ -35,8 +35,8 @@ class Activity(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
 class ActivityData(BaseDatatableView, UserPassesTestMixin):
     model = models.ActionLog
-    columns = ['timestamp', 'user', 'action', 'content_type', 'object_id', 'content_object']
-    order_columns = ['timestamp', 'user', 'action', 'content_type', 'object_id', '']
+    columns = ['timestamp', 'user.username', 'action', 'content_type.model', 'object_id', 'content_object']
+    order_columns = ['timestamp', 'user.username', 'action', 'content_type.model', 'object_id', '']
     max_display_length = 100
 
     def render_column(self, row, column):
