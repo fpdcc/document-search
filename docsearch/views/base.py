@@ -193,7 +193,7 @@ class BaseDocumentData(BaseDatatableView, DocumentPermissionRequiredMixin):
 
     def render_column(self, row, column):
         if column == 'timestamp':
-            return row.timestamp.strftime("%B %-m, %Y, %-I:%-M %p")
+            return row.timestamp.strftime("%B %-m, %Y, %-I:%M %p")
         else:
             return super().render_column(row, column)
 
