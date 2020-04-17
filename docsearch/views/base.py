@@ -187,13 +187,13 @@ class BaseDocumentData(BaseDatatableView, DocumentPermissionRequiredMixin):
     model = models.ActionLog
     document_model = None  # Children must set this attribute
     permission_action = 'view'
-    columns = ['timestamp', 'user', 'action']
-    order_columns = ['timestamp', 'user', 'action']
+    columns = ['timestamp', 'user.username', 'action']
+    order_columns = ['timestamp', 'user.username', 'action']
     max_display_length = 100
 
     def render_column(self, row, column):
         if column == 'timestamp':
-            return row.timestamp.strftime("%B %-m, %Y, %-I:%-M %p")
+            return row.timestamp.strftime("%B %-m, %Y, %-I:%M %p")
         else:
             return super().render_column(row, column)
 
