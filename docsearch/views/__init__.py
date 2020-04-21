@@ -23,6 +23,10 @@ class Home(LoginRequiredMixin, TemplateView):
     template_name = 'docsearch/index.html'
 
 
+class About(LoginRequiredMixin, TemplateView):
+    template_name = 'docsearch/about.html'
+
+
 class Activity(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = models.ActionLog
     context_object_name = 'actions'
