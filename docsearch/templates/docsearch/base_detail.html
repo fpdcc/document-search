@@ -15,6 +15,13 @@
 {% block content %}
 <div class="row">
   <div class="col-12">
+    {% if '/search/' in request.META.HTTP_REFERER %}
+      <div class="mb-3">
+        <a href="{{ request.META.HTTP_REFERER }}#result-{{ object.id }}">
+          <i class="fa fa-fw fa-arrow-left"></i>Back to search results
+        </a>
+      </div>
+    {% endif %}
     <h1>
       {{ view.model|verbose_name|title }}
       <small class="float-right">
