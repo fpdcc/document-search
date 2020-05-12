@@ -60,6 +60,6 @@
   <td>{{ result.object.status|default_if_none:"" }}</td>
   <td>{{ result.object.end_date|default_if_none:"" }}</td>
   <td>{{ result.object.agreement_type|default_if_none:"" }}</td>
-  <td><a href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
+  <td><a class="results-link" href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
 {% endblock %}
 {% block empty_colspan %}11{% endblock %}

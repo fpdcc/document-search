@@ -80,6 +80,10 @@ body {
   }
 }
 
+a.results-link:visited {
+  color: #551A8B;
+}
+
 /* sorting */
 
 .sort-container {
