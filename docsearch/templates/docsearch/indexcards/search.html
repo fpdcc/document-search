@@ -14,6 +14,6 @@
   <td>{{ result.object.township|default_if_none:"" }}</td>
   <td>{{ result.object.section|default_if_none:"" }}</td>
   <td>{{ result.object.corner|default_if_none:"" }}</td>
-  <td><a href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
+  <td><a class="results-link" href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
 {% endblock %}
 {% block empty_colspan %}5{% endblock %}

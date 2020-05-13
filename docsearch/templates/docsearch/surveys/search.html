@@ -25,6 +25,6 @@
   <td>{{ result.object.job_number|default_if_none:"" }}</td>
   <td>{{ result.object.number_of_sheets|default_if_none:"" }}</td>
   <td>{{ result.object.date|default_if_none:"" }}</td>
-  <td><a href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
+  <td><a class="results-link" href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
 {% endblock %}
 {% block empty_colspan %}12{% endblock %}
