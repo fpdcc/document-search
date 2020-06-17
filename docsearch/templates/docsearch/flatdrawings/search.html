@@ -3,6 +3,7 @@
 {% load model_meta %}
 
 {% block thead %}
+  <th></th>
   <th>{{ view.model|field_name:"area"|capfirst }}</th>
   <th>{{ view.model|field_name:"section"|capfirst }}</th>
   <th>{{ view.model|field_name:"map_number"|capfirst }}</th>
@@ -15,9 +16,9 @@
   <th>{{ view.model|field_name:"cross_ref_area"|capfirst }}</th>
   <th>{{ view.model|field_name:"cross_ref_section"|capfirst }}</th>
   <th>{{ view.model|field_name:"cross_ref_map_number"|capfirst }}</th>
-  <th></th>
 {% endblock %}
 {% block tr %}
+  <td><a class="results-link" href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
   <td>{{ result.object.area|default_if_none:"" }}</td>
   <td>{{ result.object.section|default_if_none:"" }}</td>
   <td>{{ result.object.map_number|default_if_none:"" }}</td>
@@ -30,6 +31,5 @@
   <td>{{ result.object.cross_ref_area|default_if_none:"" }}</td>
   <td>{{ result.object.cross_ref_section|default_if_none:"" }}</td>
   <td>{{ result.object.cross_ref_map_number|default_if_none:"" }}</td>
-  <td><a class="results-link" href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
 {% endblock %}
 {% block empty_colspan %}13{% endblock %}

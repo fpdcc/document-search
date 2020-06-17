@@ -16,6 +16,7 @@
 {% endblock %}
 
 {% block thead %}
+  <th></th>
   <th>{{ view.model|field_name:"license_number"|capfirst }}</th>
   <th>{{ view.model|field_name:"description"|capfirst }}</th>
   <th style="min-width:300px">{{ view.model|field_name:"geometry"|capfirst }}</th>
@@ -26,9 +27,9 @@
   <th>{{ view.model|field_name:"status"|capfirst }}</th>
   <th>{{ view.model|field_name:"end_date"|capfirst }}</th>
   <th>{{ view.model|field_name:"agreement_type"|capfirst }}</th>
-  <th></th>
 {% endblock %}
 {% block tr %}
+  <td><a class="results-link" href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
   <td>{{ result.object.license_number|default_if_none:"" }}</td>
   <td>{{ result.object.description|default_if_none:"" }}</td>
   {% with "geometry-"|concat:forloop.counter as map_id %}
@@ -60,6 +61,5 @@
   <td>{{ result.object.status|default_if_none:"" }}</td>
   <td>{{ result.object.end_date|default_if_none:"" }}</td>
   <td>{{ result.object.agreement_type|default_if_none:"" }}</td>
-  <td><a class="results-link" href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
 {% endblock %}
 {% block empty_colspan %}11{% endblock %}

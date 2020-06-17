@@ -3,11 +3,11 @@
 {% load model_meta %}
 
 {% block thead %}
-  <th>{{ view.model|field_name:"folder_tab"|capfirst }}</th>
   <th></th>
+  <th>{{ view.model|field_name:"folder_tab"|capfirst }}</th>
 {% endblock %}
 {% block tr %}
-  <td>{{ result.object.folder_tab|default_if_none:"" }}</td>
   <td><a class="results-link" href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
+  <td>{{ result.object.folder_tab|default_if_none:"" }}</td>
 {% endblock %}
 {% block empty_colspan %}5{% endblock %}

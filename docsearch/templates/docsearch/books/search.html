@@ -5,17 +5,17 @@
 {% load params %}
 
 {% block thead %}
+  <th></th>
   <th>{{ view.model|field_name:"township"|capfirst }}</th>
   <th>{{ view.model|field_name:"range"|capfirst }}</th>
   <th>{{ view.model|field_name:"section"|capfirst }}</th>
-  <th></th>
 {% endblock %}
 
 {% block tr %}
+  <td><a class="results-link" href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
   <td>{{ result.object.township|display_range|default_if_none:"" }}</td>
   <td>{{ result.object.range|display_range|default_if_none:"" }}</td>
   <td>{{ result.object.section|display_range|default_if_none:"" }}</td>
-  <td><a class="results-link" href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
 {% endblock %}
 
 {% block empty_colspan %}4{% endblock %}

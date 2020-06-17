@@ -3,11 +3,11 @@
 {% load model_meta %}
 
 {% block thead %}
-  <th>{{ view.model|field_name:"control_number"|capfirst }}</th>
   <th></th>
+  <th>{{ view.model|field_name:"control_number"|capfirst }}</th>
 {% endblock %}
 {% block tr %}
-  <td>{{ result.object.control_number|default_if_none:"" }}</td>
   <td><a class="results-link" href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
+  <td>{{ result.object.control_number|default_if_none:"" }}</td>
 {% endblock %}
 {% block empty_colspan %}2{% endblock %}
