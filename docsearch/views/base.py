@@ -96,8 +96,9 @@ class BaseDetailView(LoginRequiredMixin, DocumentPermissionRequiredMixin, Detail
 
 class BaseDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     def has_permission(self):
-        # Only Staff users should be able to delete
-        return self.request.user.is_staff
+        # Only Staff or Read/Write users should be able to delete
+        can_read_write = self.request.user.groups.filter(name='Read/Write').exists()
+        return self.request.user.is_staff or can_read_write
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
