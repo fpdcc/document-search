@@ -68,6 +68,7 @@ class LicenseSearch(base_views.BaseSearchView):
         q = self.request.GET.get('q')
 
         try:
+            # See if they searched by a license number
             id = int(q)
             qs = qs.filter(license_number=id)
             if qs:
@@ -75,6 +76,8 @@ class LicenseSearch(base_views.BaseSearchView):
         except ValueError:
             pass
 
+        # Return the original queryset if they didn't search
+        # by license number or found no results
         return qs
 
 
