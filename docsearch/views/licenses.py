@@ -74,11 +74,10 @@ class LicenseSearch(base_views.BaseSearchView):
             # See if they searched a license number
             # by casting the search query to an int
             id = int(q)
+            return qs.filter(license_number=id)
         except ValueError:
             # If int casting error then return original queryset
             return qs
-
-        return qs.filter(license_number=id)
 
 
 class LicenseData(base_views.BaseDocumentData):
