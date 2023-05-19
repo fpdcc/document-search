@@ -65,7 +65,6 @@ class LicenseSearch(base_views.BaseSearchView):
     def get_queryset(self):
         qs = super().get_queryset()
 
-
         q = self.request.GET.get('q')
 
         try:
