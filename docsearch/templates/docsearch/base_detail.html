@@ -54,7 +54,11 @@
                   {% if field in view.array_fields %}
                     {{ object|get_attr:field|display_array|default_if_none:"" }}
                   {% else %}
-                    {{ object|get_attr:field|default_if_none:"" }}
+                    {% if field == 'cad_file' and object.cad_file.url %}
+                      <a href="{{ object.cad_file.url }}">{{ object|get_attr:field|default_if_none:"" }}</a> 
+                    {% else %}
+                      {{ object|get_attr:field|default_if_none:"" }}
+                    {% endif %}
                   {% endif %}
                   </td>
               </tr>
