@@ -78,6 +78,8 @@ class LicenseSearch(base_views.BaseSearchView):
         except ValueError:
             # If int casting error then return original queryset
             return qs
+        finally:
+            return qs
 
 
 class LicenseData(base_views.BaseDocumentData):
