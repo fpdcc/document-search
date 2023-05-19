@@ -62,6 +62,19 @@ class LicenseSearch(base_views.BaseSearchView):
         'agreement_type_exact'
     ]
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        id = self.request.GET.get('q')
+
+        if id:
+            qs = qs.filter(license_number=int(id))
+
+            if qs:
+                return qs
+
+        return qs
+
 
 class LicenseData(base_views.BaseDocumentData):
     document_model = models.License
