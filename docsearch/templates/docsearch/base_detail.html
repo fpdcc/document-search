@@ -15,9 +15,9 @@
 {% block content %}
 <div class="row">
   <div class="col-12">
-    {% if '/search/' in request.META.HTTP_REFERER %}
+    {% if '/search/' in request.META.HTTP_REFERER or '/update/' in request.META.HTTP_REFERER %}
       <div class="mb-3">
-        <a href="{{ request.META.HTTP_REFERER }}#result-{{ object.id }}">
+        <a href="/{{ object.get_plural_slug }}/search/#result-{{ object.id }}">
           <i class="fa fa-fw fa-arrow-left"></i>Back to search results
         </a>
       </div>
