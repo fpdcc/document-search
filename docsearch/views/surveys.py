@@ -5,11 +5,11 @@ from . import base as base_views
 class SurveyDetail(base_views.BaseDetailView):
     model = models.Survey
     template_name = 'docsearch/surveys/detail.html'
-    metadata_fields = ['township', 'range', 'section', 'map_number', 'location',
+    metadata_fields = ['township', 'section', 'range', 'map_number', 'location',
                        'description', 'job_number', 'number_of_sheets',
                        'date', 'cross_ref_area', 'cross_ref_section',
                        'cross_ref_map_number', 'hash', 'source_file']
-    array_fields = ['township', 'range', 'section']
+    array_fields = ['township', 'section', 'range']
 
 
 class SurveyCreate(base_views.BaseCreateView):
