@@ -65,16 +65,17 @@ class LicenseSearch(base_views.BaseSearchView):
     def get_queryset(self):
         qs = super().get_queryset()
 
+        q = self.request.GET.get('q')
+
+        if not q:
+            return qs
+
         try:
             # See if they searched by a license number
-            q = self.request.GET.get('q')
-
-            if not q:
-                return qs
-
+            # by casting the search query to an int
             id = int(q)
         except ValueError:
-            # If not then return the original queryset
+            # If int casting error then return original queryset
             return qs
 
         return qs.filter(license_number=id)
