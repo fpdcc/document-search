@@ -20,9 +20,9 @@ class LicenseDetail(base_views.BaseDetailView):
     model = models.License
     template_name = 'docsearch/licenses/detail.html'
     metadata_fields = [
-        'license_number', 'description', 'township', 'range', 'section',
-        'type', 'status', 'end_date', 'agreement_type', 'material',
-        'diameter', 'source_file'
+        'license_number', 'description', 'type', 'entity', 'diameter',
+        'material', 'end_date', 'status', 'agreement_type', 'township',
+        'range', 'section', 'source_file',
     ]
     array_fields = ['township', 'range', 'section']
 
