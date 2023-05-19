@@ -71,7 +71,7 @@ class LicenseSearch(base_views.BaseSearchView):
             return qs
 
         try:
-            # See if they searched by a license number
+            # See if they searched a license number
             # by casting the search query to an int
             id = int(q)
         except ValueError:
