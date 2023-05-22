@@ -132,17 +132,21 @@
                           {% for value, count in facets.fields|get_key:facet_field %}
                             {% if count > 0 %}
                               {% with facet_field_exact|add:":"|add:value as facet_query %}
-                                <li>
-                                  {% if facet_query in selected_facets %}
-                                    <a href="?{% remove_facet_param parameters facet_field_exact value %}" title="{{ value }}">
-                                      <strong>{{ value }}</strong>&nbsp;<i class="fa fa-fw fa-times"></i>
+                                <li class="border-bottom mb-1">
+                                  <div class="d-inline-block" style="width:80%">
+                                    {% if facet_query in selected_facets %}
+                                      <a href="?{% remove_facet_param parameters facet_field_exact value %}" title="{{ value }}">
+                                        <strong>{{ value }}</strong>&nbsp;<i class="fa fa-fw fa-times"></i>
+                                      </a>
+                                    {% else %}
+                                    <a href="?{% set_facet_param parameters facet_field_exact value %}" title="{{ value }}">
+                                      {{ value }}
                                     </a>
-                                  {% else %}
-                                  <a href="?{% set_facet_param parameters facet_field_exact value %}" title="{{ value }}">
-                                    {{ value }}
-                                  </a>
-                                  {% endif %}
-                                  <span class="badge badge-secondary rounded-pill float-right">{{ count }}</span>
+                                    {% endif %}
+                                  </div>
+                                  <div class="d-inline-block align-top" style="width:15%">
+                                    <span class="badge badge-secondary rounded-pill float-right">{{ count }}</span>
+                                  </div>
                                 </li>
                               {% endwith %}
                             {% endif %}
