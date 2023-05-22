@@ -1,6 +1,6 @@
 import json
 
-from django.forms import ModelForm
+from django.forms import ModelForm, ValidationError
 from django.contrib.gis.forms.fields import GeometryCollectionField
 from haystack.query import SQ
 from haystack.forms import SearchForm
@@ -48,6 +48,9 @@ class LicenseGeometryCollectionField(GeometryCollectionField):
         Convert the value to a GeometryCollection, not natively supported
         by GeoDjango.
         """
+        if not value:
+            return None
+
         val = json.loads(value)
         if val.get('type') != 'GeometryCollection':
             val = {
