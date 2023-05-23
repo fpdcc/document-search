@@ -146,3 +146,8 @@ footer a {
 footer a.dropdown-item {
   color: #212529 !important;
 }
+
+.asteriskField {
+  color:red;
+  font-size: 1.3em;
+}
