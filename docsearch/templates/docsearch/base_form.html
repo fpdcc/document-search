@@ -12,6 +12,7 @@
     <h1 class="mb-3">
       {% if object %}Edit{% else %}Add new{% endif %} {{ view.model|verbose_name|title }}
     </h1>
+    <p><span class="asteriskField">*</span> Indicates a required field</p>
     <form method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       {{ form|crispy }}
