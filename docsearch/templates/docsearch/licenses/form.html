@@ -23,6 +23,17 @@
         }
       });
       map.addLayer(streets);
+      {% if object.geometry %}
+        var featureCollection = JSON.parse("{{ object.geometry.geojson|escapejs }}");
+        var geoJsonLayer = L.geoJSON(featureCollection);
+        geoJsonLayer.addTo(map);
+        map.fitBounds(geoJsonLayer.getBounds());
+
+        // Have the reset view button take the view back to the initial position
+        map.on('viewreset', function() {
+          map.fitBounds(geoJsonLayer.getBounds())
+        });
+      {% endif %}
     });
     $(document).ready(function() {
       // Make sure the textarea input is a Bootstrap form-control. We need to
