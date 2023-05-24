@@ -55,6 +55,10 @@
           map.on('viewreset', function() {
             map.fitBounds(geoJsonLayer.getBounds())
           });
+        {% else %}
+          map.on('viewreset', function() {
+            map.setView(L.latLng([41.82, -87.85]), 9)
+          });
         {% endif %}
       }
     </script>
