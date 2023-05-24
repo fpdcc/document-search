@@ -7,6 +7,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres import fields as pg_fields
 from django.contrib.postgres import forms as pg_forms
 from django.contrib.gis.db import models as gis_models
+from django.core.validators import FileExtensionValidator
+
+from .validators import validate_positive_int
 
 
 class InclusiveIntegerRangeFormField(pg_forms.IntegerRangeField):
@@ -170,7 +173,7 @@ class Book(BaseDocumentModel):
         null=True,
         blank=True,
         help_text=RANGE_FIELD_HELP_TEXT)
-    source_file = models.FileField(upload_to='BOOKS')
+    source_file = models.FileField(upload_to='BOOKS', validators=[FileExtensionValidator(['pdf'])])
 
 
 class ControlMonumentMap(BaseDocumentModel):
@@ -181,30 +184,33 @@ class ControlMonumentMap(BaseDocumentModel):
         help_text=ARRAY_FIELD_HELP_TEXT
     )
     part_of_section = models.CharField(max_length=255, null=True, blank=True)
-    source_file = models.FileField(upload_to='CONTROL_MONUMENT_MAPS')
+    source_file = models.FileField(upload_to='CONTROL_MONUMENT_MAPS', validators=[FileExtensionValidator(['pdf'])])
 
 
 class SurplusParcel(BaseDocumentModel):
     surplus_parcel = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    source_file = models.FileField(upload_to='DEEP_PARCEL_SURPLUS')
+    source_file = models.FileField(upload_to='DEEP_PARCEL_SURPLUS', validators=[FileExtensionValidator(['pdf'])])
 
 
 class DeepTunnel(BaseDocumentModel):
     description = models.TextField()
-    source_file = models.FileField(upload_to='DEEP_PARCEL_SURPLUS')
+    source_file = models.FileField(upload_to='DEEP_PARCEL_SURPLUS', validators=[FileExtensionValidator(['pdf'])])
 
 
 class Dossier(BaseDocumentModel):
-    file_number = models.CharField(max_length=255)
-    document_number = models.CharField(max_length=3)
-    source_file = models.FileField(upload_to='DOSSIER_FILES')
+    file_number = models.CharField(max_length=255, validators=[validate_positive_int])
+    document_number = models.CharField(max_length=3, validators=[validate_positive_int])
+    source_file = models.FileField(
+        upload_to='DOSSIER_FILES',
+        validators=[FileExtensionValidator(['pdf'])]
+    )
 
 
 class Easement(BaseDocumentModel):
     easement_number = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    source_file = models.FileField(upload_to='EASEMENTS')
+    source_file = models.FileField(upload_to='EASEMENTS', validators=[FileExtensionValidator(['pdf'])])
 
 
 class FlatDrawing(BaseDocumentModel):
@@ -226,7 +232,7 @@ class FlatDrawing(BaseDocumentModel):
     )
     hash = models.CharField(max_length=255, null=True, blank=True)
     cad_file = models.FileField('CAD file', null=True, blank=True)
-    source_file = models.FileField(upload_to='FLAT_DRAWINGS')
+    source_file = models.FileField(upload_to='FLAT_DRAWINGS', validators=[FileExtensionValidator(['pdf'])])
 
 
 class IndexCard(BaseDocumentModel):
@@ -234,7 +240,7 @@ class IndexCard(BaseDocumentModel):
     township = models.CharField(max_length=255)
     section = models.CharField(max_length=255, null=True, blank=True)
     corner = models.CharField(max_length=255, null=True, blank=True)
-    source_file = models.FileField(upload_to='INDEX_CARDS')
+    source_file = models.FileField(upload_to='INDEX_CARDS', validators=[FileExtensionValidator(['pdf'])])
 
 
 class License(BaseDocumentModel):
@@ -263,7 +269,7 @@ class License(BaseDocumentModel):
         help_text=ARRAY_FIELD_HELP_TEXT,
         default=list
     )
-    source_file = models.FileField(upload_to='LICENSES')
+    source_file = models.FileField(upload_to='LICENSES', validators=[FileExtensionValidator(['pdf'])])
 
 
 class ProjectFile(BaseDocumentModel):
@@ -274,12 +280,12 @@ class ProjectFile(BaseDocumentModel):
     description = models.TextField(null=True, blank=True)
     cabinet_number = models.CharField(max_length=255, null=True, blank=True)
     drawer_number = models.CharField(max_length=255, null=True, blank=True)
-    source_file = models.FileField(upload_to='PROJECT_FILES')
+    source_file = models.FileField(upload_to='PROJECT_FILES', validators=[FileExtensionValidator(['pdf'])])
 
 
 class RightOfWay(BaseDocumentModel):
     folder_tab = models.CharField(max_length=255)
-    source_file = models.FileField(upload_to='RIGHT_OF_WAY')
+    source_file = models.FileField(upload_to='RIGHT_OF_WAY', validators=[FileExtensionValidator(['pdf'])])
 
     class Meta:
         verbose_name_plural = 'rights of way'
@@ -316,9 +322,9 @@ class Survey(BaseDocumentModel):
         null=True
     )
     hash = models.CharField(max_length=255, null=True, blank=True)
-    source_file = models.FileField(upload_to='SURVEYS')
+    source_file = models.FileField(upload_to='SURVEYS', validators=[FileExtensionValidator(['pdf'])])
 
 
 class Title(BaseDocumentModel):
     control_number = models.CharField(max_length=255)
-    source_file = models.FileField(upload_to='TITLES')
+    source_file = models.FileField(upload_to='TITLES', validators=[FileExtensionValidator(['pdf'])])
