@@ -41,6 +41,15 @@
         var geoJsonLayer = L.geoJSON(featureCollection);
         geoJsonLayer.addTo(map);
         map.fitBounds(geoJsonLayer.getBounds());
+
+        // Have the reset view button take the view back to the initial position
+        map.on('viewreset', function() {
+          map.fitBounds(geoJsonLayer.getBounds())
+        });
+      {% else %}
+        map.on('viewreset', function() {
+          map.setView(L.latLng([41.82, -87.85]), 9)
+        });
       {% endif %}
     }
   </script>
