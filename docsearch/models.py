@@ -9,7 +9,7 @@ from django.contrib.postgres import forms as pg_forms
 from django.contrib.gis.db import models as gis_models
 from django.core.validators import FileExtensionValidator
 
-from .validators import validate_positive_int
+from .validators import validate_positive_int, validate_range, check_value
 
 
 class InclusiveIntegerRangeFormField(pg_forms.IntegerRangeField):
@@ -162,16 +162,19 @@ class Book(BaseDocumentModel):
         max_length=255,
         null=True,
         blank=True,
+        validators=[validate_range(min=35, max=42)],
         help_text=RANGE_FIELD_HELP_TEXT)
     range = InclusiveIntegerRangeField(
         max_length=255,
         null=True,
         blank=True,
+        validators=[validate_range(min=9, max=15)],
         help_text=RANGE_FIELD_HELP_TEXT)
     section = InclusiveIntegerRangeField(
         max_length=255,
         null=True,
         blank=True,
+        validators=[validate_range(min=1, max=36)],
         help_text=RANGE_FIELD_HELP_TEXT)
     source_file = models.FileField(upload_to='BOOKS', validators=[FileExtensionValidator(['pdf'])])
 
@@ -208,7 +211,7 @@ class Dossier(BaseDocumentModel):
 
 
 class Easement(BaseDocumentModel):
-    easement_number = models.CharField(max_length=255, null=True, blank=True)
+    easement_number = models.CharField(max_length=255, validators=[validate_positive_int], null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     source_file = models.FileField(upload_to='EASEMENTS', validators=[FileExtensionValidator(['pdf'])])
 
@@ -326,5 +329,5 @@ class Survey(BaseDocumentModel):
 
 
 class Title(BaseDocumentModel):
-    control_number = models.CharField(max_length=255)
+    control_number = models.CharField(max_length=255, validators=[validate_positive_int])
     source_file = models.FileField(upload_to='TITLES', validators=[FileExtensionValidator(['pdf'])])
