@@ -2,9 +2,11 @@ from django.core.exceptions import ValidationError
 import re
 
 def validate_positive_int(value):
-    if int(value) <= 0:
+    # Check that the value is a positive integer
+
+    if not value.isnumeric() or int(value) <= 0:
         raise ValidationError(
-            ("Please enter a positive number, %(value)s is not valid."),
+            ("Please enter a positive number, '%(value)s' is not valid."),
             params={"value": value},
         )
 
