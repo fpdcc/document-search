@@ -305,12 +305,12 @@ class License(BaseDocumentModel):
 
 
 class ProjectFile(BaseDocumentModel):
-    area = models.PositiveIntegerField(null=True, blank=True)
-    section = models.PositiveIntegerField(null=True, blank=True)
+    area = models.PositiveIntegerField(null=True, blank=True, validators=[validate_int_btwn(1, 33)])
+    section = models.PositiveIntegerField(null=True, blank=True, validators=[validate_int_btwn(1, 36)])
     job_number = models.CharField(max_length=255, null=True, blank=True)
     job_name = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    cabinet_number = models.CharField(max_length=255, null=True, blank=True)
+    cabinet_number = models.CharField(max_length=255, null=True, blank=True, validators=[validate_int_btwn(1, 10)])
     drawer_number = models.CharField(max_length=255, null=True, blank=True)
     source_file = models.FileField(upload_to='PROJECT_FILES', validators=[FileExtensionValidator(['pdf'])])
 

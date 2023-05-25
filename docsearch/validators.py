@@ -37,7 +37,7 @@ def validate_int_btwn(min, max):
     # Check that a single integer is between the min and max
 
     def validator(value):
-        if value < min or value > max:
+        if int(value) < min or int(value) > max:
             raise ValidationError(
                 ("Please enter a number between %(min)s and %(max)s. The number %(value)s is not valid."),
                 params={
@@ -77,7 +77,6 @@ def validate_int_array(min, max):
 
 
 def validate_date(value):
-    print(value)
     pattern = re.compile(r"^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$")
     date_error='Please enter the date as "YYYY-MM-DD", ensuring that the date exists. The date %(value)s is not valid.'
 
