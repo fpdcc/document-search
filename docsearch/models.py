@@ -9,7 +9,7 @@ from django.contrib.postgres import forms as pg_forms
 from django.contrib.gis.db import models as gis_models
 from django.core.validators import FileExtensionValidator
 
-from .validators import validate_positive_int, validate_int_btwn, validate_int_range,  validate_int_array, validate_date, check_value
+from .validators import validate_positive_int, validate_int_btwn, validate_int_range,  validate_int_array, validate_date, validate_license_num
 
 
 class InclusiveIntegerRangeFormField(pg_forms.IntegerRangeField):
@@ -276,28 +276,64 @@ class IndexCard(BaseDocumentModel):
 
 
 class License(BaseDocumentModel):
-    license_number = models.CharField(max_length=255, null=True, blank=True)
+    TYPE_CHOICES = [
+        ("combined sewer", "Combined Sewer"),
+        ("electric", "Electric"),
+        ("gas", "Gas"),
+        ("pipeline", "Pipeline"),
+        ("sanitary sewer", "Sanitary Sewer"),
+        ("storm sewer", "Storm Sewer"),
+        ("telecom", "Telecom"),
+        ("water main", "Water Main"),
+        ("other", "Other"),
+    ]
+
+    STATUS_CHOICES = [
+        ("TBD", "TBD"),
+        ("active", "Active"),
+        ("cancelled", "Cancelled"),
+        ("continuous", "Continuous"),
+        ("expired", "Expired"),
+        ("indefinite", "Indefinite"),
+        ("perpetual", "Perpetual"),
+    ]
+
+    license_number = models.CharField(
+        max_length=255,
+        null=True, blank=True,
+        validators=[validate_license_num],
+        help_text='Enter as a hyphenated string starting with "O" and ending with an integer (i.e. O-100)'
+    )
     description = models.TextField(null=True, blank=True)
     geometry = gis_models.GeometryCollectionField(blank=True, null=True)
-    type = models.CharField(max_length=255, null=True, blank=True)
+    type = models.CharField(max_length=255, choices=TYPE_CHOICES, null=True, blank=True)
     entity = models.CharField(max_length=255, null=True, blank=True)
-    diameter = models.PositiveIntegerField(null=True, blank=True)
+    diameter = models.PositiveIntegerField(null=True, blank=True, validators=[validate_positive_int])
     material = models.CharField(max_length=255, null=True, blank=True)
-    end_date = models.CharField(max_length=255, null=True, blank=True)
-    status = models.CharField(max_length=255, null=True, blank=True)
+    end_date = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        validators=[validate_date],
+        help_text=DATE_FIELD_HELP_TEXT
+    )
+    status = models.CharField(max_length=255, choices=STATUS_CHOICES, null=True, blank=True)
     agreement_type = models.CharField(max_length=255, null=True, blank=True)
     township = pg_fields.ArrayField(
         models.PositiveIntegerField(null=True),
+        validators=[validate_int_array(35, 42)],
         help_text=ARRAY_FIELD_HELP_TEXT,
         default=list
     )
     range = pg_fields.ArrayField(
         models.PositiveIntegerField(null=True),
+        validators=[validate_int_array(9, 15)],
         help_text=ARRAY_FIELD_HELP_TEXT,
         default=list
     )
     section = pg_fields.ArrayField(
         models.PositiveIntegerField(null=True),
+        validators=[validate_int_array(1, 36)],
         help_text=ARRAY_FIELD_HELP_TEXT,
         default=list
     )

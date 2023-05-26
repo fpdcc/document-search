@@ -116,7 +116,11 @@ def validate_date(value):
             )
 
 
-def check_value(value):
-    # TODO: For testing purposes only. Delete before finishing
-    if value:
-        print("The value is:", value)
+def validate_license_num(value):
+    # Check that the license number is a hyphenated string starting with "O" and ending with an integer
+
+    if not value[:2] == "O-" or not value[2:].isnumeric():
+        raise ValidationError(
+            ("Please enter a hyphenated string starting with 'O' and ending with an integer, '%(value)s' is not valid."),
+            params={"value": value},
+        )
