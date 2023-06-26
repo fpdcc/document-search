@@ -62,6 +62,25 @@ class LicenseSearch(base_views.BaseSearchView):
         'agreement_type_exact'
     ]
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        q = self.request.GET.get('q')
+
+        if not q:
+            return qs
+
+        try:
+            # See if they searched a license number
+            # by casting the search query to an int
+            id = int(q)
+            return qs.filter(license_number=id)
+        except ValueError:
+            # If int casting error then return original queryset
+            return qs
+        finally:
+            return qs
+
 
 class LicenseData(base_views.BaseDocumentData):
     document_model = models.License
