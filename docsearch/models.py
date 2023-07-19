@@ -275,11 +275,11 @@ class IndexCard(BaseDocumentModel):
 
 class License(BaseDocumentModel):
     TYPE_CHOICES = [
-        ("combined sewer", "Combined Sewer"),
+        ("combined_sewer", "Combined Sewer"),
         ("electric", "Electric"),
         ("gas", "Gas"),
         ("pipeline", "Pipeline"),
-        ("sanitary sewer", "Sanitary Sewer"),
+        ("sanitary_sewer", "Sanitary Sewer"),
         ("storm sewer", "Storm Sewer"),
         ("telecom", "Telecom"),
         ("water main", "Water Main"),
