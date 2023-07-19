@@ -164,7 +164,6 @@ class Book(BaseDocumentModel):
         max_length=255,
         null=True,
         blank=True,
-        validators=[validate_int_range(min=35, max=42)],
         help_text=RANGE_FIELD_HELP_TEXT)
     range = InclusiveIntegerRangeField(
         max_length=255,
@@ -189,7 +188,6 @@ class ControlMonumentMap(BaseDocumentModel):
 
     township = models.PositiveIntegerField(
         null=True,
-        validators=[validate_int_btwn(35, 42)]
     )
     range = models.PositiveIntegerField(
         null=True,
@@ -321,7 +319,6 @@ class License(BaseDocumentModel):
     agreement_type = models.CharField(max_length=255, null=True, blank=True)
     township = pg_fields.ArrayField(
         models.PositiveIntegerField(null=True),
-        validators=[validate_int_array(35, 42)],
         help_text=ARRAY_FIELD_HELP_TEXT,
         default=list
     )
@@ -366,7 +363,6 @@ class RightOfWay(BaseDocumentModel):
 class Survey(BaseDocumentModel):
     township = pg_fields.ArrayField(
         models.PositiveIntegerField(null=True, blank=True),
-        validators=[validate_int_array(35, 42)],
         help_text=ARRAY_FIELD_HELP_TEXT
     )
     section = pg_fields.ArrayField(

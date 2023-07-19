@@ -52,10 +52,6 @@ class LicenseGeometryCollectionField(GeometryCollectionField):
         """
         if not value:
             return None
-
-        # if not isinstance(value, GeometryCollection) or not value.valid or value.empty:
-        #     print("NOT VALID FROM TO PYTHON")
-        #     return None
         
         val = json.loads(value)
         if val.get('type') != 'GeometryCollection':
@@ -76,14 +72,16 @@ class LicenseForm(ModelForm):
     ))
 
     # def clean_geometry(self):
-    #     try:
-    #         data = self.cleaned_data['geometry']
-    #         print('THE GEOMETRY IS:', data)
-    #         if not isinstance(data, GeometryCollection) or not data.valid or data.empty:
-    #             print("NOT VALID")
-    #             raise ValidationError(("Please enter valid GeoJSON"))
-    #     except GDALException:
-    #         print("FROM THE EXCEPT BLOCK")
+    #     data = self.cleaned_data['geometry']
+    #     # print('THE GEOMETRY IS:', data)
+    #     # print('Valid:', data.valid)
+    #     # print('Empty:', data.empty)
+    #     # print('Coords:', data.num_coords)
+    #     # print('Geom:', data.num_geom)
+    #     # print(data.geojson)
+    #     # print(dir(data))
+    #     if not data.valid or data.empty:
+    #         print("NOT VALID")
     #         raise ValidationError(("Please enter valid GeoJSON"))
         
     #     return data
