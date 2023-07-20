@@ -2,8 +2,6 @@ import json
 
 from django.forms import ModelForm, ValidationError
 from django.contrib.gis.forms.fields import GeometryCollectionField
-from django.contrib.gis.geos.collections import GeometryCollection
-from django.contrib.gis.gdal.error import GDALException
 from haystack.query import SQ
 from haystack.forms import SearchForm
 
@@ -53,7 +51,11 @@ class LicenseGeometryCollectionField(GeometryCollectionField):
         if not value:
             return None
         
-        val = json.loads(value)
+        try:
+            val = json.loads(value)
+        except json.decoder.JSONDecodeError:
+            raise ValidationError(("Please check the formatting for your GeoJSON"))
+
         if val.get('type') != 'GeometryCollection':
             val = {
                 'type': 'GeometryCollection',
@@ -71,20 +73,12 @@ class LicenseForm(ModelForm):
         'GeometryCollection and paste it in the box above.'
     ))
 
-    # def clean_geometry(self):
-    #     data = self.cleaned_data['geometry']
-    #     # print('THE GEOMETRY IS:', data)
-    #     # print('Valid:', data.valid)
-    #     # print('Empty:', data.empty)
-    #     # print('Coords:', data.num_coords)
-    #     # print('Geom:', data.num_geom)
-    #     # print(data.geojson)
-    #     # print(dir(data))
-    #     if not data.valid or data.empty:
-    #         print("NOT VALID")
-    #         raise ValidationError(("Please enter valid GeoJSON"))
+    def clean_geometry(self):
+        data = self.cleaned_data['geometry']
+        if not data.valid or data.empty:
+            raise ValidationError(("Please enter valid GeoJSON"))
         
-    #     return data
+        return data
 
     class Meta:
         model = License
