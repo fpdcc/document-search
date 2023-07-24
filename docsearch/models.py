@@ -7,6 +7,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres import fields as pg_fields
 from django.contrib.postgres import forms as pg_forms
 from django.contrib.gis.db import models as gis_models
+from django.core.validators import FileExtensionValidator
+
+from .validators import validate_positive_int, validate_int_btwn, validate_int_range,  validate_int_array, validate_date, validate_license_num
 
 
 class InclusiveIntegerRangeFormField(pg_forms.IntegerRangeField):
@@ -153,6 +156,8 @@ ARRAY_FIELD_HELP_TEXT = (
     'to save the values 1, 2, and 3, record them as 1,2,3.'
 )
 
+DATE_FIELD_HELP_TEXT = ('Enter the date as "YYYY-MM-DD"')
+
 
 class Book(BaseDocumentModel):
     township = InclusiveIntegerRangeField(
@@ -164,69 +169,100 @@ class Book(BaseDocumentModel):
         max_length=255,
         null=True,
         blank=True,
+        validators=[validate_int_range(min=9, max=15)],
         help_text=RANGE_FIELD_HELP_TEXT)
     section = InclusiveIntegerRangeField(
         max_length=255,
         null=True,
         blank=True,
+        validators=[validate_int_range(min=1, max=36)],
         help_text=RANGE_FIELD_HELP_TEXT)
-    source_file = models.FileField(upload_to='BOOKS')
+    source_file = models.FileField(upload_to='BOOKS', validators=[FileExtensionValidator(['pdf'])])
 
 
 class ControlMonumentMap(BaseDocumentModel):
-    township = models.PositiveIntegerField(null=True)
-    range = models.PositiveIntegerField(null=True)
+    PART_OF_SECTION_CHOICES = [
+        ("E1/2", "E1/2"),
+        ("W1/2", "W1/2")
+    ]
+
+    township = models.PositiveIntegerField(
+        null=True,
+    )
+    range = models.PositiveIntegerField(
+        null=True,
+        validators=[validate_int_btwn(9, 15)]
+    )
     section = pg_fields.ArrayField(
         models.PositiveIntegerField(null=True),
+        validators=[validate_int_array(1, 36)],
         help_text=ARRAY_FIELD_HELP_TEXT
     )
-    part_of_section = models.CharField(max_length=255, null=True, blank=True)
-    source_file = models.FileField(upload_to='CONTROL_MONUMENT_MAPS')
+    part_of_section = models.CharField(
+        max_length=4,
+        null=True,
+        blank=True,
+        choices=PART_OF_SECTION_CHOICES,
+    )
+    source_file = models.FileField(upload_to='CONTROL_MONUMENT_MAPS', validators=[FileExtensionValidator(['pdf'])])
 
 
 class SurplusParcel(BaseDocumentModel):
     surplus_parcel = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    source_file = models.FileField(upload_to='DEEP_PARCEL_SURPLUS')
+    source_file = models.FileField(upload_to='DEEP_PARCEL_SURPLUS', validators=[FileExtensionValidator(['pdf'])])
 
 
 class DeepTunnel(BaseDocumentModel):
     description = models.TextField()
-    source_file = models.FileField(upload_to='DEEP_PARCEL_SURPLUS')
+    source_file = models.FileField(upload_to='DEEP_PARCEL_SURPLUS', validators=[FileExtensionValidator(['pdf'])])
 
 
 class Dossier(BaseDocumentModel):
-    file_number = models.CharField(max_length=255)
-    document_number = models.CharField(max_length=3)
-    source_file = models.FileField(upload_to='DOSSIER_FILES')
+    file_number = models.CharField(max_length=255, validators=[validate_positive_int])
+    document_number = models.CharField(max_length=3, validators=[validate_positive_int])
+    source_file = models.FileField(
+        upload_to='DOSSIER_FILES',
+        validators=[FileExtensionValidator(['pdf'])]
+    )
 
 
 class Easement(BaseDocumentModel):
-    easement_number = models.CharField(max_length=255, null=True, blank=True)
+    easement_number = models.CharField(max_length=255, validators=[validate_positive_int], null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    source_file = models.FileField(upload_to='EASEMENTS')
+    source_file = models.FileField(upload_to='EASEMENTS', validators=[FileExtensionValidator(['pdf'])])
 
 
 class FlatDrawing(BaseDocumentModel):
-    area = models.PositiveIntegerField(null=True, blank=True)
+    area = models.PositiveIntegerField(null=True, blank=True, validators=[validate_int_btwn(1, 33)])
     section = models.PositiveIntegerField(null=True, blank=True)
     map_number = models.CharField(max_length=255, null=True, blank=True)
     location = models.TextField(blank=True, null=True)
     building_id = models.IntegerField(verbose_name='Building ID', null=True, blank=True)
     description = models.TextField(blank=True, null=True)
     job_number = models.CharField(max_length=255, blank=True, null=True)
-    number_of_sheets = models.CharField(max_length=255, null=True, blank=True)
-    date = models.CharField(max_length=255, null=True, blank=True)
-    cross_ref_area = models.PositiveIntegerField(null=True, blank=True)
-    cross_ref_section = models.PositiveIntegerField(null=True, blank=True)
+    number_of_sheets = models.CharField(max_length=255, null=True, blank=True, validators=[validate_positive_int])
+    date = models.CharField(max_length=255, null=True, blank=True, validators=[validate_date], help_text=DATE_FIELD_HELP_TEXT)
+    cross_ref_area = models.PositiveIntegerField(null=True, blank=True, validators=[validate_int_btwn(1, 33)])
+    cross_ref_section = models.PositiveIntegerField(null=True, blank=True, validators=[validate_int_btwn(1, 36)])
     cross_ref_map_number = models.CharField(
         max_length=255,
         blank=True,
         null=True
     )
     hash = models.CharField(max_length=255, null=True, blank=True)
-    cad_file = models.FileField('CAD file', null=True, blank=True)
-    source_file = models.FileField(upload_to='FLAT_DRAWINGS')
+    cad_file = models.FileField(
+        'CAD file',
+        null=True,
+        blank=True,
+        validators=[FileExtensionValidator([
+            'dwg',
+            'dxf',
+            'dgn',
+            'stl'
+        ])],
+    )
+    source_file = models.FileField(upload_to='FLAT_DRAWINGS', validators=[FileExtensionValidator(['pdf'])])
 
 
 class IndexCard(BaseDocumentModel):
@@ -234,19 +270,52 @@ class IndexCard(BaseDocumentModel):
     township = models.CharField(max_length=255)
     section = models.CharField(max_length=255, null=True, blank=True)
     corner = models.CharField(max_length=255, null=True, blank=True)
-    source_file = models.FileField(upload_to='INDEX_CARDS')
+    source_file = models.FileField(upload_to='INDEX_CARDS', validators=[FileExtensionValidator(['pdf'])])
 
 
 class License(BaseDocumentModel):
-    license_number = models.CharField(max_length=255, null=True, blank=True)
+    TYPE_CHOICES = [
+        ("combined_sewer", "Combined Sewer"),
+        ("electric", "Electric"),
+        ("gas", "Gas"),
+        ("pipeline", "Pipeline"),
+        ("sanitary_sewer", "Sanitary Sewer"),
+        ("storm sewer", "Storm Sewer"),
+        ("telecom", "Telecom"),
+        ("water main", "Water Main"),
+        ("other", "Other"),
+    ]
+
+    STATUS_CHOICES = [
+        ("TBD", "TBD"),
+        ("active", "Active"),
+        ("cancelled", "Cancelled"),
+        ("continuous", "Continuous"),
+        ("expired", "Expired"),
+        ("indefinite", "Indefinite"),
+        ("perpetual", "Perpetual"),
+    ]
+
+    license_number = models.CharField(
+        max_length=255,
+        null=True, blank=True,
+        validators=[validate_license_num],
+        help_text='Enter as a hyphenated string starting with "O" and ending with an integer (i.e. O-100)'
+    )
     description = models.TextField(null=True, blank=True)
     geometry = gis_models.GeometryCollectionField(blank=True, null=True)
-    type = models.CharField(max_length=255, null=True, blank=True)
+    type = models.CharField(max_length=255, choices=TYPE_CHOICES, null=True, blank=True)
     entity = models.CharField(max_length=255, null=True, blank=True)
-    diameter = models.PositiveIntegerField(null=True, blank=True)
+    diameter = models.PositiveIntegerField(null=True, blank=True, validators=[validate_positive_int])
     material = models.CharField(max_length=255, null=True, blank=True)
-    end_date = models.CharField(max_length=255, null=True, blank=True)
-    status = models.CharField(max_length=255, null=True, blank=True)
+    end_date = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        validators=[validate_date],
+        help_text=DATE_FIELD_HELP_TEXT
+    )
+    status = models.CharField(max_length=255, choices=STATUS_CHOICES, null=True, blank=True)
     agreement_type = models.CharField(max_length=255, null=True, blank=True)
     township = pg_fields.ArrayField(
         models.PositiveIntegerField(null=True),
@@ -255,31 +324,33 @@ class License(BaseDocumentModel):
     )
     range = pg_fields.ArrayField(
         models.PositiveIntegerField(null=True),
+        validators=[validate_int_array(9, 15)],
         help_text=ARRAY_FIELD_HELP_TEXT,
         default=list
     )
     section = pg_fields.ArrayField(
         models.PositiveIntegerField(null=True),
+        validators=[validate_int_array(1, 36)],
         help_text=ARRAY_FIELD_HELP_TEXT,
         default=list
     )
-    source_file = models.FileField(upload_to='LICENSES')
+    source_file = models.FileField(upload_to='LICENSES', validators=[FileExtensionValidator(['pdf'])])
 
 
 class ProjectFile(BaseDocumentModel):
-    area = models.PositiveIntegerField(null=True, blank=True)
-    section = models.PositiveIntegerField(null=True, blank=True)
+    area = models.PositiveIntegerField(null=True, blank=True, validators=[validate_int_btwn(1, 33)])
+    section = models.PositiveIntegerField(null=True, blank=True, validators=[validate_int_btwn(1, 36)])
     job_number = models.CharField(max_length=255, null=True, blank=True)
     job_name = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    cabinet_number = models.CharField(max_length=255, null=True, blank=True)
+    cabinet_number = models.CharField(max_length=255, null=True, blank=True, validators=[validate_int_btwn(1, 10)])
     drawer_number = models.CharField(max_length=255, null=True, blank=True)
-    source_file = models.FileField(upload_to='PROJECT_FILES')
+    source_file = models.FileField(upload_to='PROJECT_FILES', validators=[FileExtensionValidator(['pdf'])])
 
 
 class RightOfWay(BaseDocumentModel):
     folder_tab = models.CharField(max_length=255)
-    source_file = models.FileField(upload_to='RIGHT_OF_WAY')
+    source_file = models.FileField(upload_to='RIGHT_OF_WAY', validators=[FileExtensionValidator(['pdf'])])
 
     class Meta:
         verbose_name_plural = 'rights of way'
@@ -296,29 +367,31 @@ class Survey(BaseDocumentModel):
     )
     section = pg_fields.ArrayField(
         models.PositiveIntegerField(null=True, blank=True),
+        validators=[validate_int_array(1, 36)],
         help_text=ARRAY_FIELD_HELP_TEXT
     )
     range = pg_fields.ArrayField(
         models.PositiveIntegerField(null=True, blank=True),
+        validators=[validate_int_array(9, 15)],
         help_text=ARRAY_FIELD_HELP_TEXT
     )
     map_number = models.CharField(max_length=255, null=True, blank=True)
     location = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     job_number = models.CharField(max_length=255, blank=True, null=True)
-    number_of_sheets = models.CharField(max_length=255, blank=True, null=True)
-    date = models.CharField(max_length=255, blank=True, null=True)
-    cross_ref_area = models.PositiveIntegerField(blank=True, null=True)
-    cross_ref_section = models.PositiveIntegerField(blank=True, null=True)
+    number_of_sheets = models.CharField(max_length=255, blank=True, null=True, validators=[validate_positive_int])
+    date = models.CharField(max_length=255, blank=True, null=True, validators=[validate_date], help_text=DATE_FIELD_HELP_TEXT)
+    cross_ref_area = models.PositiveIntegerField(blank=True, null=True, validators=[validate_int_btwn(1, 33)])
+    cross_ref_section = models.PositiveIntegerField(blank=True, null=True, validators=[validate_int_btwn(1, 36)])
     cross_ref_map_number = models.CharField(
         max_length=255,
         blank=True,
         null=True
     )
     hash = models.CharField(max_length=255, null=True, blank=True)
-    source_file = models.FileField(upload_to='SURVEYS')
+    source_file = models.FileField(upload_to='SURVEYS', validators=[FileExtensionValidator(['pdf'])])
 
 
 class Title(BaseDocumentModel):
-    control_number = models.CharField(max_length=255)
-    source_file = models.FileField(upload_to='TITLES')
+    control_number = models.CharField(max_length=255, validators=[validate_positive_int])
+    source_file = models.FileField(upload_to='TITLES', validators=[FileExtensionValidator(['pdf'])])

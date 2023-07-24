@@ -151,3 +151,7 @@ footer a.dropdown-item {
   color:red;
   font-size: 1.3em;
 }
+
+.invalid-feedback {
+  display: block;
+}

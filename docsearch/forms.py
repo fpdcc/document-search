@@ -50,8 +50,12 @@ class LicenseGeometryCollectionField(GeometryCollectionField):
         """
         if not value:
             return None
+        
+        try:
+            val = json.loads(value)
+        except json.decoder.JSONDecodeError:
+            raise ValidationError(("Please check the formatting for your GeoJSON"))
 
-        val = json.loads(value)
         if val.get('type') != 'GeometryCollection':
             val = {
                 'type': 'GeometryCollection',
@@ -68,6 +72,13 @@ class LicenseForm(ModelForm):
         'multiple features for this geometry, define a custom GeoJSON '
         'GeometryCollection and paste it in the box above.'
     ))
+
+    def clean_geometry(self):
+        data = self.cleaned_data['geometry']
+        if not data.valid or data.empty:
+            raise ValidationError(("Please enter valid GeoJSON"))
+        
+        return data
 
     class Meta:
         model = License

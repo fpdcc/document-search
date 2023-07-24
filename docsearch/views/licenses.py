@@ -1,14 +1,32 @@
 from docsearch import models
 from leaflet.forms.widgets import LeafletWidget
+from django.contrib.gis.geos import GEOSException, GEOSGeometry
+from django.contrib.gis.gdal.error import GDALException
+import logging
 
 from docsearch.forms import LicenseForm
 from . import base as base_views
 
+logger = logging.getLogger("django.contrib.gis")
+
+class StricterLeafletWidget(LeafletWidget):
+    def deserialize(self, value):
+        try:
+            return GEOSGeometry(value)
+        except (GEOSException, ValueError, TypeError, GDALException) as err:
+            logger.error("Error creating geometry from value '%s' (%s)", value, err)
+        return None
+    
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        if not context['serialized'] and isinstance(value, str):
+            context['serialized'] = value
+        return context
 
 class MapWidgetMixin:
     def get_form(self):
         form = super().get_form()
-        form.fields['geometry'].widget = LeafletWidget(attrs={
+        form.fields['geometry'].widget = StricterLeafletWidget(attrs={
             'map_height': '400px',
             'map_width': '100%',
             'display_raw': True
