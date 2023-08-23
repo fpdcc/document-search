@@ -52,3 +52,5 @@ HAYSTACK_CONNECTIONS = {
         'ADMIN_URL': 'http://solr:8983/solr/admin/cores'
     },
 }
+
+BASE_URL = 'https://examplesite.com'
