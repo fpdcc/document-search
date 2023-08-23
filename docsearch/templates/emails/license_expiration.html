@@ -1,0 +1,11 @@
+<p>Hello,</p>
+
+<p>
+    There are {{ n_licenses }} licenses that will expire in the next 6 months.
+</p>
+
+<ul>
+    {% for l in licenses %}
+        <li>{{l.license_number}}: <a href="{{l.url}}">{{l.url}}</a></li>
+    {% endfor %}
+</ul>

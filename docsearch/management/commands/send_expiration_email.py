@@ -1,6 +1,9 @@
 from ...models import License
 from ...settings import BASE_URL
 from django.core.management.base import BaseCommand
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+
 
 import datetime
 from dateutil.relativedelta import relativedelta
@@ -29,3 +32,22 @@ class Command(BaseCommand):
                 }
 
                 near_expired.append(obj)
+
+        if len(near_expired) > 0:
+            body = render_to_string(
+                'emails/license_expiration.html',
+                {
+                    'n_licenses': str(len(near_expired)),
+                    'licenses': near_expired,
+                },
+            )
+            
+            email = EmailMessage(
+                subject="Licenses have almost expired!",
+                body=body,
+                to=["example@email.com"],
+                from_email="example@email.com",
+            )
+
+            email.content_subtype = 'html'
+            email.send()
