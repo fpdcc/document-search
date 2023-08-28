@@ -1,11 +1,9 @@
 <p>Hello,</p>
 
 <p>
-    There are {{ n_licenses }} licenses that will expire in the next 6 months.
-</p>
+    There are {% if n_licenses != '0' %}{{ n_licenses }}{% else %}no{% endif %} licenses that will expire this year ({{ year }}). 
 
-<ul>
-    {% for l in licenses %}
-        <li>{{l.license_number}}: <a href="{{l.url}}">{{l.url}}</a></li>
-    {% endfor %}
-</ul>
+    {% if n_licenses != '0' %}
+    Please see attached csv file for more details.
+    {% endif %} 
+</p>
