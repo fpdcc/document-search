@@ -1,7 +1,13 @@
 <p>Hello,</p>
 
 <p>
-    There are {% if n_licenses != '0' %}{{ n_licenses }}{% else %}no{% endif %} licenses that will expire this year ({{ year }}). 
+    There are 
+    {% if n_licenses != '0' %}
+        {{ n_licenses }}
+    {% else %}
+        no
+    {% endif %} 
+    license(s) that will expire between {{ date_range_start }} and {{ date_range_end }}. 
 
     {% if n_licenses != '0' %}
     Please see attached csv file for more details.

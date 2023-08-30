@@ -1,4 +1,5 @@
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
+import os
 import socket
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -53,4 +54,16 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-BASE_URL = 'https://examplesite.com'
+BASE_URL = os.getenv('BASE_URL', 'localhost:8000')
+
+try:
+    EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+except KeyError:
+    print('Email password not found, email sending not turned on.')
+else:
+    EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.mandrillapp.com')
+    EMAIL_PORT = os.getenv('EMAIL_PORT', 587)
+    EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'testing@datamade.us')
+    EMAIL_USE_TLS = True
+
+    DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

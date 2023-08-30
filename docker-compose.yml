@@ -24,6 +24,8 @@ services:
       # Docker automatically recognizes your changes.
       - .:/app
       - ${PWD}/docsearch/local_settings.dev.py:/app/docsearch/local_settings.py
+    env_file:
+      - .env
     command: python manage.py runserver 0.0.0.0:8000
 
   migration:
