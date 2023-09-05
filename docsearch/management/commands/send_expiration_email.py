@@ -3,6 +3,7 @@ from docsearch.settings import BASE_URL
 from django.core.management.base import BaseCommand
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
+from django.db import transaction
 
 import datetime
 from dateutil.relativedelta import relativedelta
@@ -30,6 +31,14 @@ class Command(BaseCommand):
 
         return file
     
+    def attach_csv(self, email, near_expired, date):
+        '''
+        If any expiring licenses exist, attach a csv report to the email
+        '''
+        if len(near_expired) > 0:
+            attachment = self.generate_csv(near_expired)
+            email.attach('expiring_licenses_{}.csv'.format(str(date.year)), attachment.getvalue())
+    
     def get_near_expired_licenses(self, present, future_limit):
         '''
         Returns all licenses expiring between now and a future date
@@ -53,7 +62,38 @@ class Command(BaseCommand):
                 result.append(obj)
 
         return result
+    
+    def prep_email(self, subscribers, near_expired, date_range_start, date_range_end, subject):
+        '''
+        Assign recipients and build the contents of the email
+        '''
+        recipients = []
+        for sub in subscribers:
+            recipients.append(sub.user.email)
+            sub.notification_date = date_range_end
+            sub.save()
 
+        body = render_to_string(
+            'emails/license_expiration.html',
+            {
+                "n_licenses": str(len(near_expired)),
+                "date_range_start": date_range_start.strftime("%m/%d/%Y"),
+                "date_range_end": date_range_end.strftime("%m/%d/%Y"),
+            },
+        )
+
+        email = EmailMessage(
+            subject=subject,
+            body=body,
+            to=recipients,
+        )
+        email.content_subtype = 'html'
+
+        self.attach_csv(email, near_expired, date_range_start)
+
+        return email
+
+    @transaction.atomic
     def handle(self, *args, **options):
         today = datetime.date.today()
 
@@ -62,39 +102,18 @@ class Command(BaseCommand):
 
             one_year_from_now = datetime.date.today() + relativedelta(years=1)
             near_expired = self.get_near_expired_licenses(today, one_year_from_now)
-            subscribers = NotificationSubscription.objects.filter(notification_date=today)
-
-            # Prepare email
-            recipients = []
-            for sub in subscribers:
-                recipients.append(sub.user.email)
-
-            body = render_to_string(
-                'emails/license_expiration.html',
-                {
-                    "n_licenses": str(len(near_expired)),
-                    "date_range_start": today.strftime("%m/%d/%Y"),
-                    "date_range_end": one_year_from_now.strftime("%m/%d/%Y"),
-                },
-            )
-
-            email = EmailMessage(
-                subject="Licenses expiring in the next 12 months",
-                body=body,
-                to=recipients,
-            )
-
             self.stdout.write(f"{len(near_expired)} license(s) found")
-            if len(near_expired) > 0:
-                attachment = self.generate_csv(near_expired)
-                email.attach('expiring_licenses_{}.csv'.format(str(today.year)), attachment.getvalue())
+
+            subscribers = NotificationSubscription.objects.filter(notification_date=today)
+            subject = "Licenses expiring in the next 12 months"
+            email = self.prep_email(
+                subscribers=subscribers,
+                near_expired=near_expired,
+                date_range_start=today,
+                date_range_end=one_year_from_now,
+                subject=subject
+            )
 
             self.stdout.write("Sending emails...")
-            email.content_subtype = 'html'
             email.send()
-            self.stdout.write(self.style.SUCCESS("Emails sent!"))
-
-            # Update each users' notification date after sending emails
-            for sub in subscribers:
-                sub.notification_date = one_year_from_now
-                sub.save()
+            self.stdout.write(self.style.SUCCESS("Emails sent!"))                
