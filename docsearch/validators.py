@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from functools import wraps
 import re
 
 def validate_positive_int(value):
@@ -14,6 +15,7 @@ def validate_positive_int(value):
 def validate_int_range(min, max):
     # Check that a 2 integer range is between the min and max
 
+    @wraps(validate_int_range)
     def validator(value):
         # Change the NumericRange obj to an indexable array of ints
         value_list = value.__str__().strip('][').split(', ')
@@ -38,6 +40,7 @@ def validate_int_range(min, max):
 def validate_int_btwn(min, max):
     # Check that a single integer is between the min and max
 
+    @wraps(validate_int_btwn)
     def validator(value):
         if int(value) < min or int(value) > max:
             raise ValidationError(
@@ -55,6 +58,7 @@ def validate_int_btwn(min, max):
 def validate_int_array(min, max):
     # Check that a list/array of integers is between the min and max
 
+    @wraps(validate_int_array)
     def validator(value):
         valid = True
         invalid_ints = []

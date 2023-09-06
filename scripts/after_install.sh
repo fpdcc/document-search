@@ -79,3 +79,9 @@ echo "DEPLOYMENT_ID='$DEPLOYMENT_ID'" > $PROJECT_DIR/docsearch/deployment.py
 
 # Make sure Solr is running
 (docker ps | grep document-search-solr) || (cd $PROJECT_DIR && docker-compose up -d solr)
+
+# Move the crontab from the scripts directory to `/etc/cron.d`
+mv $PROJECT_DIR/scripts/document-search-cronjobs /etc/cron.d/document-search-cronjobs
+
+# Adjust the permissions, so that the Cron service can effectively interact with the file
+chmod 644 /etc/cron.d/document-search-cronjobs

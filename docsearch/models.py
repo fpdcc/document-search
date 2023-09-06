@@ -395,3 +395,8 @@ class Survey(BaseDocumentModel):
 class Title(BaseDocumentModel):
     control_number = models.CharField(max_length=255, validators=[validate_positive_int])
     source_file = models.FileField(upload_to='TITLES', validators=[FileExtensionValidator(['pdf'])])
+
+
+class NotificationSubscription(models.Model):
+    notification_date = models.DateField()
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
