@@ -16,7 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Build containers and run tests
-        run: docker-compose -f docker-compose.yml -f tests/docker-compose.yml run --rm app
+        run: |
+            cp .env.example .env
+            docker-compose -f docker-compose.yml -f tests/docker-compose.yml run --rm app
   deploy-staging:
     if:
       contains('
