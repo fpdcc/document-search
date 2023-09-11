@@ -4,8 +4,6 @@ services:
   app:
     # Don't restart the service when the command exits
     restart: "no"
-    env_file:
-      - .env.example
     volumes:
       # Mount the development directory as a volume into the container, so
       # Docker automatically recognizes your changes.
