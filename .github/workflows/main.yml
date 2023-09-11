@@ -21,13 +21,6 @@ jobs:
 #             cp .env.example .env
 #             docker-compose -f docker-compose.yml -f tests/docker-compose.yml run --rm app
   deploy-staging:
-    if:
-      contains('
-        refs/heads/master
-        refs/heads/deploy
-        refs/heads/feature/github-actions
-      ', github.ref)
-    # needs: test
     name: Deploy to AWS
     runs-on: ubuntu-latest
     steps:
