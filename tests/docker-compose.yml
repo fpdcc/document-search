@@ -6,10 +6,6 @@ services:
     restart: "no"
     env_file:
       - .env.example
-    environment:
-      DJANGO_SECRET_KEY: reallysupersecret
-      DJANGO_STATICFILES_STORAGE: django.contrib.staticfiles.storage.StaticFilesStorage
-      PGPASSWORD: postgres
     volumes:
       # Mount the development directory as a volume into the container, so
       # Docker automatically recognizes your changes.
