@@ -25,6 +25,7 @@ jobs:
       contains('
         refs/heads/master
         refs/heads/deploy
+        refs/heads/feature/github-actions
       ', github.ref)
     # needs: test
     name: Deploy to AWS
