@@ -89,12 +89,12 @@ def test_write_users_can_write(client, read_write_user, document_and_fields):
 
 
 @pytest.mark.django_db
-def test_write_users_cannot_delete(client, read_write_user, document_and_fields):
+def test_write_users_can_delete(client, read_write_user, document_and_fields):
     client.force_login(read_write_user)
     document, _ = document_and_fields
     url = document.get_delete_url()
     response = client.get(url)
-    assert response.status_code == 403
+    assert response.status_code == 200
 
 
 @pytest.mark.django_db

@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+      - deploy
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build containers and run tests
+        run: |
+            mkdir -p data && touch data/requirements.txt
+            cp .env.example .env
+            docker-compose -f docker-compose.yml -f tests/docker-compose.yml run --rm app
+  deploy:
+    if:
+      contains('
+        refs/heads/master
+        refs/heads/deploy
+      ', github.ref)
+    needs: test
+    name: Deploy to AWS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - uses: actions/checkout@v2
+      - id: deploy
+        uses: webfactory/create-aws-codedeploy-deployment@0.2.2
+        with:
+          application: document-search

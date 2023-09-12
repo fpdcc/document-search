@@ -32,9 +32,9 @@ def test_create(client, superuser, document_and_fields):
     document, fields = document_and_fields
     # Mock out a file for upload
     fields['source_file'] = SimpleUploadedFile(
-        'foobarbaz.png',
+        'foobarbaz.pdf',
         b'content',
-        content_type='image/png'
+        content_type='application/pdf'
     )
 
     Model = type(document)
