@@ -84,4 +84,5 @@ echo "DEPLOYMENT_ID='$DEPLOYMENT_ID'" > $PROJECT_DIR/docsearch/deployment.py
 mv $PROJECT_DIR/scripts/document-search-cronjobs /etc/cron.d/document-search-cronjobs
 
 # Adjust the permissions, so that the Cron service can effectively interact with the file
+chown root.root /etc/cron.d/document-search-cronjobs
 chmod 644 /etc/cron.d/document-search-cronjobs
