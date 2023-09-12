@@ -11,23 +11,23 @@ from docsearch import models
 DOCUMENTS = [
     (models.Book, {'township': '[1,1]', 'range': '[2,4]', 'section': '[3,5]'}),
     (models.ControlMonumentMap, {
-        'township': 1, 'range': 2, 'section': [3, 4], 'part_of_section': 'bam'
+        'township': 1, 'range': 11, 'section': [3, 4], 'part_of_section': 'E1/2'
     }),
     (models.SurplusParcel, {'surplus_parcel': 'foo', 'description': 'bar'}),
     (models.DeepTunnel, {'description': 'foobarbaz'}),
-    (models.Dossier, {'file_number': 'foo', 'document_number': 'bar'}),
-    (models.Easement, {'easement_number': 'foo'}),
+    (models.Dossier, {'file_number': 3, 'document_number': 5}),
+    (models.Easement, {'easement_number': 6}),
     (models.FlatDrawing, {
         'area': 1, 'section': 2, 'map_number': 'foo', 'location': 'bar',
-        'description': 'baz', 'job_number': 'foo', 'number_of_sheets': 'bar',
-        'date': 'baz', 'cross_ref_area': 1, 'cross_ref_section': 2,
+        'description': 'baz', 'job_number': 'foo', 'number_of_sheets': 7,
+        'date': '2023-09-12', 'cross_ref_area': 1, 'cross_ref_section': 2,
         'cross_ref_map_number': 'foo', 'hash': 'bar'
     }),
     (models.IndexCard, {
         'monument_number': 'foo', 'township': 'foo', 'corner': 'bar', 'section': 'baz'
     }),
     (models.License, {
-        'license_number': 'foo',
+        'license_number': 'O-12345',
         'township': [42],
         'section': [30],
         'range': [12],
@@ -38,16 +38,16 @@ DOCUMENTS = [
     }),
     (models.ProjectFile, {
         'area': 1, 'section': 2, 'job_number': 'foo', 'job_name': 'bar',
-        'description': 'baz', 'cabinet_number': 'foo', 'drawer_number': 'bar',
+        'description': 'baz', 'cabinet_number': 3, 'drawer_number': 'bar',
     }),
     (models.RightOfWay, {'folder_tab': 'foo'}),
     (models.Survey, {
-        'township': [1], 'section': [2], 'range': [3], 'map_number': 'foo', 'location': 'bar',
-        'description': 'baz', 'job_number': 'foo', 'number_of_sheets': 'bar',
-        'date': 'baz', 'cross_ref_area': 1, 'cross_ref_section': 2,
+        'township': [1], 'section': [2], 'range': [10], 'map_number': 'foo', 'location': 'bar',
+        'description': 'baz', 'job_number': 'foo', 'number_of_sheets': 4,
+        'date': '2023-09-12', 'cross_ref_area': 1, 'cross_ref_section': 2,
         'cross_ref_map_number': 'foo', 'hash': 'bar'
     }),
-    (models.Title, {'control_number': 'foo'}),
+    (models.Title, {'control_number': 5}),
 ]
 
 
