@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, TemplateView
+from django.contrib.auth.views import PasswordResetView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from docsearch import models
@@ -57,6 +58,10 @@ class ActivityData(BaseDatatableView, UserPassesTestMixin):
     def test_func(self):
         # Only Read/Write users should be able to see this view
         return can_create(self.request.user)
+    
+
+class PasswordResetView(PasswordResetView):
+    email_template_name = 'docsearch/password_reset_email.html'
 
 
 def pong(request):
