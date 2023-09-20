@@ -80,8 +80,13 @@ echo "DEPLOYMENT_ID='$DEPLOYMENT_ID'" > $PROJECT_DIR/docsearch/deployment.py
 # Make sure Solr is running
 (docker ps | grep document-search-solr) || (cd $PROJECT_DIR && docker-compose up -d solr)
 
+
+# Add the virtualenv directory name to python command in the script
+SCRIPT_PATH = $PROJECT_DIR/scripts/document-search-cronjobs
+sed -i 's/VENV_DIR/$VENV_DIR/g' $SCRIPT_PATH
+
 # Move the crontab from the scripts directory to `/etc/cron.d`
-mv $PROJECT_DIR/scripts/document-search-cronjobs /etc/cron.d/document-search-cronjobs
+mv $SCRIPT_PATH /etc/cron.d/document-search-cronjobs
 
 # Adjust the permissions, so that the Cron service can effectively interact with the file
 chown root.root /etc/cron.d/document-search-cronjobs
