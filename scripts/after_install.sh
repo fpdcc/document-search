@@ -83,7 +83,7 @@ echo "DEPLOYMENT_ID='$DEPLOYMENT_ID'" > $PROJECT_DIR/docsearch/deployment.py
 
 # Add the virtualenv directory name to python command in the script
 SCRIPT_PATH="$PROJECT_DIR/scripts/document-search-cronjobs"
-sed -i 's/VENV_DIR/$VENV_DIR/g' $SCRIPT_PATH
+sed -i "s/VENV_DIR/$VENV_DIR/g" "$SCRIPT_PATH"
 
 # Move the crontab from the scripts directory to `/etc/cron.d`
 mv $SCRIPT_PATH /etc/cron.d/document-search-cronjobs
