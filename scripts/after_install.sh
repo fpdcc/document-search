@@ -84,7 +84,7 @@ echo "DEPLOYMENT_ID='$DEPLOYMENT_ID'" > $PROJECT_DIR/docsearch/deployment.py
 # Add the virtualenv directory name to python command in the script
 # and write the modified crontab in the `/etc/cron.d` directory
 SCRIPT_PATH="$PROJECT_DIR/scripts/document-search-cronjobs"
-sed -e "s|{VENV_DIR}|$VENV_DIR|" "$SCRIPT_PATH" > -e "s|{PROJECT_DIR}|$PROJECT_DIR|" /etc/cron.d/document-search-cronjobs
+sed -e "s|{VENV_DIR}|$VENV_DIR|" "$SCRIPT_PATH" > -e "s|{PROJECT_DIR}|$PROJECT_DIR|" "$SCRIPT_PATH" > /etc/cron.d/document-search-cronjobs
 
 # Adjust the permissions, so that the Cron service can effectively interact with the file
 chown root.root /etc/cron.d/document-search-cronjobs
