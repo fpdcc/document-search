@@ -1,3 +1,3 @@
 # /etc/cron.d/document-search-cronjobs
-*/5 * * * * datamade {VENV_DIR}/bin/python {PROJECT_DIR}/manage.py send_expiration_email
+*/5 * * * * datamade {VENV_DIR}/bin/python {PROJECT_DIR}/manage.py send_expiration_email >> /var/log/send_expiration_email.log 2>&1
 # You need a newline at the end of your crontab, or cron ignores the file.
