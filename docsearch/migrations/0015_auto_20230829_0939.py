@@ -135,7 +135,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='license',
             name='license_number',
-            field=models.CharField(blank=True, help_text='Enter as a hyphenated string starting with "O" and ending with an integer (i.e. O-100)', max_length=255, null=True, validators=[docsearch.validators.validate_license_num]),
+            field=models.CharField(blank=True, max_length=255, null=True),
         ),
         migrations.AlterField(
             model_name='license',

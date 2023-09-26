@@ -9,7 +9,7 @@ from django.contrib.postgres import forms as pg_forms
 from django.contrib.gis.db import models as gis_models
 from django.core.validators import FileExtensionValidator
 
-from .validators import validate_positive_int, validate_int_btwn, validate_int_range,  validate_int_array, validate_date, validate_license_num
+from .validators import validate_positive_int, validate_int_btwn, validate_int_range,  validate_int_array, validate_date
 
 
 class InclusiveIntegerRangeFormField(pg_forms.IntegerRangeField):
@@ -299,8 +299,6 @@ class License(BaseDocumentModel):
     license_number = models.CharField(
         max_length=255,
         null=True, blank=True,
-        validators=[validate_license_num],
-        help_text='Enter as a hyphenated string starting with "O" and ending with an integer (i.e. O-100)'
     )
     description = models.TextField(null=True, blank=True)
     geometry = gis_models.GeometryCollectionField(blank=True, null=True)
