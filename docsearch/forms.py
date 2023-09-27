@@ -4,6 +4,7 @@ from django.forms import ModelForm, ValidationError
 from django.contrib.gis.forms.fields import GeometryCollectionField
 from haystack.query import SQ
 from haystack.forms import SearchForm
+from haystack.inputs import Exact
 
 from docsearch.models import License
 from docsearch.query import FuzzyAutoQuery
@@ -35,7 +36,10 @@ class BaseSearchForm(SearchForm):
 
             field, value = facet.split(":", 1)
 
-            facet_filter |= SQ(**{field: sqs.query.clean(value)})
+            if "_exact" in field:
+                facet_filter |= SQ(**{field: Exact(value)})
+            else:
+                facet_filter |= SQ(**{field: sqs.query.clean(value)})
 
         sqs = sqs.filter(facet_filter)
 
