@@ -1,4 +1,4 @@
-Django==2.2.13
+Django==3.2.24
 psycopg2==2.8.4
 django-storages==1.8
 django-crispy-forms==1.8.1
