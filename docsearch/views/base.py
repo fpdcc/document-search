@@ -146,6 +146,21 @@ class BaseSearchView(LoginRequiredMixin, DocumentPermissionRequiredMixin, Facete
 
     def get_queryset(self):
         sqs = super().get_queryset().models(self.model)
+
+        q = self.request.GET.get('q')
+        exact_match_re = re.compile(r'"(?P<phrase>.*?)"')
+        if q:
+            """
+            Boost results that contain direct matches of each term in the query,
+            regardless of whether any terms are enclosed in double quotes.
+            For terms in double quotes, ensure that they get boosted as is,
+            whitespace and all.
+            """
+            tokens = exact_match_re.split(q)
+            for t in tokens:
+                if t and not t.strip().startswith("-"):
+                    sqs = sqs.boost(t, .5)
+
         for facet_field in self.facet_fields:
             # Sort facet options alphabetically, not by hit count
             sqs = sqs.facet(facet_field, sort='index', limit=1000)
