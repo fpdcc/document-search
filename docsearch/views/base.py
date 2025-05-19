@@ -148,18 +148,23 @@ class BaseSearchView(LoginRequiredMixin, DocumentPermissionRequiredMixin, Facete
         sqs = super().get_queryset().models(self.model)
 
         q = self.request.GET.get('q')
-        exact_match_re = re.compile(r'"(?P<phrase>.*?)"')
         if q:
             """
             Boost results that contain direct matches of each term in the query,
             regardless of whether any terms are enclosed in double quotes.
-            For terms in double quotes, ensure that they get boosted as is,
-            whitespace and all.
+            Terms in double quotes are exact match terms, so give them a bit of
+            an extra boost, and boost them as is - whitespace and all.
             """
+            exact_match_re = re.compile(r'"(?P<phrase>.*?)"')
             tokens = exact_match_re.split(q)
+            exacts = exact_match_re.findall(q)
+
             for t in tokens:
                 if t and not t.strip().startswith("-"):
-                    sqs = sqs.boost(t, .5)
+                    if t in exacts:
+                        sqs = sqs.boost(t, 1)
+                    else:
+                        sqs = sqs.boost(t, .5)
 
         for facet_field in self.facet_fields:
             # Sort facet options alphabetically, not by hit count
