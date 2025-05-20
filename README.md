@@ -27,13 +27,13 @@ cp docsearch/local_settings.example.py docsearch/local_settings.dev.py
 Next, build containers:
 
 ```
-docker-compose build
+docker compose build
 ```
 
 Run the app:
 
 ```
-docker-compose up
+docker compose up
 ```
 
 The app will be available at http://localhost:8000. The database will be exposed
@@ -42,7 +42,7 @@ on port 32001.
 Create a superuser to view the application:
 
 ```
-docker-compose run --rm app ./manage.py createsuperuser
+docker compose run --rm app ./manage.py createsuperuser
 ```
 
 ### Loading initial data
@@ -67,19 +67,19 @@ cp -R ./document-search-data/ ./document-search/data/
 Then, load initial data using GNU Make:
 
 ```
-docker-compose -f docker-compose.yml -f data/docker-compose.yml run --rm app make all
+docker compose -f docker-compose.yml -f data/docker-compose.yml run --rm app make all
 ```
 
 To create the search index, start by bringing up Solr in one shell:
 
 ```
-docker-compose up solr
+docker compose up solr
 ```
 
 Then, in another shell, run the `rebuild_index` command:
 
 ```
-docker-compose run --rm app ./manage.py rebuild_index
+docker compose run --rm app ./manage.py rebuild_index
 ```
 
 ### Running tests
@@ -87,7 +87,7 @@ docker-compose run --rm app ./manage.py rebuild_index
 Run tests with Docker Compose:
 
 ```
-docker-compose -f docker-compose.yml -f tests/docker-compose.yml run --rm app
+docker compose -f docker-compose.yml -f tests/docker-compose.yml run --rm app
 ```
 
 ## Deployment
