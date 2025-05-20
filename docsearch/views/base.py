@@ -191,16 +191,21 @@ class BaseSearchView(LoginRequiredMixin, DocumentPermissionRequiredMixin, Facete
         # the values and labels of sort fields, but for now the
         # conversion rule is pretty simple
         sort_options = []
-        for sort_field in self.sort_fields:
-            label = sort_field
-            replacements = [
+        replacements = [
                 ('_exact$', ''),
                 ('_arr$', ''),
                 ('_', ' ')
             ]
+
+        # There is one exception with this renamed field
+        if self.model == models.Survey:
+            replacements.append(('job number', 'control number'))
+
+        for sort_field in self.sort_fields:
+            label = sort_field
             for pattern, new_pattern in replacements:
                 label = re.sub(pattern, new_pattern, label)
-            sort_options.append({'value': sort_field, 'label': label})
+            sort_options.append({'value': sort_field, 'label': label.capitalize()})
         return sort_options
 
 
