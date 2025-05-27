@@ -78,7 +78,7 @@ $VENV_DIR/bin/python $PROJECT_DIR/scripts/render_configs.py $DEPLOYMENT_ID $DEPL
 echo "DEPLOYMENT_ID='$DEPLOYMENT_ID'" > $PROJECT_DIR/docsearch/deployment.py
 
 # Make sure Solr is running
-(docker ps | grep document-search-solr) || (cd $PROJECT_DIR && docker-compose up -d solr)
+(docker ps | grep document-search-solr) || (cd $PROJECT_DIR && docker compose up -d solr)
 
 
 # Add the virtualenv directory name to python command in the script

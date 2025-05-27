@@ -19,7 +19,7 @@ jobs:
         run: |
             mkdir -p data && touch data/requirements.txt
             cp .env.example .env
-            docker-compose -f docker-compose.yml -f tests/docker-compose.yml run --rm app
+            docker compose -f docker-compose.yml -f tests/docker-compose.yml run --rm app
   deploy:
     if:
       contains('
