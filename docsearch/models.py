@@ -376,7 +376,7 @@ class Survey(BaseDocumentModel):
     map_number = models.CharField(max_length=255, null=True, blank=True)
     location = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    job_number = models.CharField(max_length=255, blank=True, null=True)
+    job_number = models.CharField(max_length=255, blank=True, null=True, verbose_name="control number")
     number_of_sheets = models.CharField(max_length=255, blank=True, null=True, validators=[validate_positive_int])
     date = models.CharField(max_length=255, blank=True, null=True, validators=[validate_date], help_text=DATE_FIELD_HELP_TEXT)
     cross_ref_area = models.PositiveIntegerField(blank=True, null=True, validators=[validate_int_btwn(1, 33)])

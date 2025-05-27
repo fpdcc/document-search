@@ -182,7 +182,7 @@
             <h6 class="float-lg-right">
               Sort by:
               <select class="sort-select">
-                <option value=""></option>
+                <option value="">---</option>
                 {% for sort_option in view.get_sort_options %}
                   <option
                     value="?{% set_param parameters 'sort' sort_option.value %}"
