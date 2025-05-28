@@ -19,9 +19,14 @@
 <div class="container-fluid">
   <div class="row jumbotron p-4">
     <div class="col-sm-10 offset-sm-1">
-      <h1 class="mb-3">
-        Search for {{ view.model|verbose_name_plural|title }}
-      </h1>
+      <div>
+        <h1 class="mb-3 d-inline-block">
+          Search for {{ view.model|verbose_name_plural|title }}
+        </h1>
+        <button type="button" class="btn btn-link px-0 fpdcc-light-green" data-toggle="tooltip" data-placement="top" data-html="true" title='<p>You can enclose search terms in <strong>double quotes</strong> to look for exact matches (i.e. "Cook County").</p> <p>You can also prepend a <strong>hyphen</strong> to terms to exclude results that have them (i.e. -parking).</p>' aria-label='You can enclose search terms or whole phrases in double quotes to look for exact matches. You can also prepend hyphens to terms to exclude results that have them.'>
+          <i class="fas fa-info-circle mb-2" aria-hidden="true"></i>
+        </button>
+      </div>
       <form method="GET" class="mb-4">
         <div class="row">
           <div class="col-md">
@@ -589,6 +594,11 @@
       $('.switch-to-map-view').click(function() {
         map.invalidateSize();
       });
+    });
+
+    // Enable bootstrap tooltips
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
     });
   });
 </script>
