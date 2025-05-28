@@ -156,6 +156,12 @@
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/fontawesome.min.js' %}"></script>
     <script src="{% static 'js/solid.min.js' %}"></script>
+    <script type="text/javascript">
+      // Enable bootstrap tooltips
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      });
+    </script>
     {% block extra_js %}{% endblock %}
   </body>
 </html>
