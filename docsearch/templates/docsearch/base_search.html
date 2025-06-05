@@ -19,9 +19,12 @@
 <div class="container-fluid">
   <div class="row jumbotron p-4">
     <div class="col-sm-10 offset-sm-1">
-      <h1 class="mb-3">
-        Search for {{ view.model|verbose_name_plural|title }}
-      </h1>
+      <div>
+        <h1 class="mb-3 d-inline-block">
+          Search for {{ view.model|verbose_name_plural|title }}
+        </h1>
+        {% include "docsearch/partials/search_tooltip.html" %}
+      </div>
       <form method="GET" class="mb-4">
         <div class="row">
           <div class="col-md">
