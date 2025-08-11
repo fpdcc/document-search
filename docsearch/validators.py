@@ -4,8 +4,7 @@ import re
 
 def validate_positive_int(value):
     # Check that the value is a positive integer
-
-    if not value.isnumeric() or int(value) <= 0:
+    if int(value) <= 0:
         raise ValidationError(
             ("Please enter a positive number, '%(value)s' is not valid."),
             params={"value": value},
