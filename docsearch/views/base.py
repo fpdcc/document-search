@@ -168,7 +168,7 @@ class BaseSearchView(LoginRequiredMixin, DocumentPermissionRequiredMixin, Facete
 
         for facet_field in self.facet_fields:
             # Sort facet options alphabetically, not by hit count
-            sqs = sqs.facet(facet_field, sort='index', limit=1000)
+            sqs = sqs.facet(facet_field, sort='index', mincount=1, limit=-1)
         sort = self._get_sort()
         if sort:
             sqs = sqs.order_by(sort)
