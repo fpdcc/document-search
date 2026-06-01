@@ -47,11 +47,15 @@ docker compose run --rm app ./manage.py createsuperuser
 
 ### Loading initial data
 
-Initial data is available in a separate repo, `document-search-data`, that is
+Initial data is available in separate repos, called `document-search-data`, that are
 kept private in order to respect the privacy of entities mentioned in the
-metadata. The repo is hosted on AWS CodeCommit in the Forest Preserves AWS account.
+metadata. One repo is hosted on a private DataMade github repo, and another on AWS CodeCommit in the Forest Preserves AWS account.
 
-To get the data in that repo, the easiest option is to ask a fellow dev to send you a zipped version of the `/data` directory from the root of their local environment and unzip it in a similar directory in your environment. If this is not possible, then jump to these [instructions for cloning the private repo](#cloning-document-search-data) and return here when done.
+To get that data, the easiest options are to:
+- Clone it from [DataMade's private repo of the data](https://github.com/datamade/document-search-data), and copy that into a directory called `/data` in the root of your local environment.
+- Ask a fellow dev to send you a zipped version of the `/data` directory from the root of their local environment and unzip it in a similar directory in your environment. 
+
+If neither option is possible, you can also follow these [instructions for cloning CCFP's version of the same repo on AWS](#cloning-document-search-data) and return here when done.
 
 Once you have initial `/data/` locally, load it using GNU Make:
 
@@ -73,7 +77,7 @@ docker compose run --rm app ./manage.py rebuild_index
 
 Voila, you now have Licenses, and Titles, and Books, oh my!
 
-#### Cloning `document-search-data`
+#### Cloning `document-search-data` from AWS
 To gain access to cloning `document-search-data`, you'll need to add yourself to the SSH keys for CodeCommit.
 
 First, log in to AWS using the credentials in Bitwarden titled "CCFP Forest Preserve of Cook County AWS creds". Make sure you're on the "us-east-1" regional version of the site after logging in.
@@ -106,5 +110,12 @@ This repo is configured to deploy in the following ways:
 | ----------- | ------------------------- |
 | staging     | commit to `master` branch |
 | production  | tagged commit or release  |
+
+Push to production using the following commands:
+```bash
+git tag <new-tag-name>  # create new tag
+git tag  # list all tags to confirm creation
+git push origin —-tags  # push all local tags, including the new one
+```
 
 In both cases, Travis CI will run tests before triggering a new deployment with AWS CodeDeploy.
