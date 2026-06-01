@@ -130,31 +130,33 @@
                       </div>
                     {% endif %}
                     <div id="{{ facet_field }}-list-widget" {% if facet_field in view.geo_facet_fields %}style="display:none"{% endif %}>
-                      <div class="card-body pb-0">
-                        <ul class="pl-0" style="list-style-type:none">
-                          {% for value, count in facets.fields|get_key:facet_field %}
-                            {% if count > 0 %}
-                              {% with facet_field_exact|add:":"|add:value as facet_query %}
-                                <li class="border-bottom mb-1">
-                                  <div class="d-inline-block" style="width:80%">
-                                    {% if facet_query in selected_facets %}
-                                      <a href="?{% remove_facet_param parameters facet_field_exact value %}" title="{{ value }}">
-                                        <strong>{{ value }}</strong>&nbsp;<i class="fa fa-fw fa-times"></i>
+                      <div class="card-body pb-0 pr-0">
+                        <div class="pr-3" style="max-height: 400px; overflow-y: auto;">
+                          <ul class="pl-0" style="list-style-type:none">
+                            {% for value, count in facets.fields|get_key:facet_field %}
+                              {% if count > 0 %}
+                                {% with facet_field_exact|add:":"|add:value as facet_query %}
+                                  <li class="border-bottom mb-1">
+                                    <div class="d-inline-block" style="width:80%">
+                                      {% if facet_query in selected_facets %}
+                                        <a href="?{% remove_facet_param parameters facet_field_exact value %}" title="{{ value }}">
+                                          <strong>{{ value }}</strong>&nbsp;<i class="fa fa-fw fa-times"></i>
+                                        </a>
+                                      {% else %}
+                                      <a href="?{% set_facet_param parameters facet_field_exact value %}" title="{{ value }}">
+                                        {{ value }}
                                       </a>
-                                    {% else %}
-                                    <a href="?{% set_facet_param parameters facet_field_exact value %}" title="{{ value }}">
-                                      {{ value }}
-                                    </a>
-                                    {% endif %}
-                                  </div>
-                                  <div class="d-inline-block align-top" style="width:15%">
-                                    <span class="badge badge-secondary rounded-pill float-right">{{ count }}</span>
-                                  </div>
-                                </li>
-                              {% endwith %}
-                            {% endif %}
-                          {% endfor %}
-                        </ul>
+                                      {% endif %}
+                                    </div>
+                                    <div class="d-inline-block align-top" style="width:15%">
+                                      <span class="badge badge-secondary rounded-pill float-right">{{ count }}</span>
+                                    </div>
+                                  </li>
+                                {% endwith %}
+                              {% endif %}
+                            {% endfor %}
+                          </ul>
+                        </div>
                       </div>
                       {% if facet_field in view.geo_facet_fields %}
                         <button
