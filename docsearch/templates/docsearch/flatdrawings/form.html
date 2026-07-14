@@ -1,1 +1,6 @@
 {% extends "docsearch/base_form.html" %}
+{% load static %}
+
+{% block extra_js %}
+  <script src="{% static 'js/tooltips/flatdrawings.js' %}"></script>
+{% endblock %}
