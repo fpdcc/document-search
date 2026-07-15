@@ -72,7 +72,7 @@
           </button>
           <div id="facet-panel-collapse" class="facets-collapse collapse" style="width:100%">
             {% for facet_field in view.facet_fields %}
-		{% if facet_field == "section" and "area_exact" in selected_facet_fields or facet_field != "section"  %}
+          {% if facet_field == "section" and "area_exact" in selected_facet_fields or facet_field != "section"  %}
               <div class="card mt-3">
                 <div class="card-header p-0" id="facet-{{ facet_field }}-header">
                   <h5 class="mb-0">
@@ -171,7 +171,7 @@
                   </div>
                 </div>
               {% endwith %}
-	      {% endif %}
+        {% endif %}
             {% endfor %}
           </div>
         </div>
@@ -342,7 +342,6 @@
     }
 
     var areaUrl = '{% static "geojson/area.geojson" %}';
-	
     var townshipUrl = '{% static "geojson/township.geojson" %}';
     var rangeUrl = '{% static "geojson/range.geojson" %}';
     var sectionUrl = '{% static "geojson/section.geojson" %}';
@@ -556,77 +555,77 @@
             });
           }
           layer.on('mousedown', function() {
-						if (featureIsSelected) {
-								// Remove the facet from the query string
-								selectedFacets.splice(facetIndex, 1);
-						} else {
-							// Only allow one selected area at a time
-							if (entity === 'area') {
-								selectedFacets = selectedFacets.filter(function(sf) {
-									return !(sf.startsWith('area_exact:') || sf.startsWith('area_arr_exact:') ||
-													 sf.startsWith('area_exact:') || sf.startsWith('area_arr:') ||
-													 sf.startsWith('area:') || sf.startsWith('area_arr:') );
-								}).filter(function(sf) {
-									// Clear any selected sections after selecting an area
-									return !(sf.startsWith('section_exact:') || sf.startsWith('section_arr_exact:') ||
-													 sf.startsWith('section_exact:') || sf.startsWith('section_arr:') ||
-													 sf.startsWith('section:') || sf.startsWith('section_arr:'));
-								});
-							}
+            if (featureIsSelected) {
+                // Remove the facet from the query string
+                selectedFacets.splice(facetIndex, 1);
+            } else {
+              // Only allow one selected area at a time
+              if (entity === 'area') {
+                selectedFacets = selectedFacets.filter(function(sf) {
+                  return !(sf.startsWith('area_exact:') || sf.startsWith('area_arr_exact:') ||
+                           sf.startsWith('area_exact:') || sf.startsWith('area_arr:') ||
+                           sf.startsWith('area:') || sf.startsWith('area_arr:') );
+                }).filter(function(sf) {
+                  // Clear any selected sections after selecting an area
+                  return !(sf.startsWith('section_exact:') || sf.startsWith('section_arr_exact:') ||
+                           sf.startsWith('section_exact:') || sf.startsWith('section_arr:') ||
+                           sf.startsWith('section:') || sf.startsWith('section_arr:'));
+                });
+              }
 
-							if (entity == 'section') {
-								// Add area, township, and range as well
-								for (var i=0; i<relatedGeoEntityFacets.length; i++) {
-									var geoFacet = relatedGeoEntityFacets[i][0];
-									var relatedEntity = relatedGeoEntityFacets[i][1];
-									if (feature.properties[relatedEntity]) {
-										selectedFacets.push(formatFacetString(geoFacet, feature, relatedEntity));
-									}
-								}
-							}
+              if (entity == 'section') {
+                // Add area, township, and range as well
+                for (var i=0; i<relatedGeoEntityFacets.length; i++) {
+                  var geoFacet = relatedGeoEntityFacets[i][0];
+                  var relatedEntity = relatedGeoEntityFacets[i][1];
+                  if (feature.properties[relatedEntity]) {
+                    selectedFacets.push(formatFacetString(geoFacet, feature, relatedEntity));
+                  }
+                }
+              }
 
-							selectedFacets.push(facetString);
-						}
+              selectedFacets.push(facetString);
+            }
 
-						const dedupedFacets = Array.from(new Set(selectedFacets));
+            const dedupedFacets = Array.from(new Set(selectedFacets));
 
-						// Redirect to page 1 of the new faceted view
-						window.location.search = $.param({
-							'q': query,
-							'selected_facets': dedupedFacets,
-						}, traditional=true);
+            // Redirect to page 1 of the new faceted view
+            window.location.search = $.param({
+              'q': query,
+              'selected_facets': dedupedFacets,
+            }, traditional=true);
           });
         }
       }).addTo(map);
 
       // Defer the loading of the GeoJSON layer
       if (geojsonUrl) {
-	// When displaying sections, only render those that are in the selected areas
-	$.getJSON(geojsonUrl, function(data) {
-	  if (entity === 'section') {
-	    // Build a set of selected area values (handles both 'area' and 'area_arr' facet names)
-	    var selectedAreas = {};
-	    for (var i=0; i<selectedFacets.length; i++) {
-	      var sf = selectedFacets[i];
-	      if (sf.indexOf('area_exact:') === 0) {
-		selectedAreas[sf.split(':')[1]] = true;
-	      } else if (sf.indexOf('area_arr_exact:') === 0) {
-		selectedAreas[sf.split(':')[1]] = true;
-	      }
-	    }
-	    // If any area is selected, filter features to only those in selectedAreas
-	    var featuresToAdd = data.features;
-	    if (Object.keys(selectedAreas).length > 0) {
-	      featuresToAdd = data.features.filter(function(f) {
-		var val = f.properties && f.properties.area;
-		return val && selectedAreas.hasOwnProperty(val);
-	      });
-	    }
-	    geojsonLayer.addData({type: 'FeatureCollection', features: featuresToAdd});
-	  } else {
-	    geojsonLayer.addData(data);
-	  }
-	});
+        // When displaying sections, only render those that are in the selected areas
+        $.getJSON(geojsonUrl, function(data) {
+          if (entity === 'section') {
+            // Build a set of selected area values (handles both 'area' and 'area_arr' facet names)
+            var selectedAreas = {};
+            for (var i=0; i<selectedFacets.length; i++) {
+              var sf = selectedFacets[i];
+              if (sf.indexOf('area_exact:') === 0) {
+          selectedAreas[sf.split(':')[1]] = true;
+              } else if (sf.indexOf('area_arr_exact:') === 0) {
+          selectedAreas[sf.split(':')[1]] = true;
+              }
+            }
+            // If any area is selected, filter features to only those in selectedAreas
+            var featuresToAdd = data.features;
+            if (Object.keys(selectedAreas).length > 0) {
+              featuresToAdd = data.features.filter(function(f) {
+          var val = f.properties && f.properties.area;
+          return val && selectedAreas.hasOwnProperty(val);
+              });
+            }
+            geojsonLayer.addData({type: 'FeatureCollection', features: featuresToAdd});
+          } else {
+            geojsonLayer.addData(data);
+          }
+        });
       }
 
       $('#facet-' + facetField).on('shown.bs.collapse', function() {
