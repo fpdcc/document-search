@@ -3,26 +3,32 @@ const fieldDescriptions = {
   "Area": `
     <p>Area number that project is located in.</p
     <p>Public Land Survey System term indicating a grided system of squares no larger than 6 miles × 6 miles. The numbering of Township Areas starts in the northwest end of the county, runs east to the lake and then starts back at the west end of the county. This number also represents the first number of the Cook County Property Identification Number – PIN.</p>
-    <p>Interactive map of Areas: <a href="https://hub-cookcountyil.opendata.arcgis.com/datasets/24fd4fa810794d9cba17e135f36db92c_2/explore">https://hub-cookcountyil.opendata.arcgis.com/datasets/24fd4fa810794d9cba17e135f36db92c_2/explore</a></p>
+    <p><a href="https://hub-cookcountyil.opendata.arcgis.com/datasets/24fd4fa810794d9cba17e135f36db92c_2/explore">Click here for an interactive map of Areas</a></p>
     <p>Note: if project contains multiple locations, duplicate entries should be made for each separate Area-Section combination.</p>
   `,
   "Section": `
     <p>Section number that project is located in.</p>
     <p>Public Land Survey System term indicating a grided subsystem of squares 1 mile × 1 mile (36 Sections = 1 Township Area). The numbering of Sections starts in the northeast corner of the Township Area, runs West to 6, then East to 12, then West to 18, and so on, back and forth, until they end with Section 36 in the southeast corner. This number represents the second number of the Property Identification Number – PIN.</p>
-    <p>Interactive map of Sections: <a href="https://hub-cookcountyil.opendata.arcgis.com/datasets/217a635972fb4dfa95411e57a57d1250_3/explore">https://hub-cookcountyil.opendata.arcgis.com/datasets/217a635972fb4dfa95411e57a57d1250_3/explore</a></p>
+    <p><a href="https://hub-cookcountyil.opendata.arcgis.com/datasets/217a635972fb4dfa95411e57a57d1250_3/explore">Click here for an interactive map of Sections</a></p>
     <p>Note: if project contains multiple locations, duplicate entries should be made for each separate Area-Section combination.</p>
   `,
   "Map number": `
-    <p>Do not complete for new document additions. Historical Planning and Development map numbering system for filing purposes. These numbers were written on the original drawings typically below the title blocks. The filing number sequence on the sheets is in reverse order of the drawing sheets – i.e. the last sheet of the drawing set has the lowest Map Number and the first sheet of the drawing set has the largest. Map numbers were sequential for projects that were contained in the same Area-Section drawers.</p>
+    <p>Do not complete for new document additions. Historical Planning and Development map numbering system for filing purposes.</p>
+    <p>These numbers were written on the original drawings typically below the title blocks. The filing number sequence on the sheets is in reverse order of the drawing sheets – i.e. the last sheet of the drawing set has the lowest Map Number and the first sheet of the drawing set has the largest. Map numbers were sequential for projects that were contained in the same Area-Section drawers.</p>
   `,
   "Location": `
-    <p>Official FPCC name for project location. For new entries, please refer to map.fpdcc.com or consult with GIS team for current official preserve names. For buildings, typical naming convention is: [preserve complex] – [building_name] and , if applicable, [grove_number]. Names are not currently standardized and can change over time so be aware of this restriction when searching for records.</p>
+    <p>Official FPCC name for project location.</p>
+    <p>For new entries, please refer to <a href="map.fpdcc.com">map.fpdcc.com</a> or consult with GIS team for current official preserve names. For buildings, typical naming convention is: <em>[preserve complex] – [building_name]</em> and , if applicable, <em>[grove_number]</em>.</p>
+    <p>Names are not currently standardized and can change over time so be aware of this restriction when searching for records.</p>
   `,
   "Building ID": `
-    <p>Unique number assigned by GIS to each building in the Forest Preserves. Please contact the GIS team if you do not know how to determine building ID or need an ID generated for a new building.</p>
+    <p>Unique number assigned by GIS to each building in the Forest Preserves.</p>
+    <p>Please contact the GIS team if you do not know how to determine building ID or need an ID generated for a new building.</p>
   `,
   "Description": `
-      <p>General description of project following the format of [Activity] of [Component] for [building_name] at [complex]. The [building_name] and [preserve complex] are repeated as necessary where multiple locations are encompassed in the drawings. Please note when drawings are “As-Builts” or if drawing sheets are missing. Please note if the project was done in cooperation with another entity. See below for samples of Activity & Component terms:</p>
+      <p>General description of project following the format of <em>[Activity] of [Component] for [building_name] at [complex]</em>.</p>
+      <p>The <em>[building_name]</em> and <em>[preserve complex]</em> are repeated as necessary where multiple locations are encompassed in the drawings.</p>
+      <p>Please note when drawings are “As-Builts” or if drawing sheets are missing. Please note if the project was done in cooperation with another entity. See below for samples of Activity & Component terms:</p>
       <ul>
         <li>Example Activity Terms: Construction, Renovation, Remodeling, Demolition, Replacement, Proposal, Layout, Installation, Testing</li>
         <li>Example Component Terms: Foundation, Walls, Roof, Plumbing, HVAC, Electrical, Landscaping, Parking Lots, Trails</li>
@@ -34,26 +40,30 @@ const fieldDescriptions = {
     <p>Historical Planning and Development project numbering system.</p>
   `,
   "Number of sheets": `
-    <p>Number of sheets in set of drawings. Please note some sets of historical drawings were improperly scanned as individual sheets. These individual sheets should be combined into their respective sets, when discovered, and the number of sheets corrected to the set total.</p>
+    <p>Number of sheets in set of drawings.</p>
+    <p>Please note some sets of historical drawings were improperly scanned as individual sheets. These individual sheets should be combined into their respective sets, when discovered, and the number of sheets corrected to the set total.</p>
   `,
   "Date": `
     <p>Date on the drawing sheets.</p>
   `,
   "Cross ref area": `
-    <p>Do not complete for new document additions. This field is a holdover from the paper indexing of historical projects used to indicate multiple locations. Note that the area and section values need to be null for any revisions to the indexing to be saved.</p>
+    <p>Do not complete for new document additions.</p>
+    <p>This field is a holdover from the paper indexing of historical projects used to indicate multiple locations. Note that the area and section values need to be null for any revisions to the indexing to be saved.</p>
   `,
   "Cross ref section": `
-    <p>Do not complete for new document additions. This field is a holdover from the paper indexing of historical projects used to indicate multiple locations. Note that the area and section values need to be null for any revisions to the indexing to be saved.</p>
+    <p>Do not complete for new document additions.</p>
+    <p>This field is a holdover from the paper indexing of historical projects used to indicate multiple locations. Note that the area and section values need to be null for any revisions to the indexing to be saved.</p>
   `,
   "Cross ref map number": `
-    <p>Do not complete for new document additions. This field is a holdover from the paper indexing of historical projects used to indicate multiple locations. Note that the area and section values need to be null for any revisions to the indexing to be saved.</p>
+    <p>Do not complete for new document additions.</p>
+    <p>This field is a holdover from the paper indexing of historical projects used to indicate multiple locations. Note that the area and section values need to be null for any revisions to the indexing to be saved.</p>
   `,
   "Hash": undefined,
   "CAD file": `
     <p>Final CAD drawing of record can be uploaded here for archival purposes, if available.</p>
   `,
   "Source file": `
-    <p>Final PDF drawing of record to be uploaded for archival purposes</p>
+    <p>Final PDF drawing of record to be uploaded for archival purposes.</p>
   `,
 }
 
