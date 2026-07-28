@@ -219,12 +219,26 @@ class DeepTunnel(BaseDocumentModel):
 
 
 class Dossier(BaseDocumentModel):
+    DOCUMENT_TYPE_CHOICES = (
+        ("deed", "Deed"),
+        ("land_acquisition", "Land Acquisition"),
+        ("receipts", "Receipts"),
+        ("condemnation", "Condemnation"),
+        ("legal_misc", "Legal Misc."),
+        ("appraisal", "Appraisal"),
+        ("plat_of_survey", "Plat of Survey"),
+        ("other", "Other"),
+    )
+
     file_number = models.CharField(max_length=255, validators=[validate_positive_int])
     document_number = models.CharField(max_length=3, validators=[validate_positive_int])
     source_file = models.FileField(
-        upload_to='DOSSIER_FILES',
-        validators=[FileExtensionValidator(['pdf'])]
+        upload_to="DOSSIER_FILES", validators=[FileExtensionValidator(["pdf"])]
     )
+    document_type = models.CharField(
+        max_length=256, choices=DOCUMENT_TYPE_CHOICES, null=True, blank=True
+    )
+    description = models.TextField(null=True, blank=True)
 
 
 class Easement(BaseDocumentModel):
