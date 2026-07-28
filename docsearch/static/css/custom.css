@@ -155,3 +155,7 @@ footer a.dropdown-item {
 .invalid-feedback {
   display: block;
 }
+
+.edit-form-tooltip {
+  color: #445721;
+}
