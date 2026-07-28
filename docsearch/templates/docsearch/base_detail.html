@@ -54,13 +54,15 @@
                   {% if field in view.array_fields %}
                     {{ object|get_attr:field|display_array|default_if_none:"" }}
                   {% else %}
-                    {% if field == 'cad_file' and object.cad_file.url %}
-                      <a href="{{ object.cad_file.url }}" download>{{ object|get_attr:field|default_if_none:"" }}</a> 
+                    {% if field == 'document_type' %}
+                      {{ object.get_document_type_display|default_if_none:"" }}
+                    {% elif field == 'cad_file' and object.cad_file.url %}
+                      <a href="{{ object.cad_file.url }}" download>{{ object|get_attr:field|default_if_none:"" }}</a>
                     {% else %}
                       {{ object|get_attr:field|default_if_none:"" }}
                     {% endif %}
                   {% endif %}
-                  </td>
+                </td>
               </tr>
             {% endfor %}
             {% block extra_fields %}{% endblock %}
