@@ -113,3 +113,6 @@ LEAFLET_CONFIG = {
     'DEFAULT_ZOOM': 9,
     'TILES': [],
 }
+
+# Max upload for files = 5gb
+DATA_UPLOAD_MAX_MEMORY_SIZE = 5 * 1024 * 1024 * 1024
