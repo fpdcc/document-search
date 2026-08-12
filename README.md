@@ -109,13 +109,6 @@ This repo is configured to deploy in the following ways:
 | environment | deploys on                |
 | ----------- | ------------------------- |
 | staging     | commit to `master` branch |
-| production  | tagged commit or release  |
-
-Push to production using the following commands:
-```bash
-git tag <new-tag-name>  # create new tag
-git tag  # list all tags to confirm creation
-git push origin —-tags  # push all local tags, including the new one
-```
+| production  | commit to `deploy` branch |
 
 In both cases, Travis CI will run tests before triggering a new deployment with AWS CodeDeploy.
