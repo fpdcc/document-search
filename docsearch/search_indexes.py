@@ -65,9 +65,14 @@ class DossierIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     file_number = indexes.CharField(model_attr='file_number', faceted=True)
     document_number = indexes.CharField(model_attr='document_number', faceted=True)
+    document_type = indexes.CharField(model_attr='document_type', null=True, faceted=True)
 
     def get_model(self):
         return models.Dossier
+
+    def prepare_document_type(self, obj):
+        # Index the human readable choice label
+        return obj.get_document_type_display()
 
 
 class EasementIndex(indexes.SearchIndex, indexes.Indexable):

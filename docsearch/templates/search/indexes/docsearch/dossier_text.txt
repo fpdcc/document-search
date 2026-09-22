@@ -1,2 +1,3 @@
 {{ object.file_number }}
 {{ object.document_number }}
+{{ object.get_document_type|default_if_none:"" }}
