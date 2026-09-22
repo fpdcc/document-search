@@ -70,6 +70,10 @@ class DossierIndex(indexes.SearchIndex, indexes.Indexable):
     def get_model(self):
         return models.Dossier
 
+    def prepare_document_type(self, obj):
+        # Index the human readable choice label
+        return obj.get_document_type_display()
+
 
 class EasementIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)

@@ -12,6 +12,6 @@
   <td><a class="results-link" href="{{ result.object.get_absolute_url }}">View details&nbsp;&raquo;</td>
   <td>{{ result.object.file_number|default_if_none:"" }}</td>
   <td>{{ result.object.document_number|default_if_none:"" }}</td>
-  <td>{{ result.object.document_type|default_if_none:"" }}</td>
+  <td>{{ result.object.get_document_type_display|default_if_none:"" }}</td>
 {% endblock %}
 {% block empty_colspan %}3{% endblock %}
