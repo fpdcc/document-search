@@ -412,3 +412,10 @@ class Title(BaseDocumentModel):
 class NotificationSubscription(models.Model):
     notification_date = models.DateField()
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+
+class Coordinate(models.Model):
+    area = models.PositiveIntegerField(null=True, blank=True, validators=[validate_int_btwn(1, 33)])
+    section = models.PositiveIntegerField(null=True, blank=True, validators=[validate_int_btwn(1, 36)])
+
+    flat_drawing = models.ForeignKey(FlatDrawing, on_delete=models.CASCADE, null=True, blank=True, related_name="coordinates", verbose_name="Coordinates")
