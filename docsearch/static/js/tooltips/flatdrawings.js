@@ -69,7 +69,7 @@ const fieldDescriptions = {
 
 // Create and insert all tooltip modals
 for (const label of allFieldLabels) {
-  const labelText = label.innerText.trim().replace("*", "")
+  const labelText = label.innerText.replace("*", "").trim()
   const fieldDivId = label.parentNode.id
 
   if (fieldDescriptions[labelText] == undefined) {
@@ -102,7 +102,7 @@ for (const label of allFieldLabels) {
       </div>
     </div>
   `
-  label.insertAdjacentHTML("afterend", tooltipStr + modalStr)
+  label.innerHTML += tooltipStr + modalStr
 }
 
 // Prevent a11y warnings from hidden modal

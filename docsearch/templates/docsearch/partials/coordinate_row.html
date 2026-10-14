@@ -1,0 +1,24 @@
+<div class="coordinate-row mb-3" {% if coord_form.DELETE.value %}hidden{% endif %}>
+  {{ coord_form.id }}
+  <div class="d-none">{{ coord_form.DELETE }}</div>
+
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <label class="input-group-text" for="{{ coord_form.area.id_for_label }}">Area:</label>
+    </div>
+    {{ coord_form.area }}
+    <div class="input-group-prepend input-group-append">
+      <label class="input-group-text" for="{{ coord_form.section.id_for_label }}">Section:</label>
+    </div>
+    {{ coord_form.section }}
+    <div class="input-group-append">
+      <button class="btn btn-outline-danger btn-remove-coordinate" type="button" aria-label="Remove Coordinate">
+        <i class="fas fa-trash-alt"></i> Remove
+      </button>
+    </div>
+  </div>
+
+  {% for error in coord_form.non_field_errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+  {% for error in coord_form.area.errors %}<div class="invalid-feedback d-block">Area: {{ error }}</div>{% endfor %}
+  {% for error in coord_form.section.errors %}<div class="invalid-feedback d-block">Section: {{ error }}</div>{% endfor %}
+</div>
