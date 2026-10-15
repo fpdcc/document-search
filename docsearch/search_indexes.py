@@ -99,8 +99,25 @@ class FlatDrawingIndex(indexes.SearchIndex, indexes.Indexable):
     cross_ref_section = indexes.IntegerField(model_attr='cross_ref_section', null=True, faceted=True)
     cross_ref_map_number = indexes.CharField(model_attr='cross_ref_map_number', null=True, faceted=True)
 
+    coordinate_areas = IntegerMultiValueField(null=True, faceted=True)
+    coordinate_sections = IntegerMultiValueField(null=True, faceted=True)
+
     def get_model(self):
         return models.FlatDrawing
+
+    def get_distinct_area_or_section(self, obj, attribute: str):
+        """ `attribute` will be either "area" or "section" """
+        distinct_attributes = list(
+            obj.coordinates.all().values_list(attribute, flat=True).distinct()
+        )
+        filtered_attributes = [a for a in distinct_attributes if a is not None]
+        return sorted(filtered_attributes) if filtered_attributes else None
+
+    def prepare_coordinate_areas(self, obj):
+        return self.get_distinct_area_or_section(obj, "area")
+
+    def prepare_coordinate_sections(self, obj):
+        return self.get_distinct_area_or_section(obj, "section")
 
 
 class IndexCardIndex(indexes.SearchIndex, indexes.Indexable):

@@ -154,6 +154,14 @@
     <field name="cross_ref_map_number" type="text_en" indexed="true" stored="true" multiValued="false" />
     
     <field name="cross_ref_map_number_exact" type="string" indexed="true" stored="true" multiValued="false" />
+
+    <field name="coordinate_areas" type="long" indexed="true" stored="true" multiValued="true" />
+    
+    <field name="coordinate_areas_exact" type="string" indexed="true" stored="true" multiValued="true" />
+    
+    <field name="coordinate_sections" type="long" indexed="true" stored="true" multiValued="true" />
+    
+    <field name="coordinate_sections_exact" type="string" indexed="true" stored="true" multiValued="true" />
     
     <field name="hash" type="text_en" indexed="true" stored="true" multiValued="false" />
     
