@@ -89,6 +89,7 @@ class FlatDrawingSearch(base_views.BaseSearchView):
     sort_fields = ['location_set_areas', 'location_set_sections', 'map_number_exact', 'location_name_exact',
                    'building_id', 'description_exact', 'job_number_exact',
                    'number_of_sheets_exact', 'date_exact', 'cross_ref_map_number_exact']
+    facet_field_name_overrides = {'location_set_areas': 'area', 'location_set_sections': 'section'}
 
 
 class FlatDrawingData(base_views.BaseDocumentData):
