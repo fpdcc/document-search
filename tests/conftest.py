@@ -18,10 +18,13 @@ DOCUMENTS = [
     (models.Dossier, {'file_number': 3, 'document_number': 5}),
     (models.Easement, {'easement_number': 6}),
     (models.FlatDrawing, {
-        'area': 1, 'section': 2, 'map_number': 'foo', 'location': 'bar',
+        'map_number': 'foo', 'location_name': 'bar',
         'description': 'baz', 'job_number': 'foo', 'number_of_sheets': 7,
         'date': '2023-09-12', 'cross_ref_area': 1, 'cross_ref_section': 2,
-        'cross_ref_map_number': 'foo', 'hash': 'bar'
+        'cross_ref_map_number': 'foo', 'hash': 'bar',
+        # LocationSet inline formset
+        'location_sets-TOTAL_FORMS': 1, 'location_sets-INITIAL_FORMS': 0, 
+        'location_sets-0-area': 1, 'location_sets-0-section': 2,
     }),
     (models.IndexCard, {
         'monument_number': 'foo', 'township': 'foo', 'corner': 'bar', 'section': 'baz'
@@ -89,6 +92,8 @@ def document_and_fields(request):
     Model, fields = request.param
     fields['source_file'] = 'foobarbaz.pdf'
     updated_fields = fields.copy()
+    # Omit related model fields from model creation
+    [updated_fields.pop(f) for f in fields if f.startswith('location_sets')]
     if fields.get('geometry'):
         updated_fields['geometry'] = GEOSGeometry(fields['geometry'])
     return Model.objects.create(**updated_fields), fields
