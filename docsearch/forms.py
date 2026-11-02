@@ -123,7 +123,6 @@ LocationSetFormSet = inlineformset_factory(
 )
 
 class FlatDrawingForm(ModelForm):
-
     def __init__(self, *args, **kwargs):
         super(FlatDrawingForm, self).__init__(*args, **kwargs)
         disabled_fields = ["area", "section", "cross_ref_area", "cross_ref_section"]
@@ -132,4 +131,8 @@ class FlatDrawingForm(ModelForm):
 
     class Meta:
         model = FlatDrawing
-        fields = '__all__'
+
+        # Display disabled fields at the end of the form
+        fields = ['map_number', 'location_name', 'building_id', 'description', 'job_number',
+                'number_of_sheets', 'date', 'cross_ref_map_number', 'hash', 'cad_file', 'source_file',
+                'area', 'section', 'cross_ref_area', 'cross_ref_section']

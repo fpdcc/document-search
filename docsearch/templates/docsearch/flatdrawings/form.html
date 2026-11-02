@@ -19,7 +19,7 @@
       {% csrf_token %}
 
       <div id="div_id_location_sets" class="form-group">
-        <p class="d-block mb-2">Location Sets <span class="asteriskField">*</span></p>
+        <p class="d-block mb-2"><label for="location_sets_container">Location sets <span class="asteriskField">*</span></label></p>
         <small id="hint_location_sets" class="form-text text-muted">{{ location_set_formset.help_text }}</small>
 
         {{ location_set_formset.management_form }}

@@ -1,16 +1,19 @@
 const allFieldLabels = document.querySelectorAll("[id^='div_id_'] label")
 const fieldDescriptions = {
+  "Location sets": `
+    <p>Description coming soon.</p>
+  `,
   "Area": `
-    <p>Area number that project is located in.</p
+    <p>Area number that project is located in.</p>
+    <p>Do not complete for new document additions.</p>
     <p>Public Land Survey System term indicating a grided system of squares no larger than 6 miles × 6 miles. The numbering of Township Areas starts in the northwest end of the county, runs east to the lake and then starts back at the west end of the county. This number also represents the first number of the Cook County Property Identification Number – PIN.</p>
     <p><a href="https://hub-cookcountyil.opendata.arcgis.com/datasets/24fd4fa810794d9cba17e135f36db92c_2/explore">Click here for an interactive map of Areas</a></p>
-    <p>Note: if project contains multiple locations, duplicate entries should be made for each separate Area-Section combination.</p>
   `,
   "Section": `
     <p>Section number that project is located in.</p>
+    <p>Do not complete for new document additions.</p>
     <p>Public Land Survey System term indicating a grided subsystem of squares 1 mile × 1 mile (36 Sections = 1 Township Area). The numbering of Sections starts in the northeast corner of the Township Area, runs West to 6, then East to 12, then West to 18, and so on, back and forth, until they end with Section 36 in the southeast corner. This number represents the second number of the Property Identification Number – PIN.</p>
     <p><a href="https://hub-cookcountyil.opendata.arcgis.com/datasets/217a635972fb4dfa95411e57a57d1250_3/explore">Click here for an interactive map of Sections</a></p>
-    <p>Note: if project contains multiple locations, duplicate entries should be made for each separate Area-Section combination.</p>
   `,
   "Map number": `
     <p>Do not complete for new document additions. Historical Planning and Development map numbering system for filing purposes.</p>
