@@ -121,3 +121,15 @@ LocationSetFormSet = inlineformset_factory(
     validate_min=True,   # and must keep at least one set of locations
     can_delete=True,
 )
+
+class FlatDrawingForm(ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(FlatDrawingForm, self).__init__(*args, **kwargs)
+        disabled_fields = ["area", "section", "cross_ref_area", "cross_ref_section"]
+        for field in disabled_fields:
+            self.fields[field].disabled = True
+
+    class Meta:
+        model = FlatDrawing
+        fields = '__all__'

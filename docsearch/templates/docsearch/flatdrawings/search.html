@@ -12,8 +12,6 @@
   <th>{{ view.model|field_name:"job_number"|capfirst }}</th>
   <th>{{ view.model|field_name:"number_of_sheets"|capfirst }}</th>
   <th>{{ view.model|field_name:"date"|capfirst }}</th>
-  <th>{{ view.model|field_name:"cross_ref_area"|capfirst }}</th>
-  <th>{{ view.model|field_name:"cross_ref_section"|capfirst }}</th>
   <th>{{ view.model|field_name:"cross_ref_map_number"|capfirst }}</th>
 {% endblock %}
 {% block tr %}
@@ -31,8 +29,6 @@
   <td>{{ result.object.job_number|default_if_none:"" }}</td>
   <td>{{ result.object.number_of_sheets|default_if_none:"" }}</td>
   <td>{{ result.object.date|default_if_none:"" }}</td>
-  <td>{{ result.object.cross_ref_area|default_if_none:"" }}</td>
-  <td>{{ result.object.cross_ref_section|default_if_none:"" }}</td>
   <td>{{ result.object.cross_ref_map_number|default_if_none:"" }}</td>
 {% endblock %}
 {% block empty_colspan %}13{% endblock %}

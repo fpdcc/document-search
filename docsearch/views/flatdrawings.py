@@ -7,10 +7,9 @@ from . import base as base_views
 class FlatDrawingDetail(base_views.BaseDetailView):
     model = models.FlatDrawing
     template_name = 'docsearch/flatdrawings/detail.html'
-    metadata_fields = ['location_sets', 'area', 'section', 'map_number', 'location_name', 'building_id',
+    metadata_fields = ['location_sets', 'map_number', 'location_name', 'building_id',
                        'description', 'job_number', 'number_of_sheets',
-                       'date', 'cross_ref_area', 'cross_ref_section',
-                       'cross_ref_map_number', 'hash', 'cad_file',
+                       'date', 'cross_ref_map_number', 'hash', 'cad_file',
                        'source_file']
 
     def get_context_data(self, *args, **kwargs):
@@ -68,13 +67,13 @@ class LocationSetFormSetMixin:
 class FlatDrawingCreate(LocationSetFormSetMixin, base_views.BaseCreateView):
     model = models.FlatDrawing
     template_name = 'docsearch/flatdrawings/form.html'
-    fields = '__all__'
+    form_class = forms.FlatDrawingForm
 
 
 class FlatDrawingUpdate(LocationSetFormSetMixin, base_views.BaseUpdateView):
     model = models.FlatDrawing
     template_name = 'docsearch/flatdrawings/form.html'
-    fields = '__all__'
+    form_class = forms.FlatDrawingForm
 
 
 class FlatDrawingDelete(base_views.BaseDeleteView):
@@ -85,13 +84,11 @@ class FlatDrawingDelete(base_views.BaseDeleteView):
 class FlatDrawingSearch(base_views.BaseSearchView):
     model = models.FlatDrawing
     template_name = 'docsearch/flatdrawings/search.html'
-    facet_fields = ['location_set_areas', 'location_set_sections', 'area', 'section', 'map_number', 'location_name', 'building_id',
-                    'job_number', 'number_of_sheets', 'date', 'cross_ref_area',
-                    'cross_ref_section', 'cross_ref_map_number']
-    sort_fields = ['location_set_areas', 'location_set_sections', 'area', 'section_exact', 'map_number_exact', 'location_name_exact',
+    facet_fields = ['location_set_areas', 'location_set_sections', 'map_number', 'location_name', 'building_id',
+                    'job_number', 'number_of_sheets', 'date', 'cross_ref_map_number']
+    sort_fields = ['location_set_areas', 'location_set_sections', 'map_number_exact', 'location_name_exact',
                    'building_id', 'description_exact', 'job_number_exact',
-                   'number_of_sheets_exact', 'date_exact', 'cross_ref_area',
-                   'cross_ref_section', 'cross_ref_map_number_exact']
+                   'number_of_sheets_exact', 'date_exact', 'cross_ref_map_number_exact']
 
 
 class FlatDrawingData(base_views.BaseDocumentData):
