@@ -72,7 +72,11 @@
           </button>
           <div id="facet-panel-collapse" class="facets-collapse collapse" style="width:100%">
             {% for facet_field in view.facet_fields %}
-          {% if facet_field == "section" and "area_exact" in selected_facet_fields or facet_field != "section"  %}
+            {% if facet_field == "section" and "area_exact" not in selected_facet_fields %}
+              <!-- Area has not been selected. Don't show Section facet. -->
+            {% elif facet_field == "location_set_sections" and "location_set_areas_exact" not in selected_facet_fields %}
+              <!-- Location Area has not been selected. Don't show Location Section facet. -->
+            {% else %}
               <div class="card mt-3">
                 <div class="card-header p-0" id="facet-{{ facet_field }}-header">
                   <h5 class="mb-0">
@@ -173,7 +177,7 @@
                   </div>
                 </div>
               {% endwith %}
-        {% endif %}
+            {% endif %}
             {% endfor %}
           </div>
         </div>
