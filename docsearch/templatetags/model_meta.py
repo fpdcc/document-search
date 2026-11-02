@@ -24,6 +24,13 @@ def field_name(value, field):
     """
     Return the verbose fieldname for a given 'field' on an object or Model.
     """
+    global_exceptions = {
+        "location_set_areas": "location set areas",
+        "location_set_sections": "location set sections"
+    }
+    if field in global_exceptions.keys():
+        return global_exceptions[field]
+
     Model = value.model if hasattr(value, 'model') else value
     field_obj = Model._meta.get_field(field)
     if isinstance(field_obj, ForeignObjectRel):

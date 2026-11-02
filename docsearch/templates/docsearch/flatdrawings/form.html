@@ -18,26 +18,26 @@
     <form method="POST" enctype="multipart/form-data">
       {% csrf_token %}
 
-      <div id="div_id_coordinates" class="form-group">
-        <p class="d-block mb-2">Coordinates <span class="asteriskField">*</span></p>
-        <small id="hint_coordinates" class="form-text text-muted">{{ coordinate_formset.help_text }}</small>
+      <div id="div_id_location_sets" class="form-group">
+        <p class="d-block mb-2">Location Sets <span class="asteriskField">*</span></p>
+        <small id="hint_location_sets" class="form-text text-muted">{{ location_set_formset.help_text }}</small>
 
-        {{ coordinate_formset.management_form }}
-        {% for error in coordinate_formset.non_form_errors %}
+        {{ location_set_formset.management_form }}
+        {% for error in location_set_formset.non_form_errors %}
           <div class="invalid-feedback d-block">{{ error }}</div>
         {% endfor %}
 
-        <div id="coordinates_container">
-          {% for coord_form in coordinate_formset %}
-            {% include "docsearch/partials/coordinate_row.html" %}
+        <div id="location_sets_container">
+          {% for loc_form in location_set_formset %}
+            {% include "docsearch/partials/location_set_row.html" %}
           {% endfor %}
         </div>
 
-        <template id="empty_coordinate_row">
-          {% include "docsearch/partials/coordinate_row.html" with coord_form=coordinate_formset.empty_form %}
+        <template id="empty_location_set_row">
+          {% include "docsearch/partials/location_set_row.html" with loc_form=location_set_formset.empty_form %}
         </template>
 
-        <button class="btn btn-link" id="add_row_btn" type="button">+ Add Coordinate Row</button>
+        <button class="btn btn-link" id="add_row_btn" type="button">+ Add Location Set Row</button>
       </div>
 
       {% for field in form %}
@@ -72,9 +72,9 @@
 {% block extra_js %}
   <script src="{% static 'js/tooltips/flatdrawings.js' %}"></script>
   <script>
-    const container = document.getElementById("coordinates_container")
-    const totalForms = document.getElementById("id_coordinates-TOTAL_FORMS")
-    const rowTemplate = document.getElementById("empty_coordinate_row")
+    const container = document.getElementById("location_sets_container")
+    const totalForms = document.getElementById("id_location_sets-TOTAL_FORMS")
+    const rowTemplate = document.getElementById("empty_location_set_row")
 
     document.getElementById("add_row_btn").addEventListener("click", () => {
       const index = Number(totalForms.value)
@@ -83,9 +83,9 @@
     })
 
     container.addEventListener("click", (event) => {
-      const btn = event.target.closest(".btn-remove-coordinate")
+      const btn = event.target.closest(".btn-remove-location-set")
       if (!btn) return
-      const row = btn.closest(".coordinate-row")
+      const row = btn.closest(".location-set-row")
       row.querySelector("input[name$='-DELETE']").checked = true
       row.hidden = true
     })

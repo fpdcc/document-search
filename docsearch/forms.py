@@ -6,7 +6,7 @@ from haystack.query import SQ
 from haystack.forms import SearchForm
 from haystack.inputs import Exact
 
-from docsearch.models import License, FlatDrawing, Coordinate
+from docsearch.models import License, FlatDrawing, LocationSet
 from docsearch.query import FuzzyAutoQuery
 
 
@@ -89,9 +89,9 @@ class LicenseForm(ModelForm):
         fields = '__all__'
 
 
-class CoordinateForm(ModelForm):
+class LocationSetForm(ModelForm):
     class Meta:
-        model = Coordinate
+        model = LocationSet
         fields = ['area', 'section']
         widgets = {
             'area': NumberInput(attrs={'class': 'form-control', 'max': 33}),
@@ -107,17 +107,17 @@ class CoordinateForm(ModelForm):
             field.widget.attrs['min'] = 1
 
 
-class BaseCoordinateFormSet(BaseInlineFormSet):
-    help_text = 'Both an area and section must be entered for each coordinate.'
+class BaseLocationSetFormSet(BaseInlineFormSet):
+    help_text = 'Both an area and section must be entered for each set of locations.'
 
 
-CoordinateFormSet = inlineformset_factory(
+LocationSetFormSet = inlineformset_factory(
     FlatDrawing,
-    Coordinate,
-    form=CoordinateForm,
-    formset=BaseCoordinateFormSet,
+    LocationSet,
+    form=LocationSetForm,
+    formset=BaseLocationSetFormSet,
     extra=0,             # Adding extra blank rows to be handled by js script
     min_num=1,           # A new drawing starts with one row,
-    validate_min=True,   # and must keep at least one coordinate
+    validate_min=True,   # and must keep at least one set of locations
     can_delete=True,
 )

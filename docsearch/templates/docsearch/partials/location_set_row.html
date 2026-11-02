@@ -1,0 +1,24 @@
+<div class="location-set-row mb-3" {% if loc_form.DELETE.value %}hidden{% endif %}>
+  {{ loc_form.id }}
+  <div class="d-none">{{ loc_form.DELETE }}</div>
+
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <label class="input-group-text" for="{{ loc_form.area.id_for_label }}">Area:</label>
+    </div>
+    {{ loc_form.area }}
+    <div class="input-group-prepend input-group-append">
+      <label class="input-group-text" for="{{ loc_form.section.id_for_label }}">Section:</label>
+    </div>
+    {{ loc_form.section }}
+    <div class="input-group-append">
+      <button class="btn btn-outline-danger btn-remove-location-set" type="button" aria-label="Remove Location Set">
+        <i class="fas fa-trash-alt"></i> Remove
+      </button>
+    </div>
+  </div>
+
+  {% for error in loc_form.non_field_errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+  {% for error in loc_form.area.errors %}<div class="invalid-feedback d-block">Area: {{ error }}</div>{% endfor %}
+  {% for error in loc_form.section.errors %}<div class="invalid-feedback d-block">Section: {{ error }}</div>{% endfor %}
+</div>

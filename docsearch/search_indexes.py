@@ -89,7 +89,7 @@ class FlatDrawingIndex(indexes.SearchIndex, indexes.Indexable):
     area = indexes.IntegerField(model_attr='area', null=True, faceted=True)
     section = indexes.IntegerField(model_attr='section', null=True, faceted=True)
     map_number = indexes.CharField(model_attr='map_number', null=True, faceted=True)
-    location = indexes.CharField(model_attr='location', null=True, faceted=True)
+    location_name = indexes.CharField(model_attr='location_name', null=True, faceted=True)
     building_id = indexes.IntegerField(model_attr='building_id', null=True, faceted=True)
     description = indexes.CharField(model_attr='description', null=True, faceted=True)
     job_number = indexes.CharField(model_attr='job_number', null=True, faceted=True)
@@ -99,8 +99,9 @@ class FlatDrawingIndex(indexes.SearchIndex, indexes.Indexable):
     cross_ref_section = indexes.IntegerField(model_attr='cross_ref_section', null=True, faceted=True)
     cross_ref_map_number = indexes.CharField(model_attr='cross_ref_map_number', null=True, faceted=True)
 
-    coordinate_areas = IntegerMultiValueField(null=True, faceted=True)
-    coordinate_sections = IntegerMultiValueField(null=True, faceted=True)
+    location_set_areas = IntegerMultiValueField(null=True, faceted=True)
+    location_set_sections = IntegerMultiValueField(null=True, faceted=True)
+    location_sets = fields.MultiValueField(null=True)
 
     def get_model(self):
         return models.FlatDrawing
@@ -108,16 +109,22 @@ class FlatDrawingIndex(indexes.SearchIndex, indexes.Indexable):
     def get_distinct_area_or_section(self, obj, attribute: str):
         """ `attribute` will be either "area" or "section" """
         distinct_attributes = list(
-            obj.coordinates.all().values_list(attribute, flat=True).distinct()
+            obj.location_sets.all().values_list(attribute, flat=True).distinct()
         )
         filtered_attributes = [a for a in distinct_attributes if a is not None]
         return sorted(filtered_attributes) if filtered_attributes else None
 
-    def prepare_coordinate_areas(self, obj):
+    def prepare_location_set_areas(self, obj):
         return self.get_distinct_area_or_section(obj, "area")
 
-    def prepare_coordinate_sections(self, obj):
+    def prepare_location_set_sections(self, obj):
         return self.get_distinct_area_or_section(obj, "section")
+
+    def prepare_location_sets(self, obj):
+        result = []
+        for l in obj.location_sets.all().order_by("id"):
+            result.append([l.area, l.section])
+        return result if len(result) > 0 else None
 
 
 class IndexCardIndex(indexes.SearchIndex, indexes.Indexable):

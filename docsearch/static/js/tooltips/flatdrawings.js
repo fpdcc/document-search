@@ -16,7 +16,7 @@ const fieldDescriptions = {
     <p>Do not complete for new document additions. Historical Planning and Development map numbering system for filing purposes.</p>
     <p>These numbers were written on the original drawings typically below the title blocks. The filing number sequence on the sheets is in reverse order of the drawing sheets – i.e. the last sheet of the drawing set has the lowest Map Number and the first sheet of the drawing set has the largest. Map numbers were sequential for projects that were contained in the same Area-Section drawers.</p>
   `,
-  "Location": `
+  "Location name": `
     <p>Official FPCC name for project location.</p>
     <p>For new entries, please refer to <a href="map.fpdcc.com">map.fpdcc.com</a> or consult with GIS team for current official preserve names. For buildings, typical naming convention is: <em>[preserve complex] – [building_name]</em> and , if applicable, <em>[grove_number]</em>.</p>
     <p>Names are not currently standardized and can change over time so be aware of this restriction when searching for records.</p>
