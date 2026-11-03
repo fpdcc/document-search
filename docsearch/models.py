@@ -248,17 +248,17 @@ class Easement(BaseDocumentModel):
 
 
 class FlatDrawing(BaseDocumentModel):
-    area = models.PositiveIntegerField(null=True, blank=True, validators=[validate_int_btwn(1, 33)])
+    area = models.PositiveIntegerField(null=True, blank=True)
     section = models.PositiveIntegerField(null=True, blank=True)
     map_number = models.CharField(max_length=255, null=True, blank=True)
-    location = models.TextField(blank=True, null=True)
+    location_name = models.TextField(blank=True, null=True)
     building_id = models.IntegerField(verbose_name='Building ID', null=True, blank=True)
     description = models.TextField(blank=True, null=True)
     job_number = models.CharField(max_length=255, blank=True, null=True)
     number_of_sheets = models.CharField(max_length=255, null=True, blank=True, validators=[validate_positive_int])
     date = models.CharField(max_length=255, null=True, blank=True, validators=[validate_date], help_text=DATE_FIELD_HELP_TEXT)
-    cross_ref_area = models.PositiveIntegerField(null=True, blank=True, validators=[validate_int_btwn(1, 33)])
-    cross_ref_section = models.PositiveIntegerField(null=True, blank=True, validators=[validate_int_btwn(1, 36)])
+    cross_ref_area = models.PositiveIntegerField(null=True, blank=True)
+    cross_ref_section = models.PositiveIntegerField(null=True, blank=True)
     cross_ref_map_number = models.CharField(
         max_length=255,
         blank=True,
@@ -412,3 +412,21 @@ class Title(BaseDocumentModel):
 class NotificationSubscription(models.Model):
     notification_date = models.DateField()
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+
+class LocationSet(models.Model):
+    """
+    The coordinates of a location, made up of a combination of attributes
+    such as area or section. Does not refer to latitude/longitude.
+    """
+    area = models.PositiveIntegerField(null=True, blank=True, validators=[validate_int_btwn(1, 33)])
+    section = models.PositiveIntegerField(null=True, blank=True, validators=[validate_int_btwn(1, 36)])
+
+    flat_drawing = models.ForeignKey(
+        FlatDrawing,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="location_sets",
+        verbose_name="Location Sets"
+    )

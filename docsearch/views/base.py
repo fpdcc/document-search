@@ -119,7 +119,7 @@ class BaseSearchView(LoginRequiredMixin, DocumentPermissionRequiredMixin, Facete
     permission_action = 'view'
     sort_fields = []
     geo_facet_fields = [
-        'area', 'section', 'section_arr', 'township', 'township_arr',
+        'location_set_areas', 'location_set_sections', 'area', 'section', 'section_arr', 'township', 'township_arr',
         'range', 'range_arr',
     ]
 

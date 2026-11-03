@@ -1,4 +1,5 @@
 from django import template
+from django.db.models.fields.reverse_related import ForeignObjectRel
 
 register = template.Library()
 
@@ -23,5 +24,16 @@ def field_name(value, field):
     """
     Return the verbose fieldname for a given 'field' on an object or Model.
     """
+    global_exceptions = {
+        "location_set_areas": "location set areas",
+        "location_set_sections": "location set sections"
+    }
+    if field in global_exceptions.keys():
+        return global_exceptions[field]
+
     Model = value.model if hasattr(value, 'model') else value
-    return Model._meta.get_field(field).verbose_name
+    field_obj = Model._meta.get_field(field)
+    if isinstance(field_obj, ForeignObjectRel):
+        # Reverse relations don't have their own verbose name. Use the OG field's
+        return field_obj.field.verbose_name
+    return field_obj.verbose_name

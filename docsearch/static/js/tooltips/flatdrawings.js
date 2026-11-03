@@ -1,22 +1,25 @@
 const allFieldLabels = document.querySelectorAll("[id^='div_id_'] label")
 const fieldDescriptions = {
+  "Location sets": `
+    <p>Description coming soon.</p>
+  `,
   "Area": `
-    <p>Area number that project is located in.</p
+    <p>Area number that project is located in.</p>
+    <p>Do not complete for new document additions.</p>
     <p>Public Land Survey System term indicating a grided system of squares no larger than 6 miles × 6 miles. The numbering of Township Areas starts in the northwest end of the county, runs east to the lake and then starts back at the west end of the county. This number also represents the first number of the Cook County Property Identification Number – PIN.</p>
     <p><a href="https://hub-cookcountyil.opendata.arcgis.com/datasets/24fd4fa810794d9cba17e135f36db92c_2/explore">Click here for an interactive map of Areas</a></p>
-    <p>Note: if project contains multiple locations, duplicate entries should be made for each separate Area-Section combination.</p>
   `,
   "Section": `
     <p>Section number that project is located in.</p>
+    <p>Do not complete for new document additions.</p>
     <p>Public Land Survey System term indicating a grided subsystem of squares 1 mile × 1 mile (36 Sections = 1 Township Area). The numbering of Sections starts in the northeast corner of the Township Area, runs West to 6, then East to 12, then West to 18, and so on, back and forth, until they end with Section 36 in the southeast corner. This number represents the second number of the Property Identification Number – PIN.</p>
     <p><a href="https://hub-cookcountyil.opendata.arcgis.com/datasets/217a635972fb4dfa95411e57a57d1250_3/explore">Click here for an interactive map of Sections</a></p>
-    <p>Note: if project contains multiple locations, duplicate entries should be made for each separate Area-Section combination.</p>
   `,
   "Map number": `
     <p>Do not complete for new document additions. Historical Planning and Development map numbering system for filing purposes.</p>
     <p>These numbers were written on the original drawings typically below the title blocks. The filing number sequence on the sheets is in reverse order of the drawing sheets – i.e. the last sheet of the drawing set has the lowest Map Number and the first sheet of the drawing set has the largest. Map numbers were sequential for projects that were contained in the same Area-Section drawers.</p>
   `,
-  "Location": `
+  "Location name": `
     <p>Official FPCC name for project location.</p>
     <p>For new entries, please refer to <a href="map.fpdcc.com">map.fpdcc.com</a> or consult with GIS team for current official preserve names. For buildings, typical naming convention is: <em>[preserve complex] – [building_name]</em> and , if applicable, <em>[grove_number]</em>.</p>
     <p>Names are not currently standardized and can change over time so be aware of this restriction when searching for records.</p>
@@ -69,7 +72,7 @@ const fieldDescriptions = {
 
 // Create and insert all tooltip modals
 for (const label of allFieldLabels) {
-  const labelText = label.innerText.trim().replace("*", "")
+  const labelText = label.innerText.replace("*", "").trim()
   const fieldDivId = label.parentNode.id
 
   if (fieldDescriptions[labelText] == undefined) {
@@ -102,7 +105,7 @@ for (const label of allFieldLabels) {
       </div>
     </div>
   `
-  label.insertAdjacentHTML("afterend", tooltipStr + modalStr)
+  label.innerHTML += tooltipStr + modalStr
 }
 
 // Prevent a11y warnings from hidden modal

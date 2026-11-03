@@ -72,7 +72,11 @@
           </button>
           <div id="facet-panel-collapse" class="facets-collapse collapse" style="width:100%">
             {% for facet_field in view.facet_fields %}
-          {% if facet_field == "section" and "area_exact" in selected_facet_fields or facet_field != "section"  %}
+            {% if facet_field == "section" and "area_exact" not in selected_facet_fields %}
+              <!-- Area has not been selected. Don't show Section facet. -->
+            {% elif facet_field == "location_set_sections" and "location_set_areas_exact" not in selected_facet_fields %}
+              <!-- Location Area has not been selected. Don't show Location Section facet. -->
+            {% else %}
               <div class="card mt-3">
                 <div class="card-header p-0" id="facet-{{ facet_field }}-header">
                   <h5 class="mb-0">
@@ -173,7 +177,7 @@
                   </div>
                 </div>
               {% endwith %}
-        {% endif %}
+            {% endif %}
             {% endfor %}
           </div>
         </div>
@@ -377,7 +381,7 @@
           townshipIsSelected = true;
         } else if (selectedFacet.startsWith('range')) {
           rangeIsSelected = true;
-        } else if (selectedFacet.startsWith('area')) {
+        } else if (selectedFacet.startsWith('area') || selectedFacet.endsWith('areas')) {
           areaIsSelected = true;
         }
       }
@@ -412,6 +416,7 @@
       switch (facetField) {
         case 'area':
         case 'area_arr':
+        case 'location_set_areas':
           entity = 'area';
           geojsonUrl = areaUrl;
           break;
@@ -427,6 +432,7 @@
           break;
         case 'section':
         case 'section_arr':
+        case 'location_set_sections':
           entity = 'section';
           geojsonUrl = sectionUrl;
           break;
@@ -566,12 +572,14 @@
                 selectedFacets = selectedFacets.filter(function(sf) {
                   return !(sf.startsWith('area_exact:') || sf.startsWith('area_arr_exact:') ||
                            sf.startsWith('area_exact:') || sf.startsWith('area_arr:') ||
-                           sf.startsWith('area:') || sf.startsWith('area_arr:') );
+                           sf.startsWith('area:') || sf.startsWith('area_arr:') ||
+                           sf.startsWith('location_set_areas:') || sf.startsWith('location_set_areas_exact:') );
                 }).filter(function(sf) {
                   // Clear any selected sections after selecting an area
                   return !(sf.startsWith('section_exact:') || sf.startsWith('section_arr_exact:') ||
                            sf.startsWith('section_exact:') || sf.startsWith('section_arr:') ||
-                           sf.startsWith('section:') || sf.startsWith('section_arr:'));
+                           sf.startsWith('section:') || sf.startsWith('section_arr:') ||
+                           sf.startsWith('location_set_sections:') || sf.startsWith('location_set_sections_exact:'));
                 });
               }
 
@@ -580,6 +588,10 @@
                 for (var i=0; i<relatedGeoEntityFacets.length; i++) {
                   var geoFacet = relatedGeoEntityFacets[i][0];
                   var relatedEntity = relatedGeoEntityFacets[i][1];
+                  // Location sections belong to location areas, not the legacy area field
+                  if (facetField === 'location_set_sections' && relatedEntity === 'area') {
+                    geoFacet = 'location_set_areas';
+                  }
                   if (feature.properties[relatedEntity]) {
                     selectedFacets.push(formatFacetString(geoFacet, feature, relatedEntity));
                   }
@@ -612,6 +624,8 @@
               if (sf.indexOf('area_exact:') === 0) {
           selectedAreas[sf.split(':')[1]] = true;
               } else if (sf.indexOf('area_arr_exact:') === 0) {
+          selectedAreas[sf.split(':')[1]] = true;
+              } else if (sf.indexOf('location_set_areas_exact:') === 0) {
           selectedAreas[sf.split(':')[1]] = true;
               }
             }
