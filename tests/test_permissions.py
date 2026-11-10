@@ -111,6 +111,13 @@ def test_staff_users_can_delete(client, staff_user, document_and_fields):
 
 
 @pytest.mark.django_db
+def test_only_autheticated_users_can_see_activity_log(client, read_only_user):
+    url = reverse('activity-data')
+    response = client.get(url, follow=False)
+    assert response.status_code == 302, "Should redirect users to login page"
+
+
+@pytest.mark.django_db
 def test_read_only_users_cannot_see_activity_log(client, read_only_user):
     client.force_login(read_only_user)
     url = reverse('activity')

@@ -38,7 +38,7 @@ class Activity(LoginRequiredMixin, UserPassesTestMixin, ListView):
         return can_create(self.request.user)
 
 
-class ActivityData(BaseDatatableView, UserPassesTestMixin):
+class ActivityData(LoginRequiredMixin, UserPassesTestMixin, BaseDatatableView):
     model = models.ActionLog
     columns = ['timestamp', 'user.username', 'action', 'content_type.model', 'object_id', 'content_object']
     order_columns = ['timestamp', 'user.username', 'action', 'content_type.model', 'object_id', '']
