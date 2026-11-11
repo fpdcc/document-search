@@ -37,6 +37,6 @@ jobs:
           aws-region: us-east-1
       - uses: actions/checkout@v7
       - id: deploy
-        uses: webfactory/create-aws-codedeploy-deployment@v1.0.0
+        uses: webfactory/create-aws-codedeploy-deployment/create-deployment@v1.0.0
         with:
           application: document-search
