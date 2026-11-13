@@ -1,6 +1,93 @@
-{% extends "docsearch/base_form.html" %}
+{% extends "docsearch/base_content.html" %}
+
 {% load static %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_field %}
+{% load model_meta %}
+{% load permissions %}
+
+{% block title %}{% if object %}Edit{% else %}Add new{% endif %} {{ view.model|verbose_name|title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-sm-12">
+    <h1 class="mb-3">
+      {% if object %}Edit{% else %}Add new{% endif %} {{ view.model|verbose_name|title }}
+    </h1>
+    <p><span class="asteriskField">*</span> Indicates a required field</p>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div id="div_id_location_sets" class="form-group">
+        <p class="d-block mb-2"><label for="location_sets_container">Location sets <span class="asteriskField">*</span></label></p>
+        <small id="hint_location_sets" class="form-text text-muted">{{ location_set_formset.help_text }}</small>
+
+        {{ location_set_formset.management_form }}
+        {% for error in location_set_formset.non_form_errors %}
+          <div class="invalid-feedback d-block">{{ error }}</div>
+        {% endfor %}
+
+        <div id="location_sets_container">
+          {% for loc_form in location_set_formset %}
+            {% include "docsearch/partials/location_set_row.html" %}
+          {% endfor %}
+        </div>
+
+        <template id="empty_location_set_row">
+          {% include "docsearch/partials/location_set_row.html" with loc_form=location_set_formset.empty_form %}
+        </template>
+
+        <button class="btn btn-link" id="add_row_btn" type="button">+ Add Location Set Row</button>
+      </div>
+
+      {% for field in form %}
+        <div id="div_{{field.auto_id}}" class="form-group">
+          <label for="{{field.auto_id}}" class="d-block">
+            {{field.label}}
+            {% if field.field.required %}<span class="asteriskField">*</span>{% endif %}
+          </label>
+
+          {% crispy_field field %}
+
+          {% if field.help_text %}
+            <small id="hint_{{field.auto_id}}" class="form-text text-muted">{{field.help_text}}</small>
+          {% endif %}
+        </div>
+        
+      {% endfor %}
+      <div class="float-right">
+        <a class="btn btn-link" href="{{ cancel_url }}">Cancel</a>
+        <button class="btn btn-secondary bg-fpdcc-light-green" type="submit">
+          {% if object %}Update{% else %}Create{% endif %}
+        </button>
+        {% if object and request.user|can_delete:view.model %}
+          <a class="btn btn-danger" href="{{ delete_url }}">Delete</a>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
 
 {% block extra_js %}
   <script src="{% static 'js/tooltips/flatdrawings.js' %}"></script>
+  <script>
+    const container = document.getElementById("location_sets_container")
+    const totalForms = document.getElementById("id_location_sets-TOTAL_FORMS")
+    const rowTemplate = document.getElementById("empty_location_set_row")
+
+    document.getElementById("add_row_btn").addEventListener("click", () => {
+      const index = Number(totalForms.value)
+      container.insertAdjacentHTML("beforeend", rowTemplate.innerHTML.replace(/__prefix__/g, index))
+      totalForms.value = index + 1
+    })
+
+    container.addEventListener("click", (event) => {
+      const btn = event.target.closest(".btn-remove-location-set")
+      if (!btn) return
+      const row = btn.closest(".location-set-row")
+      row.querySelector("input[name$='-DELETE']").checked = true
+      row.hidden = true
+    })
+  </script>
 {% endblock %}

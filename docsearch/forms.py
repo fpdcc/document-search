@@ -1,12 +1,12 @@
 import json
 
-from django.forms import ModelForm, ValidationError
+from django.forms import ModelForm, ValidationError, NumberInput, BaseInlineFormSet, inlineformset_factory
 from django.contrib.gis.forms.fields import GeometryCollectionField
 from haystack.query import SQ
 from haystack.forms import SearchForm
 from haystack.inputs import Exact
 
-from docsearch.models import License
+from docsearch.models import License, FlatDrawing, LocationSet
 from docsearch.query import FuzzyAutoQuery
 
 
@@ -87,3 +87,52 @@ class LicenseForm(ModelForm):
     class Meta:
         model = License
         fields = '__all__'
+
+
+class LocationSetForm(ModelForm):
+    class Meta:
+        model = LocationSet
+        fields = ['area', 'section']
+        widgets = {
+            'area': NumberInput(attrs={'class': 'form-control', 'max': 33}),
+            'section': NumberInput(attrs={'class': 'form-control', 'max': 36}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Set both fields as required
+        # Blank "extra" rows skip validation, so this only affects rows users touch
+        for field in self.fields.values():
+            field.required = True
+            field.widget.attrs['min'] = 1
+
+
+class BaseLocationSetFormSet(BaseInlineFormSet):
+    help_text = 'Both an area and section must be entered for each set of locations.'
+
+
+LocationSetFormSet = inlineformset_factory(
+    FlatDrawing,
+    LocationSet,
+    form=LocationSetForm,
+    formset=BaseLocationSetFormSet,
+    extra=0,             # Adding extra blank rows to be handled by js script
+    min_num=1,           # A new drawing starts with one row,
+    validate_min=True,   # and must keep at least one set of locations
+    can_delete=True,
+)
+
+class FlatDrawingForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(FlatDrawingForm, self).__init__(*args, **kwargs)
+        disabled_fields = ["area", "section", "cross_ref_area", "cross_ref_section"]
+        for field in disabled_fields:
+            self.fields[field].disabled = True
+
+    class Meta:
+        model = FlatDrawing
+
+        # Display disabled fields at the end of the form
+        fields = ['map_number', 'location_name', 'building_id', 'description', 'job_number',
+                'number_of_sheets', 'date', 'cross_ref_map_number', 'hash', 'cad_file', 'source_file',
+                'area', 'section', 'cross_ref_area', 'cross_ref_section']
