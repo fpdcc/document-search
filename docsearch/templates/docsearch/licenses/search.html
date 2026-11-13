@@ -15,6 +15,12 @@
   </style>
 {% endblock %}
 
+{% block search_actions %}
+  <a href="{% url 'export-data' %}" class="btn btn-outline-secondary" download>
+    <i class="fa fa-fw fa-download"></i> Download all licenses (CSV)
+  </a>
+{% endblock %}
+
 {% block thead %}
   <th></th>
   <th>{{ view.model|field_name:"license_number"|capfirst }}</th>
