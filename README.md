@@ -77,6 +77,19 @@ docker compose run --rm app ./manage.py rebuild_index
 
 Voila, you now have Licenses, and Titles, and Books, oh my!
 
+#### Changing the search schema
+
+Solr only copies `solr_configs/` into the `docsearch` core when the core is first created, so edits to `solr_configs/conf/schema.xml` aren't picked up by an existing Solr volume. After changing the schema locally, sync the configs into the running core, reload it, and rebuild the index:
+
+```
+docker compose up -d solr
+docker cp solr_configs/conf/. document-search-solr:/var/solr/data/docsearch/conf/
+curl "http://localhost:8986/solr/admin/cores?action=RELOAD&core=docsearch"
+docker compose run --rm app ./manage.py rebuild_index
+```
+
+On staging and production, `scripts/after_install.sh` does this automatically during deploys whenever `schema.xml` has changed (using `update_index`, so search stays available while it runs).
+
 #### Cloning `document-search-data` from AWS
 To gain access to cloning `document-search-data`, you'll need to add yourself to the SSH keys for CodeCommit.
 

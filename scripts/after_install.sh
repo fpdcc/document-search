@@ -80,6 +80,18 @@ echo "DEPLOYMENT_ID='$DEPLOYMENT_ID'" > $PROJECT_DIR/docsearch/deployment.py
 # Make sure Solr is running
 (docker ps | grep document-search-solr) || (cd $PROJECT_DIR && docker compose up -d solr)
 
+# Solr only copies configs into the core when it is first created, so changes
+# to solr_configs/ are otherwise never picked up. If the schema has changed,
+# sync the configs into the running core, reload it, and reindex.
+SOLR_CORE_CONF=/var/solr/data/docsearch/conf
+if ! docker exec document-search-solr cat $SOLR_CORE_CONF/schema.xml \
+        | cmp -s - $PROJECT_DIR/solr_configs/conf/schema.xml; then
+    echo "Solr schema changed; updating core config and reindexing"
+    docker cp $PROJECT_DIR/solr_configs/conf/. document-search-solr:$SOLR_CORE_CONF/
+    curl -sf "http://localhost:8986/solr/admin/cores?action=RELOAD&core=docsearch"
+    sudo -H -u datamade $VENV_DIR/bin/python $PROJECT_DIR/manage.py update_index
+fi
+
 
 # Add the virtualenv directory name to python command in the script
 # and write the modified crontab in the `/etc/cron.d` directory
