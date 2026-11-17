@@ -145,3 +145,50 @@ def test_version_history(client, superuser, document_and_fields):
     activity_data_response = client.get(reverse('activity-data'))
     assert activity_data_response.status_code == 200
     assert activity_data_response.json()['recordsTotal'] == 1
+
+
+@pytest.mark.django_db
+def test_export_data(client, superuser):
+    import csv
+    import io
+    from docsearch import models
+
+    models.License.objects.create(
+        license_number='O-12345',
+        type='gas',
+        township=[42],
+        range=[12, 13],
+        section=[30],
+        source_file='LICENSES/foo.pdf',
+    )
+
+    client.force_login(superuser)
+    response = client.get(reverse('export-data'))
+
+    assert response.status_code == 200
+    assert response['Content-Type'] == 'text/csv'
+    assert 'attachment' in response['Content-Disposition']
+
+    rows = list(csv.DictReader(io.StringIO(response.content.decode('utf-8'))))
+    assert len(rows) == 1
+    assert rows[0]['License number'] == 'O-12345'
+    assert rows[0]['Type'] == 'Gas'
+    assert rows[0]['Range'] == '12, 13'
+    assert rows[0]['Source file'].endswith('LICENSES/foo.pdf')
+
+
+@pytest.mark.django_db
+def test_export_data_requires_login(client):
+    response = client.get(reverse('export-data'))
+    assert response.status_code == 302
+
+
+@pytest.mark.django_db
+def test_license_search_has_export_button(client, superuser, mock_get_queryset):
+    from docsearch import models
+
+    client.force_login(superuser)
+    response = client.get(models.License.get_search_url())
+
+    assert response.status_code == 200
+    assert reverse('export-data') in response.content.decode('utf-8')

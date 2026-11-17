@@ -19,11 +19,9 @@ LABEL maintainer "DataMade <info@datamade.us>"
 # Read more on Dockerfile best practices at the source:
 # https://docs.docker.com/develop/develop-images/dockerfile_best-practices
 
-# Patch to account for missing Debian Bullseye packages
+# Add archived Debian Bullseye packages to source list
 RUN printf '%s\n' \
         'deb http://archive.debian.org/debian bullseye main' \
-        '# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1147093' \
-        'deb [check-valid-until=no] http://snapshot.debian.org/archive/debian-security/20260831T235959Z/ bullseye-security main' \
         'deb http://archive.debian.org/debian bullseye-updates main' \
         > /etc/apt/sources.list
 
