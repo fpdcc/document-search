@@ -1,7 +1,13 @@
 const allFieldLabels = document.querySelectorAll("[id^='div_id_'] label")
 const fieldDescriptions = {
   "Location sets": `
-    <p>Description coming soon.</p>
+    <p>Unique Area and Section combinations used to record project locations. If a drawing represents multiple project locations, each Area/Section location combination should be entered here.</p>
+    <p>Background:</p>
+    <p>Historically, flat file documents were organized by project location using established Public Land Survey System Area and Section grids.</p>
+    <p>The numbering of Areas starts in the northwest end of the county, runs east to the lake and then starts back at the west end of the county. This number also represents the first number of the Cook County Property Identification Number – PIN.</p>
+    <p><a href="https://hub-cookcountyil.opendata.arcgis.com/datasets/24fd4fa810794d9cba17e135f36db92c_2/explore">Click here for an interactive map of Areas</a></p>
+    <p>The numbering of Sections starts in the northeast corner of each Area, runs West to 6, then East to 12, then West to 18, and so on, back and forth, until they end with Section 36 in the southeast corner. This number represents the second number of the Property Identification Number – PIN.</p>
+    <p><a href="https://hub-cookcountyil.opendata.arcgis.com/datasets/217a635972fb4dfa95411e57a57d1250_3/explore">Click here for an interactive map of Sections</a></p>
   `,
   "Area": `
     <p>Area number that project is located in.</p>
@@ -29,15 +35,15 @@ const fieldDescriptions = {
     <p>Please contact the GIS team if you do not know how to determine building ID or need an ID generated for a new building.</p>
   `,
   "Description": `
-      <p>General description of project following the format of <em>[Activity] of [Component] for [building_name] at [complex]</em>.</p>
-      <p>The <em>[building_name]</em> and <em>[preserve complex]</em> are repeated as necessary where multiple locations are encompassed in the drawings.</p>
-      <p>Please note when drawings are “As-Builts” or if drawing sheets are missing. Please note if the project was done in cooperation with another entity. See below for samples of Activity & Component terms:</p>
-      <ul>
-        <li>Example Activity Terms: Construction, Renovation, Remodeling, Demolition, Replacement, Proposal, Layout, Installation, Testing</li>
-        <li>Example Component Terms: Foundation, Walls, Roof, Plumbing, HVAC, Electrical, Landscaping, Parking Lots, Trails</li>
-        <li>Example Description: Construction of Chimney at General Headquarters at Cummings Square in cooperation with Works Project Administration - As Built</li>
-      </ul>
-      <p>When updating historical documents, preserve names that are no longer recognized should be placed in the description text and location name should be updated to reflect current official names.</p>
+    <p>General description of project following the format of <em>[Activity] of [Component] for [building_name] at [complex]</em>.</p>
+    <p>The <em>[building_name]</em> and <em>[preserve complex]</em> are repeated as necessary where multiple locations are encompassed in the drawings.</p>
+    <p>Please note when drawings are “As-Builts” or if drawing sheets are missing. Please note if the project was done in cooperation with another entity. See below for samples of Activity & Component terms:</p>
+    <ul>
+      <li>Example Activity Terms: Construction, Renovation, Remodeling, Demolition, Replacement, Proposal, Layout, Installation, Testing</li>
+      <li>Example Component Terms: Foundation, Walls, Roof, Plumbing, HVAC, Electrical, Landscaping, Parking Lots, Trails</li>
+      <li>Example Description: Construction of Chimney at General Headquarters at Cummings Square in cooperation with Works Project Administration - As Built</li>
+    </ul>
+    <p>When updating historical documents, preserve names that are no longer recognized should be placed in the description text and location name should be updated to reflect current official names.</p>
   `,
   "Job number": `
     <p>Historical Planning and Development project numbering system.</p>
